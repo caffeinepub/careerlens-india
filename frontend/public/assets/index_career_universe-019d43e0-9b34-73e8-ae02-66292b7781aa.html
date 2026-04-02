@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Career Universe — Explore 5000+ Careers Across 150 Industries</title>
+<meta name="description" content="India's most comprehensive career exploration platform for students Grade 7 onwards. Discover industries, career paths, education roadmaps, and more."/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,wght@0,700;1,600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#03060e;--bg2:#060a16;--surface:#0b1628;--surface2:#0f1e38;
+  --border:#162338;--border2:#1d2f4a;
+  --accent:#5b9cf6;--accent2:#2dd4bf;--accent3:#a78bfa;--accent4:#fbbf24;
+  --red:#f87171;--green:#34d399;
+  --text:#dce8ff;--muted:#6b89aa;--muted2:#3d5470;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+::selection{background:rgba(91,156,246,0.3);color:var(--text);}
+
+/* ═══════════════════ NAV ═══════════════════ */
+#topnav{
+  position:fixed;top:0;left:0;right:0;z-index:9000;
+  height:64px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;
+  background:rgba(3,6,14,0.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:all 0.3s;
+}
+.nb{display:flex;align-items:center;gap:0.7rem;text-decoration:none;}
+.ni{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));}
+.nt{font-size:1.05rem;font-weight:700;color:#fff;letter-spacing:-0.3px;}
+.nt em{font-style:normal;color:var(--accent2);}
+.nl{display:flex;align-items:center;gap:0.15rem;}
+.na{padding:0.42rem 0.9rem;border-radius:7px;color:var(--muted);font-size:0.8rem;font-weight:500;text-decoration:none;transition:all 0.2s;white-space:nowrap;}
+.na:hover{color:var(--text);background:var(--surface);}
+.ncta{margin-left:0.4rem;padding:0.42rem 1.1rem;border-radius:7px;background:var(--accent);color:#fff;font-size:0.8rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
+.ncta:hover{background:#4a8ae8;transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--muted);border-radius:2px;transition:all 0.3s;}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(3,6,14,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:1rem 2rem;z-index:8999;}
+.mobile-menu.open{display:block;}
+.mobile-menu a{display:block;padding:0.7rem 0;color:var(--muted);font-size:0.9rem;text-decoration:none;border-bottom:1px solid var(--border);}
+.mobile-menu a:last-child{border:none;}
+
+/* ═══════════════════ HERO ═══════════════════ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:5rem 2rem 3rem;text-align:center;overflow:hidden;
+}
+#starbg{position:absolute;inset:0;pointer-events:none;}
+.hero-glow-a{position:absolute;top:20%;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(91,156,246,0.09) 0%,rgba(45,212,191,0.04) 45%,transparent 70%);pointer-events:none;}
+.hero-glow-b{position:absolute;top:40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(167,139,250,0.06),transparent 65%);pointer-events:none;}
+.pill{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(91,156,246,0.08);border:1px solid rgba(91,156,246,0.25);border-radius:30px;padding:0.32rem 1rem;font-size:0.72rem;font-weight:600;color:var(--accent);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:1.8rem;animation:fu 0.7s ease both;}
+.hero h1{font-size:clamp(2.4rem,6vw,4.8rem);font-weight:700;line-height:1.08;margin-bottom:1.4rem;animation:fu 0.7s 0.1s ease both;max-width:960px;letter-spacing:-0.5px;}
+.hero h1 i{font-style:normal;font-family:'Fraunces',serif;color:var(--accent2);font-style:italic;}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:560px;line-height:1.75;margin-bottom:2.5rem;animation:fu 0.7s 0.2s ease both;}
+.ha{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;animation:fu 0.7s 0.3s ease both;}
+.btn-p{padding:0.82rem 2rem;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:0.92rem;text-decoration:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.25s;display:inline-flex;align-items:center;gap:0.5rem;}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 10px 35px rgba(91,156,246,0.3);}
+.btn-s{padding:0.82rem 2rem;border-radius:10px;background:transparent;border:1px solid var(--border2);color:var(--text);font-weight:600;font-size:0.92rem;text-decoration:none;transition:all 0.25s;display:inline-flex;align-items:center;gap:0.5rem;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-s:hover{background:var(--surface);border-color:var(--accent);}
+.stats-row{display:flex;gap:0;border:1px solid var(--border);border-radius:16px;background:rgba(11,22,40,0.6);backdrop-filter:blur(12px);margin-top:4rem;animation:fu 0.7s 0.4s ease both;overflow:hidden;}
+.stat{padding:1.3rem 2.2rem;border-right:1px solid var(--border);flex:1;text-align:center;}
+.stat:last-child{border:none;}
+.sn{font-size:1.6rem;font-weight:700;color:var(--accent2);display:block;font-family:'Fraunces',serif;}
+.sl{font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:0.2rem;}
+.scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--muted2);font-size:0.72rem;animation:bob 2s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-5px);}}
+@keyframes fu{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══════════════════ GRADE TIERS ═══════════════════ */
+.section{position:relative;z-index:1;padding:5rem 2rem;}
+.wrap{max-width:1180px;margin:0 auto;}
+.section-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent2);margin-bottom:0.7rem;}
+.section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-0.3px;margin-bottom:0.6rem;}
+.section-sub{color:var(--muted);font-size:0.92rem;max-width:520px;line-height:1.7;margin-bottom:3rem;}
+.grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.grade-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:2rem;cursor:pointer;transition:all 0.35s;position:relative;overflow:hidden;
+}
+.grade-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gc1),var(--gc2));transition:height 0.3s;}
+.grade-card:hover{transform:translateY(-5px);border-color:var(--border2);box-shadow:0 24px 60px rgba(0,0,0,0.4);}
+.grade-card:hover::before{height:4px;}
+.grade-card .gicon{font-size:2.2rem;margin-bottom:1rem;display:block;}
+.gtag{display:inline-flex;align-items:center;gap:0.4rem;padding:0.22rem 0.7rem;border-radius:20px;font-size:0.67rem;font-weight:700;letter-spacing:0.5px;margin-bottom:0.9rem;}
+.grade-card h3{font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;}
+.grade-card p{color:var(--muted);font-size:0.82rem;line-height:1.65;margin-bottom:1.3rem;}
+.gfeats{list-style:none;}
+.gfeats li{font-size:0.79rem;color:var(--muted);padding:0.28rem 0;display:flex;align-items:flex-start;gap:0.5rem;}
+.gfeats li::before{content:'→';color:var(--accent2);font-weight:700;flex-shrink:0;margin-top:0.05rem;}
+.gc-explorer{--gc1:#5b9cf6;--gc2:#2dd4bf;}
+.gc-explorer .gtag{background:rgba(91,156,246,0.12);color:var(--accent);}
+.gc-discoverer{--gc1:#a78bfa;--gc2:#2dd4bf;}
+.gc-discoverer .gtag{background:rgba(167,139,250,0.12);color:var(--accent3);}
+.gc-decider{--gc1:#fbbf24;--gc2:#f87171;}
+.gc-decider .gtag{background:rgba(251,191,36,0.12);color:var(--accent4);}
+
+/* ═══════════════════ UNIVERSE MAP ═══════════════════ */
+.map-section{
+  position:relative;z-index:1;
+  background:linear-gradient(180deg,transparent,rgba(11,22,40,0.7) 15%,rgba(11,22,40,0.7) 85%,transparent);
+  padding:5rem 0;
+}
+.map-header{text-align:center;padding:0 2rem;margin-bottom:2.5rem;}
+.map-header .section-sub{margin:0 auto 2.5rem;}
+
+/* VISUAL MAP CANVAS */
+.orbital-map-container{
+  position:relative;width:100%;height:600px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:3rem;overflow:hidden;
+}
+#orbitalCanvas{position:absolute;inset:0;pointer-events:none;}
+.map-center{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(91,156,246,0.25),rgba(45,212,191,0.12));
+  border:2px solid rgba(91,156,246,0.4);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;z-index:10;cursor:pointer;
+  box-shadow:0 0 40px rgba(91,156,246,0.2),0 0 80px rgba(45,212,191,0.08);
+  transition:all 0.3s;
+}
+.map-center:hover{transform:translate(-50%,-50%) scale(1.05);box-shadow:0 0 60px rgba(91,156,246,0.35);}
+.map-center-icon{font-size:1.8rem;margin-bottom:0.2rem;}
+.map-center-text{font-size:0.62rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:1px;line-height:1.3;}
+/* Orbit node */
+.orbit-node{
+  position:absolute;transform:translate(-50%,-50%);
+  width:68px;height:68px;border-radius:50%;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;z-index:5;transition:all 0.3s;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.orbit-node:hover{transform:translate(-50%,-50%) scale(1.2);z-index:20;}
+.orbit-node:hover .on-label{opacity:1;transform:translateY(0);}
+.on-icon{font-size:1.4rem;display:block;margin-bottom:0.1rem;}
+.on-label{
+  position:absolute;bottom:-28px;left:50%;transform:translateX(-50%) translateY(4px);
+  white-space:nowrap;font-size:0.62rem;font-weight:600;color:var(--text);
+  background:rgba(3,6,14,0.9);padding:0.2rem 0.5rem;border-radius:6px;
+  border:1px solid var(--border);opacity:0;transition:all 0.2s;pointer-events:none;
+}
+
+/* FILTER + GRID (below map) */
+.map-grid-section{padding:0 2rem;}
+.filter-bar{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;}
+.ftab{padding:0.38rem 1rem;border-radius:20px;font-size:0.76rem;font-weight:600;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all 0.2s;background:transparent;font-family:'DM Sans',sans-serif;}
+.ftab:hover,.ftab.on{background:var(--surface2);border-color:var(--accent);color:var(--text);}
+.ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;max-width:1180px;margin:0 auto;}
+.icard{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:1.4rem;cursor:pointer;transition:all 0.3s;display:flex;flex-direction:column;gap:0.7rem;
+  position:relative;overflow:hidden;
+}
+.icard::after{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,var(--ic1,transparent),var(--ic2,transparent));opacity:0;transition:opacity 0.3s;pointer-events:none;}
+.icard:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 14px 35px rgba(0,0,0,0.3);}
+.icard:hover::after{opacity:0.07;}
+.icard:hover .ia{color:var(--accent2);transform:translateX(3px);}
+.ii{font-size:1.7rem;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:rgba(255,255,255,0.03);border:1px solid var(--border);}
+.iname{font-size:0.88rem;font-weight:600;line-height:1.3;}
+.imeta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+.icount{font-size:0.68rem;color:var(--muted);}
+.ia{font-size:0.78rem;color:var(--muted2);transition:all 0.2s;}
+.itag{display:inline-block;font-size:0.62rem;font-weight:700;padding:0.14rem 0.48rem;border-radius:8px;letter-spacing:0.3px;margin-bottom:0.2rem;}
+
+/* ═══════════════════ SUBJECT GATEWAY ═══════════════════ */
+.subj-section{background:rgba(11,22,40,0.5);}
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:0.9rem;}
+.subj-btn{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.2rem 1rem;text-align:center;cursor:pointer;transition:all 0.3s;
+}
+.subj-btn:hover{border-color:var(--accent);background:var(--surface2);transform:translateY(-2px);}
+.sbicon{font-size:1.7rem;display:block;margin-bottom:0.5rem;}
+.sbname{font-size:0.8rem;font-weight:600;display:block;margin-bottom:0.15rem;}
+.sbcount{font-size:0.68rem;color:var(--muted);}
+
+/* Subject results panel */
+.subj-results{
+  max-width:1180px;margin:2rem auto 0;
+  background:var(--surface);border:1px solid var(--accent);border-radius:16px;
+  padding:1.8rem;display:none;
+}
+.subj-results.open{display:block;animation:fu 0.4s ease both;}
+.sr-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;}
+.sr-title{font-size:1rem;font-weight:700;}
+.sr-close{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;}
+.sr-careers{display:flex;flex-wrap:wrap;gap:0.6rem;}
+.sr-career{
+  padding:0.4rem 1rem;border-radius:8px;font-size:0.8rem;font-weight:500;
+  background:rgba(91,156,246,0.08);border:1px solid rgba(91,156,246,0.2);color:var(--accent);
+  cursor:pointer;transition:all 0.2s;
+}
+.sr-career:hover{background:rgba(91,156,246,0.16);transform:translateY(-1px);}
+
+/* ═══════════════════ CAREER SPOTLIGHTS ═══════════════════ */
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.5rem;}
+.scard{
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;
+  padding:1.8rem;cursor:pointer;transition:all 0.35s;
+}
+.scard:hover{transform:translateY(-5px);border-color:var(--border2);box-shadow:0 20px 50px rgba(0,0,0,0.35);}
+.scard-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.2rem;}
+.scard-icon{font-size:2rem;}
+.scard-demand{font-size:0.67rem;font-weight:700;padding:0.22rem 0.6rem;border-radius:8px;display:flex;align-items:center;gap:0.3rem;}
+.d-vh{background:rgba(251,191,36,0.12);color:var(--accent4);}
+.d-h{background:rgba(52,211,153,0.12);color:var(--green);}
+.scard h3{font-size:0.98rem;font-weight:700;margin-bottom:0.25rem;}
+.scard-ind{font-size:0.72rem;color:var(--accent2);margin-bottom:0.8rem;font-weight:500;}
+.scard-desc{font-size:0.8rem;color:var(--muted);line-height:1.65;margin-bottom:1.2rem;}
+.scard-meta{display:flex;gap:2rem;margin-bottom:1.2rem;}
+.smeta{font-size:0.72rem;color:var(--muted);}
+.smeta strong{display:block;font-size:0.8rem;color:var(--text);margin-bottom:0.1rem;font-weight:600;}
+.scard-footer{padding-top:1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.skill-chips{display:flex;gap:0.35rem;flex-wrap:wrap;}
+.schip{font-size:0.63rem;padding:0.18rem 0.48rem;border-radius:6px;background:rgba(91,156,246,0.08);border:1px solid rgba(91,156,246,0.18);color:var(--accent);}
+.scard-link{font-size:0.76rem;color:var(--accent2);font-weight:700;text-decoration:none;white-space:nowrap;}
+.scard-link:hover{text-decoration:underline;}
+
+/* ═══════════════════ ROADMAP ═══════════════════ */
+.rm-container{display:grid;grid-template-columns:230px 1fr;gap:2.5rem;align-items:start;margin-top:2.5rem;}
+.rm-selector{display:flex;flex-direction:column;gap:0.4rem;position:sticky;top:80px;}
+.rm-btn{
+  padding:0.82rem 1.1rem;border-radius:10px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:0.8rem;font-weight:500;
+  text-align:left;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:0.7rem;
+}
+.rm-btn:hover,.rm-btn.on{background:var(--surface);border-color:var(--accent);color:var(--text);}
+.rm-btn.on .rmb-dot{background:var(--accent2);}
+.rmb-dot{width:7px;height:7px;border-radius:50%;background:var(--muted2);flex-shrink:0;transition:all 0.2s;}
+.rm-panel{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:2rem;}
+.rm-head{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;}
+.rm-bigicon{font-size:2rem;width:58px;height:58px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rm-title{font-size:1.1rem;font-weight:700;}
+.rm-sub{font-size:0.78rem;color:var(--muted);margin-top:0.2rem;}
+.timeline{position:relative;padding-left:2rem;}
+.timeline::before{content:'';position:absolute;left:0.8rem;top:0.5rem;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--accent3),var(--accent4),var(--green));}
+.tl-item{position:relative;margin-bottom:1.8rem;}
+.tl-dot{position:absolute;left:-2rem;top:0.3rem;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);z-index:1;transition:border-color 0.3s;}
+.tl-item:nth-child(2) .tl-dot{border-color:var(--accent3);}
+.tl-item:nth-child(3) .tl-dot{border-color:var(--accent4);}
+.tl-item:nth-child(4) .tl-dot{border-color:var(--green);}
+.tl-item:nth-child(5) .tl-dot{border-color:var(--accent2);}
+.tl-grade{font-size:0.65rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:0.25rem;}
+.tl-title{font-size:0.92rem;font-weight:700;margin-bottom:0.35rem;}
+.tl-desc{font-size:0.79rem;color:var(--muted);line-height:1.65;margin-bottom:0.5rem;}
+.tl-tags{display:flex;flex-wrap:wrap;gap:0.35rem;}
+.tl-tag{font-size:0.66rem;padding:0.18rem 0.55rem;border-radius:7px;background:rgba(255,255,255,0.03);border:1px solid var(--border);color:var(--muted);}
+
+/* ═══════════════════ SPECIAL ZONES ═══════════════════ */
+.zones-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;}
+.zcard{
+  border-radius:16px;padding:1.8rem;cursor:pointer;transition:all 0.3s;
+  position:relative;overflow:hidden;border:1px solid;
+}
+.zcard:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,0.4);}
+.zcard h3{font-size:1rem;font-weight:700;margin-bottom:0.4rem;}
+.zcard p{font-size:0.78rem;line-height:1.6;margin-bottom:1.2rem;}
+.zcard-roles{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.zcard-role{font-size:0.67rem;padding:0.18rem 0.55rem;border-radius:6px;font-weight:600;}
+.zcard-icon{font-size:2.2rem;margin-bottom:1rem;display:block;}
+.zcard-arrow{position:absolute;bottom:1.5rem;right:1.5rem;font-size:1rem;opacity:0;transition:all 0.2s;}
+.zcard:hover .zcard-arrow{opacity:1;transform:translateX(3px);}
+.zc-govt{background:rgba(251,191,36,0.04);border-color:rgba(251,191,36,0.2);color:var(--text);}
+.zc-govt h3{color:var(--accent4);}
+.zc-govt p{color:var(--muted);}
+.zc-govt .zcard-role{background:rgba(251,191,36,0.1);color:var(--accent4);}
+.zcard-arrow.zc-arrow-govt{color:var(--accent4);}
+.zc-def{background:rgba(248,113,113,0.04);border-color:rgba(248,113,113,0.2);color:var(--text);}
+.zc-def h3{color:var(--red);}
+.zc-def p{color:var(--muted);}
+.zc-def .zcard-role{background:rgba(248,113,113,0.1);color:var(--red);}
+.zc-space{background:rgba(167,139,250,0.04);border-color:rgba(167,139,250,0.2);color:var(--text);}
+.zc-space h3{color:var(--accent3);}
+.zc-space p{color:var(--muted);}
+.zc-space .zcard-role{background:rgba(167,139,250,0.1);color:var(--accent3);}
+.zc-ai{background:rgba(91,156,246,0.04);border-color:rgba(91,156,246,0.2);color:var(--text);}
+.zc-ai h3{color:var(--accent);}
+.zc-ai p{color:var(--muted);}
+.zc-ai .zcard-role{background:rgba(91,156,246,0.1);color:var(--accent);}
+.zc-voc{background:rgba(52,211,153,0.04);border-color:rgba(52,211,153,0.2);color:var(--text);}
+.zc-voc h3{color:var(--green);}
+.zc-voc p{color:var(--muted);}
+.zc-voc .zcard-role{background:rgba(52,211,153,0.1);color:var(--green);}
+.zc-free{background:rgba(45,212,191,0.04);border-color:rgba(45,212,191,0.2);color:var(--text);}
+.zc-free h3{color:var(--accent2);}
+.zc-free p{color:var(--muted);}
+.zc-free .zcard-role{background:rgba(45,212,191,0.1);color:var(--accent2);}
+
+/* ═══════════════════ QUIZ CTA ═══════════════════ */
+.quiz-cta{
+  background:linear-gradient(135deg,rgba(91,156,246,0.07),rgba(45,212,191,0.04));
+  border:1px solid rgba(91,156,246,0.15);border-radius:24px;padding:3.5rem;
+  text-align:center;margin:0 auto;max-width:780px;
+}
+.quiz-flow{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:2rem 0;}
+.qstep{display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding:0 1.2rem;}
+.qstep-icon{width:50px;height:50px;border-radius:12px;background:rgba(91,156,246,0.1);border:1px solid rgba(91,156,246,0.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.qstep-label{font-size:0.7rem;color:var(--muted);text-align:center;max-width:70px;line-height:1.3;}
+.qstep-arrow{color:var(--muted2);font-size:0.9rem;align-self:center;padding:0 0.2rem;}
+.quiz-note{font-size:0.77rem;color:var(--muted);margin-bottom:1.5rem;}
+
+/* ═══════════════════ MODAL ═══════════════════ */
+.overlay{position:fixed;inset:0;z-index:9500;background:rgba(3,6,14,0.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:680px;max-height:82vh;overflow-y:auto;transform:translateY(16px);transition:transform 0.3s;}
+.overlay.open .modal{transform:translateY(0);}
+.mhead{padding:1.7rem 2rem 1.2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--surface);z-index:5;}
+.mhead h2{font-size:1.15rem;font-weight:700;}
+.mclose{background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;padding:0.2rem;transition:color 0.2s;}
+.mclose:hover{color:var(--text);}
+.mbody{padding:1.8rem 2rem;}
+.m-intro{font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;}
+.m-section-label{font-size:0.67rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:0.7rem;}
+.careers-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:1.5rem;}
+.cmc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.9rem;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+.cmc:hover{border-color:var(--accent2);transform:translateY(-1px);}
+.cmc-icon{font-size:1.1rem;margin-bottom:0.3rem;}
+.cmc-name{font-size:0.82rem;font-weight:600;color:var(--text);}
+.cmc-type{font-size:0.67rem;color:var(--muted);margin-top:0.15rem;}
+.hchips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;}
+.hchip{font-size:0.72rem;padding:0.25rem 0.65rem;border-radius:7px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.18);color:var(--accent3);}
+
+/* ═══════════════════ DISCLAIMER STRIP ═══════════════════ */
+.dstrip{background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.18);border-radius:10px;padding:0.85rem 1.2rem;font-size:0.75rem;color:var(--muted);line-height:1.65;margin-bottom:2.5rem;}
+.dstrip strong{color:var(--accent4);}
+.dstrip a{color:var(--accent4);}
+
+/* ═══════════════════ FOOTER ═══════════════════ */
+footer{position:relative;z-index:1;padding:3.5rem 2.5rem 2rem;border-top:1px solid var(--border);background:rgba(3,6,14,0.7);}
+.ftop{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.fb-brand p{color:var(--muted);font-size:0.79rem;line-height:1.7;margin-top:0.8rem;max-width:250px;}
+.fc h4{font-size:0.68rem;font-weight:700;color:var(--text);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:0.9rem;}
+.fc a{display:block;color:var(--muted);font-size:0.79rem;text-decoration:none;padding:0.22rem 0;transition:color 0.2s;}
+.fc a:hover{color:var(--accent2);}
+.fbot{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+.fbot p{font-size:0.73rem;color:var(--muted2);}
+.flegal{display:flex;gap:1.5rem;}
+.flegal a{font-size:0.73rem;color:var(--muted2);text-decoration:none;}
+.flegal a:hover{color:var(--muted);}
+
+/* ═══════════════════ RESPONSIVE ═══════════════════ */
+@media(max-width:960px){
+  .grade-grid,.rm-container{grid-template-columns:1fr;}
+  .rm-selector{position:static;}
+  .ftop{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:700px){
+  #topnav{padding:0 1.2rem;}
+  .nl{display:none;}
+  .hamburger{display:flex;}
+  .hero h1{font-size:2.2rem;}
+  .stats-row{display:grid;grid-template-columns:1fr 1fr;}
+  .stat{border-right:none;border-bottom:1px solid var(--border);}
+  .stat:nth-child(2),.stat:last-child{border-bottom:none;}
+  .orbital-map-container{height:320px;}
+  .quiz-flow{gap:0;}
+  .qstep{padding:0 0.5rem;}
+  .qstep-arrow{display:none;}
+  .zones-grid{grid-template-columns:1fr;}
+  .ftop{grid-template-columns:1fr;}
+  .quiz-cta{padding:2rem;}
+  .careers-grid-2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="topnav">
+  <a class="nb" href="#">
+    <div class="ni">🌌</div>
+    <span class="nt">Career<em>Universe</em></span>
+  </a>
+  <div class="nl">
+    <a class="na" href="#grade-section">For Your Grade</a>
+    <a class="na" href="#map-section">Industries</a>
+    <a class="na" href="#roadmap-section">Roadmaps</a>
+    <a class="na" href="#zones-section">Special Zones</a>
+    <a class="na" href="legal.html">Legal</a>
+    <a class="ncta" href="teacher.html" class="nav-link">👩‍🏫 Teachers</a>
+    <a class="nav-link" href="profile.html" class="nav-link">🌌 My Profile</a>
+    <a href="account.html">My Dashboard</a>
+    <a class="nav-link" href="ai-advisor.html">🤖 AI Advisor</a>
+    <a class="nav-cta" href="quiz.html">Career Quiz →</a>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()" id="hbg">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mmenu">
+  <a href="#grade-section" onclick="toggleMenu()">For Your Grade</a>
+  <a href="#map-section" onclick="toggleMenu()">Explore Industries</a>
+  <a href="#roadmap-section" onclick="toggleMenu()">Career Roadmaps</a>
+  <a href="#zones-section" onclick="toggleMenu()">Special Zones</a>
+  <a href="quiz.html">Career Quiz</a>
+  <a href="legal.html">Legal & Policies</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <canvas id="starbg"></canvas>
+  <div class="hero-glow-a"></div>
+  <div class="hero-glow-b"></div>
+  <div class="pill">🚀 India's Career Intelligence Platform — Grade 7 Onwards</div>
+  <h1>Your Map to the<br/><i>Career Universe</i></h1>
+  <p class="hero-sub">Explore 5,000+ careers across 150 industries. Understand how to get there — grade by grade, subject by subject. Built for every Indian student, every path.</p>
+  <div class="ha">
+    <a href="#map-section" class="btn-p">🌍 Explore the Universe</a>
+    <a href="quiz.html" class="btn-s">✨ Find My Career Match</a>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><span class="sn">150+</span><span class="sl">Industries</span></div>
+    <div class="stat"><span class="sn">5,000+</span><span class="sl">Careers</span></div>
+    <div class="stat"><span class="sn">3,000+</span><span class="sl">Universities</span></div>
+    <div class="stat"><span class="sn">500+</span><span class="sl">Entrance Exams</span></div>
+  </div>
+  <div class="scroll-cue">↓ Scroll to explore</div>
+</section>
+
+<!-- ═══ GRADE TIERS ═══ -->
+<section class="section" id="grade-section" style="background:rgba(11,22,40,0.45);">
+  <div class="wrap">
+    <div class="section-eyebrow">Choose Your Level</div>
+    <div class="section-title">Where Are You in Your Journey?</div>
+    <p class="section-sub">Career Universe adapts to your grade. Pick the level that matches you for a tailored experience — no pressure, no wrong answers.</p>
+    <div class="grade-grid">
+      <div class="grade-card gc-explorer" onclick="scrollToSection('map-section')">
+        <span class="gicon">🔭</span>
+        <span class="gtag">Grades 7–8 &nbsp;•&nbsp; Ages 12–14</span>
+        <h3>Explorer Mode</h3>
+        <p>Just beginning your journey. Discover what the world of work looks like, explore big industries, and find out what excites you — through stories, quizzes, and a universe of possibilities.</p>
+        <ul class="gfeats">
+          <li>Industry Discovery Map</li>
+          <li>Interest-based Career Matching</li>
+          <li>"Day in the Life" stories for each career</li>
+          <li>No pressure — pure exploration</li>
+          <li>Fun Career Discovery Quiz</li>
+        </ul>
+      </div>
+      <div class="grade-card gc-discoverer" onclick="scrollToSection('roadmap-section')">
+        <span class="gicon">🗺️</span>
+        <span class="gtag">Grades 9–10 &nbsp;•&nbsp; Ages 14–16</span>
+        <h3>Discoverer Mode</h3>
+        <p>Time to connect your subjects to real careers. Understand how your stream choice shapes the future, explore entrance exam timelines, and build skills that matter now.</p>
+        <ul class="gfeats">
+          <li>Subject → Career Gateway</li>
+          <li>Stream Selection Guide (PCM / PCB / Commerce / Humanities)</li>
+          <li>Entrance Exam Awareness Timeline</li>
+          <li>Year-wise skill milestones</li>
+          <li>India + International college preview</li>
+        </ul>
+      </div>
+      <div class="grade-card gc-decider" onclick="window.location.href='career.html'">
+        <span class="gicon">🎯</span>
+        <span class="gtag">Grades 11–12 &nbsp;•&nbsp; Ages 16–18</span>
+        <h3>Decider Mode</h3>
+        <p>Deep-dive time. Compare universities, understand global opportunities, explore salary realities, scholarships, and plan your application strategy with full information.</p>
+        <ul class="gfeats">
+          <li>Full career deep-dives with salary data</li>
+          <li>India + International university comparison</li>
+          <li>Scholarship & financial aid guide</li>
+          <li>Application timeline planner</li>
+          <li>Alternative paths if plans change</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ UNIVERSE MAP ═══ -->
+<section class="map-section" id="map-section">
+  <div class="map-header">
+    <div class="section-eyebrow">The Career Universe</div>
+    <div class="section-title">Every Industry. Every Career Path.</div>
+    <p class="section-sub">The Career Universe is organised like a solar system — industries are planets, careers are cities. Click any industry to explore the careers within it.</p>
+  </div>
+
+  <!-- VISUAL ORBITAL MAP -->
+  <div class="orbital-map-container">
+    <canvas id="orbitalCanvas"></canvas>
+    <div class="map-center" onclick="showAllIndustries()">
+      <div class="map-center-icon">🌌</div>
+      <div class="map-center-text">Career<br/>Universe</div>
+    </div>
+    <div id="orbitNodes"></div>
+  </div>
+
+  <!-- FILTER + GRID -->
+  <div class="map-grid-section">
+    <div class="filter-bar">
+      <button class="ftab on" onclick="filterInd('all',this)">🌐 All Industries</button>
+      <button class="ftab" onclick="filterInd('tech',this)">💻 Technology</button>
+      <button class="ftab" onclick="filterInd('science',this)">🔬 Science & Health</button>
+      <button class="ftab" onclick="filterInd('creative',this)">🎨 Creative</button>
+      <button class="ftab" onclick="filterInd('govt',this)">🏛️ Government</button>
+      <button class="ftab" onclick="filterInd('future',this)">🚀 Future Economy</button>
+    </div>
+    <div class="ind-grid" id="indGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ SUBJECT GATEWAY ═══ -->
+<section class="section subj-section" id="subjects-section">
+  <div class="wrap">
+    <div class="section-eyebrow">Subject Gateway</div>
+    <div class="section-title">Start From What You Love</div>
+    <p class="section-sub">Don't know which career to explore? Start with subjects you enjoy — we'll show you every career they can unlock.</p>
+    <div class="subj-grid" id="subjGrid"></div>
+    <div class="subj-results" id="subjResults">
+      <div class="sr-header">
+        <div class="sr-title" id="srTitle">Careers for Mathematics</div>
+        <button class="sr-close" onclick="closeSubjResults()">✕</button>
+      </div>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:1rem;">Click any career to explore its full roadmap, salary data, and top institutes:</p>
+      <div class="sr-careers" id="srCareers"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CAREER SPOTLIGHTS ═══ -->
+<section class="section" id="spotlight-section">
+  <div class="wrap">
+    <div class="section-eyebrow">Career Spotlights</div>
+    <div class="section-title">Trending & In-Demand Careers</div>
+    <p class="section-sub">Careers shaping the next decade — with full roadmaps, salary insights, and global opportunities.</p>
+    <div class="spot-grid" id="spotGrid"></div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="career-software-engineer.html" class="btn-s">View All Career Deep-Dives →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROADMAP ═══ -->
+<section class="section" id="roadmap-section" style="background:rgba(11,22,40,0.5);">
+  <div class="wrap">
+    <div class="section-eyebrow">Year-by-Year Roadmaps</div>
+    <div class="section-title">Exactly What to Do — When to Do It</div>
+    <p class="section-sub">Select a career and see a grade-by-grade action plan, from your current year all the way to your first job or university seat.</p>
+    <div class="rm-container">
+      <div class="rm-selector" id="rmSelector"></div>
+      <div class="rm-panel" id="rmPanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SPECIAL ZONES ═══ -->
+<section class="section" id="zones-section">
+  <div class="wrap">
+    <div class="section-eyebrow">Special Career Zones</div>
+    <div class="section-title">India's Most Unique Career Paths</div>
+    <p class="section-sub">Beyond mainstream careers — explore the paths that define India's future and offer extraordinary opportunities.</p>
+    <div class="zones-grid" id="zonesGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ QUIZ CTA ═══ -->
+<section class="section" id="quiz-section" style="background:rgba(11,22,40,0.4);">
+  <div class="wrap">
+    <div class="quiz-cta">
+      <div class="section-eyebrow">Career Discovery Quiz</div>
+      <div class="section-title">What Career Suits You?</div>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0;">Answer 12 questions about your interests, personality, and work style — get personalised career matches instantly.</p>
+      <div class="quiz-flow">
+        <div class="qstep"><div class="qstep-icon">🎯</div><div class="qstep-label">Your Interests</div></div>
+        <div class="qstep-arrow">→</div>
+        <div class="qstep"><div class="qstep-icon">📚</div><div class="qstep-label">Favourite Subjects</div></div>
+        <div class="qstep-arrow">→</div>
+        <div class="qstep"><div class="qstep-icon">🧠</div><div class="qstep-label">How You Think</div></div>
+        <div class="qstep-arrow">→</div>
+        <div class="qstep"><div class="qstep-icon">🌍</div><div class="qstep-label">Work Style</div></div>
+        <div class="qstep-arrow">→</div>
+        <div class="qstep"><div class="qstep-icon">✨</div><div class="qstep-label">Your Matches</div></div>
+      </div>
+      <p class="quiz-note">✅ Free · No account needed · Results shown instantly · Nothing stored on our servers</p>
+      <a href="quiz.html" class="btn-p" style="font-size:1rem;padding:1rem 2.5rem;">🚀 Start Career Quiz — 5 Minutes</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="dstrip" style="max-width:1180px;margin:0 auto 2.5rem;">
+    <strong>⚠️ Educational Disclaimer:</strong> Career Universe is an educational reference platform. All career information, salary data, and demand scores are indicative estimates for general guidance only — not professional career counselling or financial advice. Salary ranges reflect market data compiled from public sources and vary widely by employer, location, and individual performance. Always verify with official sources before making major decisions. <a href="legal.html">Read Full Disclaimer →</a>
+  </div>
+  <div class="ftop">
+    <div class="fb-brand">
+      <a class="nb" href="#"><div class="ni">🌌</div><span class="nt">Career<em>Universe</em></span></a>
+      <p>India's most comprehensive career intelligence platform for students from Grade 7 onwards. Explore, discover, and decide with confidence — at your own pace.</p>
+    </div>
+    <div class="fc">
+      <h4>Explore</h4>
+      <a href="#map-section">All Industries</a>
+      <a href="career.html">Career Deep-Dives</a>
+      <a href="#subjects-section">By Subject</a>
+      <a href="#roadmap-section">Roadmaps</a>
+      <a href="quiz.html">Career Quiz</a>
+    </div>
+    <div class="fc">
+      <h4>Special Zones</h4>
+      <a href="#zones-section">Government & IAS</a>
+      <a href="#zones-section">Defence Careers</a>
+      <a href="#zones-section">Space & ISRO</a>
+      <a href="#zones-section">AI Era Careers</a>
+      <a href="#zones-section">Vocational Paths</a>
+    </div>
+    <div class="fc">
+      <h4>Legal & Help</h4>
+      <a href="legal.html">Privacy Policy</a>
+      <a href="legal.html">Terms of Use</a>
+      <a href="legal.html">Disclaimer</a>
+      <a href="legal.html">Minor User Policy</a>
+      <a href="/cdn-cgi/l/email-protection#94fcf1f8f8fbd4f7f5e6f1f1e6e1fafde2f1e6e7f1bafdfa">Contact Us</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <p>© 2025 Career Universe · For educational purposes only · Not a substitute for professional career counselling</p>
+    <div class="flegal">
+      <a href="legal.html">Privacy</a>
+      <a href="legal.html">Terms</a>
+      <a href="legal.html">Disclaimer</a>
+      <a href="legal.html">Accuracy Notice</a>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="indModal">
+  <div class="modal">
+    <div class="mhead">
+      <h2 id="mTitle">Industry</h2>
+      <button class="mclose" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mbody" id="mBody"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SCRIPT ═══════════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── STARFIELD ── */
+(function(){
+  const c=document.getElementById('starbg');
+  const ctx=c.getContext('2d');
+  function rs(){c.width=window.innerWidth;c.height=window.innerHeight;}rs();
+  window.addEventListener('resize',rs);
+  const S=Array.from({length:200},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.4+0.3,sp:Math.random()*0.25+0.05,ph:Math.random()*Math.PI*2}));
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    const t=Date.now()/1000;
+    S.forEach(s=>{
+      const a=0.08+0.75*Math.abs(Math.sin(t*s.sp+s.ph));
+      ctx.beginPath();ctx.arc(s.x*c.width,s.y*c.height,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(170,200,255,${a})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── DATA ── */
+const INDUSTRIES=[
+  {id:'ai',name:'Artificial Intelligence',icon:'🤖',count:'45+ careers',tag:'Future Now',tc:'rgba(91,156,246,0.15)',tt:'#5b9cf6',cat:['tech','future'],c1:'rgba(91,156,246,0.1)',c2:'rgba(45,212,191,0.05)',
+   careers:[{n:'AI Engineer',t:'Vertical',i:'⚙️'},{n:'Machine Learning Scientist',t:'Research',i:'🧠'},{n:'Prompt Engineer',t:'Emerging',i:'💬'},{n:'AI Ethicist',t:'Emerging',i:'⚖️'},{n:'Computer Vision Engineer',t:'Vertical',i:'👁️'},{n:'NLP Engineer',t:'Vertical',i:'📝'}],
+   horiz:['AI Product Management','Data Analytics','AI Strategy Consulting','Legal & AI Policy']},
+  {id:'software',name:'Software Development',icon:'💻',count:'120+ careers',tag:'Top Hiring',tc:'rgba(91,156,246,0.15)',tt:'#5b9cf6',cat:['tech'],c1:'rgba(91,156,246,0.08)',c2:'rgba(167,139,250,0.05)',
+   careers:[{n:'Full-Stack Developer',t:'Vertical',i:'⚡'},{n:'Mobile App Developer',t:'Vertical',i:'📱'},{n:'DevOps / SRE Engineer',t:'Vertical',i:'🔄'},{n:'Cloud Architect',t:'Vertical',i:'☁️'},{n:'Product Manager',t:'Horizontal',i:'🗺️'},{n:'Technical Writer',t:'Horizontal',i:'✍️'}],
+   horiz:['Technology Sales','IT Finance','Tech HR & Talent','Legal & IP']},
+  {id:'health',name:'Healthcare & Medicine',icon:'🏥',count:'90+ careers',tag:'High Demand',tc:'rgba(52,211,153,0.15)',tt:'#34d399',cat:['science'],c1:'rgba(52,211,153,0.08)',c2:'rgba(45,212,191,0.05)',
+   careers:[{n:'Doctor / Physician',t:'Vertical',i:'👨‍⚕️'},{n:'Surgeon',t:'Vertical',i:'🔬'},{n:'Radiologist',t:'Diagnostic',i:'📡'},{n:'Pharmacist',t:'Vertical',i:'💊'},{n:'Hospital Administrator',t:'Horizontal',i:'🏢'},{n:'Medical Researcher',t:'Research',i:'🧪'}],
+   horiz:['Hospital HR & Finance','Healthcare IT Systems','Medical Legal','Public Health Policy']},
+  {id:'space',name:'Space & Aerospace',icon:'🚀',count:'35+ careers',tag:'ISRO Ready',tc:'rgba(167,139,250,0.15)',tt:'#a78bfa',cat:['science','future'],c1:'rgba(167,139,250,0.08)',c2:'rgba(91,156,246,0.05)',
+   careers:[{n:'Rocket Propulsion Engineer',t:'Vertical',i:'🔧'},{n:'Satellite Systems Engineer',t:'Vertical',i:'📡'},{n:'Astrophysicist',t:'Research',i:'⭐'},{n:'Mission Control Specialist',t:'Operations',i:'🎮'},{n:'Space Scientist',t:'Research',i:'🔭'},{n:'Astrodynamics Engineer',t:'Vertical',i:'🛸'}],
+   horiz:['Aerospace Finance','Defence Liaison','Technical Communications','Systems Engineering']},
+  {id:'cyber',name:'Cybersecurity',icon:'🔐',count:'45+ careers',tag:'Critical',tc:'rgba(248,113,113,0.15)',tt:'#f87171',cat:['tech','future'],c1:'rgba(248,113,113,0.06)',c2:'rgba(91,156,246,0.04)',
+   careers:[{n:'Ethical Hacker / Pen Tester',t:'Vertical',i:'🎭'},{n:'Security Operations Analyst',t:'Vertical',i:'🛡️'},{n:'Incident Responder',t:'Vertical',i:'🚨'},{n:'Cryptographer',t:'Research',i:'🔑'},{n:'Compliance Officer',t:'Horizontal',i:'📋'},{n:'Digital Forensics Expert',t:'Vertical',i:'🔍'}],
+   horiz:['Security Management','Cyber Legal & Compliance','Risk Finance','Technology Consulting']},
+  {id:'finance',name:'Finance & FinTech',icon:'💰',count:'80+ careers',tag:'Growing',tc:'rgba(251,191,36,0.15)',tt:'#fbbf24',cat:['tech'],c1:'rgba(251,191,36,0.06)',c2:'rgba(91,156,246,0.04)',
+   careers:[{n:'Investment Banker',t:'Vertical',i:'📈'},{n:'FinTech Product Manager',t:'Vertical',i:'🏦'},{n:'Actuary',t:'Vertical',i:'📉'},{n:'Risk Analyst',t:'Vertical',i:'⚠️'},{n:'Wealth Manager',t:'Vertical',i:'💎'},{n:'Quantitative Analyst',t:'Research',i:'📊'}],
+   horiz:['Technology in Finance','Legal & Regulatory','Financial Communications','HR in Banks']},
+  {id:'engineering',name:'Engineering & Manufacturing',icon:'⚙️',count:'100+ careers',tag:'Core',tc:'rgba(251,191,36,0.15)',tt:'#fbbf24',cat:['science'],c1:'rgba(251,191,36,0.06)',c2:'rgba(52,211,153,0.04)',
+   careers:[{n:'Mechanical Engineer',t:'Vertical',i:'🔩'},{n:'Civil & Structural Engineer',t:'Vertical',i:'🏗️'},{n:'Electrical Engineer',t:'Vertical',i:'⚡'},{n:'Robotics Engineer',t:'Vertical',i:'🤖'},{n:'Manufacturing Manager',t:'Horizontal',i:'🏭'},{n:'Quality & Reliability Engineer',t:'Horizontal',i:'✅'}],
+   horiz:['Engineering Finance','Project Management','Industrial Supply Chain','Safety Management']},
+  {id:'biotech',name:'Biotechnology & Genetics',icon:'🧬',count:'60+ careers',tag:'Emerging',tc:'rgba(52,211,153,0.15)',tt:'#34d399',cat:['science','future'],c1:'rgba(52,211,153,0.08)',c2:'rgba(167,139,250,0.04)',
+   careers:[{n:'Genetic Engineer',t:'Research',i:'🔬'},{n:'Bioinformatics Scientist',t:'Vertical',i:'💻'},{n:'Pharmaceutical Scientist',t:'Vertical',i:'💊'},{n:'Clinical Researcher',t:'Vertical',i:'📋'},{n:'Biomedical Engineer',t:'Vertical',i:'⚕️'},{n:'Biotech Entrepreneur',t:'Emerging',i:'🚀'}],
+   horiz:['Regulatory Affairs','Biotech Finance','Science Communications','Intellectual Property Law']},
+  {id:'climate',name:'Climate & Environment',icon:'🌱',count:'55+ careers',tag:'Future',tc:'rgba(52,211,153,0.15)',tt:'#34d399',cat:['science','future'],c1:'rgba(52,211,153,0.08)',c2:'rgba(45,212,191,0.04)',
+   careers:[{n:'Climate Scientist',t:'Research',i:'🌡️'},{n:'Renewable Energy Engineer',t:'Vertical',i:'☀️'},{n:'Environmental Consultant',t:'Horizontal',i:'🌿'},{n:'Carbon Credit Analyst',t:'Emerging',i:'📊'},{n:'Sustainability Manager',t:'Horizontal',i:'♻️'},{n:'Conservation Biologist',t:'Research',i:'🦁'}],
+   horiz:['Environmental Finance & ESG','Climate Policy','Sustainability Communications','Environmental Law']},
+  {id:'creative',name:'Media & Creative Arts',icon:'🎨',count:'75+ careers',tag:'Diverse',tc:'rgba(167,139,250,0.15)',tt:'#a78bfa',cat:['creative'],c1:'rgba(167,139,250,0.08)',c2:'rgba(251,191,36,0.04)',
+   careers:[{n:'UX / UI Designer',t:'Vertical',i:'🖌️'},{n:'Film Director',t:'Vertical',i:'🎬'},{n:'Game Designer',t:'Vertical',i:'🎮'},{n:'Investigative Journalist',t:'Vertical',i:'📰'},{n:'Brand Strategist',t:'Horizontal',i:'💡'},{n:'Animation & VFX Artist',t:'Vertical',i:'✨'}],
+   horiz:['Creative Marketing','Media Finance','Content & IP Strategy','Entertainment Legal']},
+  {id:'ias',name:'Civil Services & IAS',icon:'🏛️',count:'30+ careers',tag:'Govt.',tc:'rgba(251,191,36,0.15)',tt:'#fbbf24',cat:['govt'],c1:'rgba(251,191,36,0.06)',c2:'rgba(91,156,246,0.04)',
+   careers:[{n:'IAS Officer',t:'Civil Services',i:'🏅'},{n:'IPS Officer',t:'Civil Services',i:'👮'},{n:'IFS Officer',t:'Foreign Services',i:'🌐'},{n:'State PCS Officer',t:'State Services',i:'📋'},{n:'Urban Development Planner',t:'Govt. Vertical',i:'🏙️'},{n:'Policy Research Analyst',t:'Govt. Horizontal',i:'📝'}],
+   horiz:['Public Finance','Governance Technology','Constitutional Law','Public Communications']},
+  {id:'defence',name:'Defence & Intelligence',icon:'🎖️',count:'40+ careers',tag:'Govt.',tc:'rgba(248,113,113,0.15)',tt:'#f87171',cat:['govt'],c1:'rgba(248,113,113,0.06)',c2:'rgba(251,191,36,0.04)',
+   careers:[{n:'Army Officer',t:'Vertical',i:'⚔️'},{n:'Naval Officer',t:'Vertical',i:'⚓'},{n:'Air Force Pilot / Officer',t:'Vertical',i:'✈️'},{n:'DRDO Research Scientist',t:'Research',i:'🧪'},{n:'Cyber Defence Expert',t:'Emerging',i:'🔐'},{n:'Strategic Intelligence Analyst',t:'Intelligence',i:'🕵️'}],
+   horiz:['Defence Finance','Military Logistics','Strategic Communications','JAG Legal Corps']},
+  {id:'edu',name:'Education & Research',icon:'📚',count:'50+ careers',tag:'Evergreen',tc:'rgba(45,212,191,0.15)',tt:'#2dd4bf',cat:['science'],c1:'rgba(45,212,191,0.06)',c2:'rgba(91,156,246,0.04)',
+   careers:[{n:'University Professor',t:'Vertical',i:'👨‍🏫'},{n:'EdTech Product Developer',t:'Emerging',i:'💻'},{n:'Educational Psychologist',t:'Vertical',i:'🧠'},{n:'Curriculum & Learning Designer',t:'Horizontal',i:'📐'},{n:'Research Scientist',t:'Vertical',i:'🔭'},{n:'School Career Counsellor',t:'Vertical',i:'💬'}],
+   horiz:['Education Administration','EdTech Finance & Ops','School Marketing','Education Policy']},
+  {id:'agri',name:'Agriculture & AgriTech',icon:'🌾',count:'65+ careers',tag:'Essential',tc:'rgba(251,191,36,0.15)',tt:'#fbbf24',cat:['science'],c1:'rgba(251,191,36,0.06)',c2:'rgba(52,211,153,0.04)',
+   careers:[{n:'Agronomist',t:'Vertical',i:'🌱'},{n:'Agricultural Data Scientist',t:'Emerging',i:'📊'},{n:'Food Technologist',t:'Vertical',i:'🍎'},{n:'Soil Scientist',t:'Research',i:'🌍'},{n:'Farm & Operations Manager',t:'Vertical',i:'🚜'},{n:'AgriTech Entrepreneur',t:'Emerging',i:'💡'}],
+   horiz:['Agricultural Finance','Rural Development Policy','Agricultural Law','Supply Chain Logistics']},
+  {id:'hospitality',name:'Tourism & Hospitality',icon:'✈️',count:'45+ careers',tag:'Global',tc:'rgba(45,212,191,0.15)',tt:'#2dd4bf',cat:['creative'],c1:'rgba(45,212,191,0.06)',c2:'rgba(251,191,36,0.04)',
+   careers:[{n:'Hotel General Manager',t:'Vertical',i:'🏨'},{n:'Travel Experience Designer',t:'Emerging',i:'🗺️'},{n:'Aviation Operations Manager',t:'Vertical',i:'✈️'},{n:'Tourism Economist',t:'Horizontal',i:'📈'},{n:'Event & Experience Manager',t:'Vertical',i:'🎉'},{n:'Culinary Artist / Chef',t:'Vertical',i:'👨‍🍳'}],
+   horiz:['Hospitality Finance','HR & Training','Destination Marketing','Technology in Travel']},
+];
+
+const SUBJECTS={
+  'Mathematics':['Software Engineer','Data Scientist','Actuary','Quantitative Analyst','AI / ML Engineer','Cryptographer','Financial Analyst','Operations Research Scientist','Statistician','Econometrician'],
+  'Biology':['Doctor / Physician','Geneticist','Pharmacist','Environmental Scientist','Veterinarian','Biomedical Researcher','Nutritionist & Dietitian','Marine Biologist','Food Scientist','Biomedical Engineer'],
+  'Physics':['Physicist','Aerospace Engineer','Nuclear Engineer','Materials Scientist','Astrophysicist','Photonics Engineer','Geophysicist','Climate Scientist','Renewable Energy Engineer','Robotics Engineer'],
+  'Chemistry':['Chemical Engineer','Pharmacologist','Materials Scientist','Environmental Chemist','Forensic Scientist','Food Technologist','Polymer Scientist','Cosmetic Scientist','Petrochemical Engineer'],
+  'Computer Science':['Software Engineer','AI Engineer','Cybersecurity Analyst','Data Scientist','Product Manager','Game Developer','Cloud Architect','DevOps Engineer','Full-Stack Developer','Blockchain Developer'],
+  'Economics':['Economist','Investment Banker','Policy Analyst','Financial Analyst','Urban Planner','International Trade Specialist','Development Economist','Behavioural Economist','Risk Manager'],
+  'Geography':['Urban & Regional Planner','GIS & Remote Sensing Specialist','Climate Scientist','Environmental Consultant','Tourism Manager','Cartographer','Disaster Management Expert'],
+  'History & Civics':['IAS / Civil Services Officer','Lawyer & Advocate','Journalist','Archaeologist','Public Policy Analyst','Museum Curator','Diplomat / Foreign Service','Political Scientist'],
+  'English & Literature':['Journalist','Content Strategist','Lawyer','University Professor','UX & Technical Writer','Editor / Publisher','Screenwriter & Script Doctor','Public Relations Manager'],
+  'Arts & Design':['UX / UI Designer','Architect','Graphic Designer','Animation Artist','Fashion Designer','Film Director','Interior Architect','Industrial Designer','Brand Identity Designer'],
+  'Music & Performing Arts':['Music Producer','Film Composer','Theatre Director','Music Therapist','Arts Administrator','Recording & Performing Artist','Choreographer','Sound Designer'],
+  'Physical Education & Sports':['Sports Coach','Physiotherapist','Sports Manager','Sports Psychologist','Athletic Trainer & Nutritionist','Sports Journalist','PE Teacher','Sports Scientist'],
+  'Business Studies':['Entrepreneur / Startup Founder','Marketing Manager','HR Manager','Operations Manager','Consultant','Business Analyst','Supply Chain Manager','E-commerce Manager'],
+  'Psychology':['Clinical Psychologist','Educational Psychologist','HR & Organisational Consultant','UX Researcher','Behavioural Economist','Social Worker','Counsellor & Therapist'],
+};
+
+const SPOTLIGHTS=[
+  {icon:'🤖',name:'AI Engineer',ind:'Artificial Intelligence',demand:'Very High',dc:'d-vh',desc:'Design and deploy intelligent systems — recommendation engines, language models, computer vision. One of the fastest-growing and best-compensated careers globally.',salary:'₹8–80 LPA (India)',growth:'Entry → Lead → VP Engineering',skills:['Python','ML / Deep Learning','PyTorch','System Design'],url:'career-ai-engineer.html'},
+  {icon:'💻',name:'Software Engineer',ind:'Software Development',demand:'Very High',dc:'d-vh',desc:'Build the apps, platforms, and infrastructure billions rely on daily. India\'s #1 hiring field — with FAANG salaries exceeding ₹1 crore for senior engineers.',salary:'₹4–80 LPA (India)',growth:'SDE-1 → SDE-2 → Senior → Staff',skills:['DSA','System Design','Python / Java','Cloud'],url:'career-software-engineer.html'},
+  {icon:'👨‍⚕️',name:'Doctor / Physician',ind:'Healthcare & Medicine',demand:'Very High',dc:'d-vh',desc:'Diagnose, treat, and heal patients across India and the world. One of the most respected and AI-resistant careers — demand far exceeds supply in India.',salary:'₹6–60 LPA (India)',growth:'Resident → Specialist → Senior Consultant',skills:['Clinical Diagnosis','NEET-UG/PG','Pharmacology','Patient Care'],url:'career-doctor.html'},
+  {icon:'🏛️',name:'IAS Officer',ind:'Civil Services & Government',demand:'Evergreen',dc:'d-h',desc:'Run India\'s districts, shape national policy, and represent India globally. The most powerful administrative career in the country — selected via UPSC.',salary:'₹56K–2.5L/month + perks',growth:'SDM → Collector → Commissioner → Secretary',skills:['UPSC CSE','Constitutional Law','Policy Analysis','Leadership'],url:'career-ias.html'},
+  {icon:'🌍',name:'Climate Scientist',ind:'Climate & Environment',demand:'Rapidly Growing',dc:'d-vh',desc:'Study how Earth\'s climate is changing and what it means for humanity. The most urgent scientific career of the 21st century — demand is exploding globally.',salary:'₹5–30 LPA (India)',growth:'Research → Scientist → Senior Scientist',skills:['Python','Climate Modelling','GIS','Statistics'],url:'career-climate-scientist.html'},
+  {icon:'🏗️',name:'Architect',ind:'Architecture & Urban Design',demand:'Steady & Growing',dc:'d-h',desc:'Design buildings, cities, and spaces where people live and work. Every structure you see was designed by an architect — India\'s construction boom needs more.',salary:'₹4–35 LPA (India)',growth:'Junior → Project → Principal → Partner',skills:['AutoCAD','Revit','NATA','Sustainable Design'],url:'career-architect.html'},
+
+  {icon:'📊',name:'Chartered Accountant',ind:'Finance, Accounting & Audit',demand:'Evergreen',dc:'d-h',desc:'India's most respected finance qualification — audit, tax, advisory, and CFO careers.',salary:'₹7–80 LPA',growth:'Articleship → CA → Senior → CFO',skills:['ICAI CA', 'Taxation', 'Audit', 'Modelling'],url:'career-chartered-accountant.html'},
+  {icon:'📈',name:'Data Scientist',ind:'Data Science & Analytics',demand:'Very High',dc:'d-vh',desc:'Turn raw data into decisions — LinkedIn's #1 fastest-growing job globally.',salary:'₹6–60 LPA',growth:'Analyst → DS → Senior → Director',skills:['Python', 'ML', 'SQL', 'Statistics'],url:'career-data-scientist.html'},
+  {icon:'⚖️',name:'Lawyer / Advocate',ind:'Law & Legal Services',demand:'Steady & Growing',dc:'d-h',desc:'Argue, advise, protect — from courtrooms to boardrooms. NLUs produce world-class lawyers.',salary:'₹3–80 LPA',growth:'Associate → Senior → Partner',skills:['CLAT', 'Legal Research', 'Drafting', 'Litigation'],url:'career-lawyer.html'},
+  {icon:'🎯',name:'Product Manager',ind:'Technology & Product',demand:'Very High',dc:'d-vh',desc:'Define what gets built and why — the CEO of the product without the CEO title.',salary:'₹12–80 LPA',growth:'APM → PM → Senior PM → VP',skills:['Strategy', 'User Research', 'SQL', 'Agile'],url:'career-product-manager.html'},
+  {icon:'🧠',name:'Psychologist',ind:'Mental Health',demand:'Rapidly Growing',dc:'d-vh',desc:'Understand the human mind — fastest growing field in post-pandemic India.',salary:'₹4–30 LPA',growth:'Counsellor → Clinical Psych → Consultant',skills:['CBT', 'Assessment', 'Empathy', 'RCI'],url:'career-psychologist.html'},
+  {icon:'🚀',name:'Aerospace Engineer',ind:'Aerospace & Defence',demand:'Very High',dc:'d-vh',desc:'Design aircraft, rockets, and satellites. India private space boom creates a golden era.',salary:'₹5–50 LPA',growth:'Junior → Project Engr → Senior Scientist',skills:['Aerodynamics', 'CFD', 'ANSYS', 'GATE AE'],url:'career-aerospace-engineer.html'},
+  {icon:'🎨',name:'UX / Product Designer',ind:'Design & User Experience',demand:'High',dc:'d-h',desc:'Design digital experiences billions use every day. Every app was designed by designers.',salary:'₹5–50 LPA',growth:'Junior → Mid → Senior → Design Lead',skills:['Figma', 'User Research', 'Prototyping', 'Accessibility'],url:'career-designer-ux.html'},
+  {icon:'📰',name:'Journalist',ind:'Media & Journalism',demand:'Evolving',dc:'d-h',desc:'Report the truth, tell stories that matter. Digital journalism creates new career models.',salary:'₹3–30 LPA',growth:'Reporter → Correspondent → Editor',skills:['Reporting', 'RTI', 'Data Journalism', 'Video'],url:'career-journalist.html'},
+  {icon:'💹',name:'Financial Analyst / IB',ind:'Finance & Capital Markets',demand:'Very High',dc:'d-vh',desc:'Value companies and move capital. IIM grads join Goldman Sachs and JP Morgan.',salary:'₹8–80 LPA',growth:'Analyst → Associate → VP → MD',skills:['DCF', 'CFA', 'Excel', 'Bloomberg'],url:'career-financial-analyst.html'},
+  {icon:'🧬',name:'Biotech Researcher',ind:'Biotechnology & Life Sciences',demand:'Very High',dc:'d-vh',desc:'Engineer biology to cure disease. India is the world's third-largest biotech hub.',salary:'₹4–35 LPA',growth:'Research Assoc → Scientist → Director',skills:['CRISPR', 'Cell Culture', 'Python', 'Bioinformatics'],url:'career-biotech-researcher.html'},
+];
+
+const ROADMAPS={
+  engineer:{icon:'💻',title:'Software Engineer',sub:'From Grade 7 curiosity to your first software job',m:[
+    {g:'Grade 7–8',t:'Discover & Build Curiosity',d:'Explore how apps and websites work around you. No pressure — this is the age for curiosity. Try Scratch or Code.org. Excel in Mathematics.',tags:['Scratch / Code.org','Strong Maths','Typing Speed','Read Tech News']},
+    {g:'Grade 9–10',t:'Choose PCM & Start Coding',d:'PCM stream opens all engineering doors. Begin Python. Participate in maths olympiads and coding clubs. Build simple programs.',tags:['PCM Stream','Python Basics','Maths Olympiad','School Tech Club']},
+    {g:'Grade 11–12',t:'JEE / BITSAT Prep + First Projects',d:'JEE Advanced for IITs, BITSAT for BITS. Alongside academics: complete Andrew Ng\'s ML course (free), build 2 projects, start GitHub.',tags:['JEE / BITSAT','GitHub Profile','2 Python Projects','DSA Awareness']},
+    {g:'UG Year 1–2',t:'B.Tech CS — Build the Foundation',d:'Data Structures & Algorithms (DSA), discrete maths, statistics. Solve 100+ Leetcode problems. Join college ML or coding club.',tags:['IIT / NIT / BITS','DSA on Leetcode','Join E-Cell / ML Club','8+ CGPA target']},
+    {g:'UG Year 3–4',t:'Intern, Build, Specialise',d:'Summer internships at tech companies. Build 2–3 real projects. Decide specialisation: web, AI, mobile, cloud. Contribute to open source.',tags:['Summer Internship','Open Source','Final Year Project','System Design']},
+    {g:'Career Entry',t:'First Job & Growth Path',d:'Entry roles: SDE-1 / Junior Developer. Target product companies (FAANG, Unicorns) or high-growth startups. Grow fast with continuous learning.',tags:['SDE-1','FAANG / Unicorns','Startups','Continuous Learning']},
+  ]},
+  doctor:{icon:'🏥',title:'Doctor / Physician',sub:'From PCB stream to clinical practice',m:[
+    {g:'Grade 7–8',t:'Build Biology Foundation',d:'Develop genuine interest in how the human body works. Read about biology and health. Excellent academic scores are essential.',tags:['Biology Basics','Science Curiosity','Strong Academics']},
+    {g:'Grade 9–10',t:'Confirm PCB Stream',d:'PCB (Physics, Chemistry, Biology) is mandatory for NEET. Maintain top scores. Begin NEET awareness — understand its structure and timeline.',tags:['PCB Stream','Top Scores','NEET Awareness','Biology Excellence']},
+    {g:'Grade 11–12',t:'NEET Preparation — All Out',d:'NEET is the single gateway to MBBS in India. Rigorous preparation with coaching (Allen, Aakash, BYJU\'s) if needed. Aim for 650+ score.',tags:['NEET Preparation','Biology Mastery','Chemistry & Physics','Coaching Support']},
+    {g:'MBBS — 5.5 Years',t:'Medical Degree & Clinical Rotations',d:'Study medicine. Clinical rotations expose you to specialisations — surgery, medicine, paediatrics. Develop patient communication skills.',tags:['MBBS Degree','Clinical Rotations','Medical Ethics','Patient Care']},
+    {g:'Postgraduate',t:'PG NEET → MD / MS Specialisation',d:'Choose specialisation through PG NEET. Surgery, cardiology, orthopaedics, psychiatry, and many more. Super-specialisation via fellowships.',tags:['PG NEET','MD / MS','Choose Specialisation','AIIMS / JIPMER / CMC']},
+  ]},
+  ias:{icon:'🏛️',title:'IAS / Civil Services',sub:'From school to District Collector via UPSC',m:[
+    {g:'Grade 7–8',t:'Read Widely — Build Awareness',d:'Read newspapers daily. Understand how government works. Develop a habit of connecting current events to history and civics.',tags:['Newspaper Reading','Current Affairs','Geography Interest','Civic Sense']},
+    {g:'Grade 9–10',t:'Choose Any Stream — Master NCERTs',d:'Any stream works for UPSC. Humanities gives a head start but is not required. NCERT textbooks are the foundation of UPSC — read them carefully.',tags:['Any Stream Works','NCERT Books','Essay Writing','History & Polity']},
+    {g:'Grade 11–12',t:'Optional: Humanities + Foundation',d:'History, Geography, Political Science as subjects are an advantage. Develop strong English writing. Follow editorials in The Hindu.',tags:['NCERT Mastery','Essay Practice','The Hindu Daily','Polity Basics']},
+    {g:'Graduation',t:'Any Bachelor\'s Degree + UPSC Preparation',d:'Any subject. Use college years to systematically prepare for UPSC. Join a study group. Read Laxmikant for Polity. Mock tests weekly.',tags:['Any Degree','UPSC Coaching (Optional)','Mock Tests','Laxmikant','M. Laxmikant']},
+    {g:'UPSC Journey',t:'Prelims → Mains → Interview',d:'Average age of IAS selection: 26–28. Typical preparation: 2–3 years. Consistent strategy beats intensive short bursts. LBSNAA training post-selection.',tags:['UPSC Prelims (GS)','GS Mains (4 Papers)','Optional Subject','Interview (UPSC Board)','LBSNAA Mussoorie']},
+  ]},
+  ai:{icon:'🤖',title:'AI / ML Engineer',sub:'Cutting-edge career in artificial intelligence',m:[
+    {g:'Grade 7–8',t:'Excel in Maths & Explore Logic',d:'AI is built on mathematics. Excel in algebra and statistics foundations. Play logic puzzles. Watch explainers on how AI works — YouTube is great.',tags:['Strong Maths','Logic Games','AI Curiosity','Khan Academy Maths']},
+    {g:'Grade 9–10',t:'PCM + Introduction to Programming',d:'PCM is essential. Start Python via free resources (CS50P, Codecademy). Understand what machine learning means conceptually.',tags:['PCM Stream','Python Intro','CS50P (Free)','Maths Excellence']},
+    {g:'Grade 11–12',t:'JEE Preparation + ML Foundations',d:'Target top engineering colleges. Complete Andrew Ng\'s ML Specialisation (free audit on Coursera). Learn NumPy and Pandas basics.',tags:['JEE / BITSAT','ML by Andrew Ng','NumPy / Pandas','Statistics Basics']},
+    {g:'UG Year 1–2',t:'B.Tech CS/AI — Core Foundations',d:'Master DSA, Linear Algebra, Statistics, and Probability. Join college AI/ML research group. Solve problems on Kaggle.',tags:['B.Tech CS / AI','DSA Mastery','Kaggle (Beginner)','Deep Learning Theory']},
+    {g:'UG Year 3–4',t:'Specialise, Research, Build',d:'Research internship at Google / Microsoft / IISC / IIT labs. Build an end-to-end ML product. Target one publication or strong tech blog.',tags:['Research Internship','PyTorch / TensorFlow','Kaggle Competitions','GitHub Portfolio']},
+    {g:'Career / PG',t:'Industry or MS / M.Tech',d:'Join FAANG/Unicorns as MLE, or pursue M.Tech at IITs (via GATE) / MS abroad at Stanford, CMU, MIT, UToronto for research roles.',tags:['ML Engineer (Industry)','GATE → IIT M.Tech','GRE → MS Abroad','PhD for Research']},
+  ]},
+  architect:{icon:'🏗️',title:'Architect / Urban Designer',sub:'Creating the built world through design',m:[
+    {g:'Grade 7–8',t:'Draw, Sketch, Build Models',d:'Architecture begins with spatial thinking. Draw floor plans of your home. Visit interesting buildings. Try model-building kits. Study geometry.',tags:['Drawing & Sketching','Spatial Thinking','Model Building','Visit Buildings']},
+    {g:'Grade 9–10',t:'PCM or PCB + Art',d:'Architecture requires both Maths and creative ability. NATA (entrance test) tests drawing and aptitude. Attend art classes. Study fine art.',tags:['PCM / PCB + Art','Drawing Practice','Art Classes','Perspective Drawing']},
+    {g:'Grade 11–12',t:'NATA / JEE Paper 2 Preparation',d:'NATA is the primary entrance for B.Arch. JEE Paper 2 for NITs/SPAs. Build a portfolio of 10–15 original drawings. Study geometry deeply.',tags:['NATA Preparation','Portfolio (10–15 Drawings)','JEE Paper 2','Maths & Physics']},
+    {g:'B.Arch — 5 Years',t:'Studio-Based Architecture Education',d:'Semester-long design studios. Learn AutoCAD, Revit, SketchUp. Intern with architecture firms each summer. Focus on sustainable design.',tags:['B.Arch','Design Studio','AutoCAD / Revit','Internships (2 minimum)']},
+    {g:'Career',t:'Licensed Architect → Specialise',d:'Council of Architecture (CoA) registration required to practice. Join design firms, real estate developers, or government bodies. Pursue urban design or interior architecture.',tags:['CoA Registration','Architecture Firm','Sustainable Design','Urban Planning']},
+  ]},
+  entrepreneur:{icon:'💡',title:'Entrepreneur / Startup Founder',sub:'No single path — infinite possibilities',m:[
+    {g:'Grade 7–8',t:'Observe Problems. Keep a Journal.',d:'Entrepreneurs solve problems. Start noticing what frustrates people around you. Keep a "problem journal". Read biographies of founders you admire.',tags:['Problem Journal','Founder Biographies','Curiosity Habit','Observation Skills']},
+    {g:'Grade 9–10',t:'Learn Business Basics + Small Ventures',d:'Start something small: sell something, run a class, start a blog. Study how businesses around you operate. Learn basic accounting.',tags:['Mini Ventures','Basic Finance','Communication','Leadership in School']},
+    {g:'Grade 11–12',t:'Any Stream + First Competitions',d:'Commerce for business knowledge; Science for tech startups; Arts for creative ventures. Enter startup competitions. Build your first MVP.',tags:['Any Stream','Startup Competitions','First Product (MVP)','Networking Start']},
+    {g:'College',t:'Degree + Build in Parallel',d:'BBA, B.Tech, B.Com — all valid. Join the Entrepreneurship Cell (E-Cell). Explore Startup India, Atal Innovation Mission (AIM). Find a co-founder.',tags:['E-Cell','Startup India Registration','AIM / NASSCOM','Find Co-founders','Pitch Practice']},
+    {g:'Venture Stage',t:'Launch → Learn → Scale',d:'Most successful entrepreneurs failed multiple times first. Key Indian resources: NASSCOM 10000 Startups, IIM Incubators, Sequoia Surge. Keep iterating.',tags:['NASSCOM / AIM','Angel Investment / VCs','Product-Market Fit','Scale & Hire','Stay Resilient']},
+  ]},
+};
+
+const ZONES=[
+  {style:'zc-govt',icon:'🏛️',h3:'Government & Civil Services',p:'Serve India at the highest level through IAS, IPS, IFS, and State Services. Shape policy, lead districts, represent India globally.',roles:['IAS Officer','IPS Officer','IFS Diplomat','State PCS','Urban Planner','Public Policy Analyst'],url:'career-ias.html'},
+  {style:'zc-def',icon:'🎖️',h3:'Defence & Armed Forces',p:'Army, Navy, Air Force — and cutting-edge roles in DRDO, cyber warfare, and strategic intelligence. Protect the nation with technology.',roles:['Army Officer','Naval Officer','IAF Pilot','DRDO Scientist','Cyber Defence','Intelligence Analyst'],url:'index.html#map-section'},
+  {style:'zc-space',icon:'🚀',h3:'Space & ISRO',p:'India\'s space programme is entering a golden era — ISRO, private space startups (Skyroot, Pixxel), and the Gaganyaan mission await.',roles:['Rocket Engineer','Satellite Engineer','Astrophysicist','Mission Control','Space Entrepreneur'],url:'index.html#map-section'},
+  {style:'zc-ai',icon:'🤖',h3:'AI Era New Careers',p:'Careers that barely existed 5 years ago. Prompt engineers, AI ethicists, automation specialists — the fastest-growing sector on earth.',roles:['Prompt Engineer','AI Ethicist','AI Trainer','Automation Specialist','Human-AI Designer'],url:'career-ai-engineer.html'},
+  {style:'zc-voc',icon:'🛠️',h3:'Vocational & Skill Paths',p:'ITI, Polytechnic, and NSDC pathways offer excellent careers and are in massive demand. Not every great career requires a 4-year degree.',roles:['Electrician / Wireman','CAD Technician','Drone Operator','Mechatronics Tech','Industrial Welder'],url:'vocational.html'},
+  {style:'zc-free',icon:'💻',h3:'Freelance & Digital Economy',p:'Build a career on your own terms. Graphic design, video editing, coding, online tutoring, content creation — global market, local talent.',roles:['Freelance Designer','Digital Marketer','YouTube Creator','Online Educator','App Developer'],url:'index.html#map-section'},
+
+  {icon:'🏗️',name:'Civil Engineer',ind:'Infrastructure & Construction',demand:'Evergreen',dc:'d-h',desc:"Design and build India's roads, bridges, metro systems, and smart cities.",salary:'₹4–40 LPA',growth:'JE → SE → Sr.Engineer → Project Director',skills:['AutoCAD', 'STAAD.Pro', 'GATE CE', 'JEE'],url:'career-civil-engineer.html'},
+  {icon:'⚡',name:'Electrical Engineer',ind:'Electrical, Power & Energy',demand:'Very High',dc:'d-vh',desc:"Power India's energy revolution — from the national grid to EVs and smart meters.",salary:'₹4–45 LPA',growth:'Fresher → Engineer → Sr.Engineer → Director',skills:['MATLAB', 'Power Systems', 'GATE EE', 'VLSI'],url:'career-electrical-engineer.html'},
+  {icon:'⚙️',name:'Mechanical Engineer',ind:'Manufacturing & Automotive',demand:'Steady & Strong',dc:'d-h',desc:"Design machines, engines, robots, and manufacturing systems — the broadest engineering discipline.",salary:'₹3.5–40 LPA',growth:'Fresher → Design Engr → Sr.Engr → Director',skills:['SolidWorks', 'ANSYS', 'GATE ME', 'CAD'],url:'career-mechanical-engineer.html'},
+  {icon:'🔐',name:'Cybersecurity Engineer',ind:'Cybersecurity & InfoSec',demand:'Very High',dc:'d-vh',desc:"Defend digital infrastructure from attackers — 3.5 million global professional shortage.",salary:'₹5–60 LPA',growth:'SOC Analyst → Sr.Security → CISO',skills:['Linux', 'Python', 'OSCP', 'CompTIA Sec+'],url:'career-cybersecurity.html'},
+  {icon:'🎮',name:'Game Developer',ind:'Gaming & Interactive Entertainment',demand:'High',dc:'d-h',desc:"Build interactive worlds — India has 507 million gamers in the world's fastest-growing market.",salary:'₹5–50 LPA',growth:'Jr.Dev → Game Dev → Senior → Lead',skills:['Unity', 'C#', 'Unreal', 'Blender'],url:'career-game-developer.html'},
+  {icon:'📣',name:'Marketing Manager',ind:'Marketing & Advertising',demand:'High',dc:'d-h',desc:"Build brands and drive growth — India's digital ad market crossed ₹50,000 crore in 2024.",salary:'₹5–50 LPA',growth:'Executive → Manager → Sr.Mgr → CMO',skills:['Google Ads', 'SEO', 'Brand Strategy', 'Analytics'],url:'career-marketing-manager.html'},
+  {icon:'🏦',name:'Investment Banker',ind:'Investment Banking & Capital Markets',demand:'Very High',dc:'d-vh',desc:"Advise on M&A, IPOs, and capital raising — the most intense and highest-paid finance career.",salary:'₹10–80 LPA',growth:'Analyst → Associate → VP → MD',skills:['Excel Modelling', 'DCF', 'LBO', 'Bloomberg'],url:'career-investment-banker.html'},
+  {icon:'🌌',name:'Astrophysicist',ind:'Space Science & Astronomy',demand:'Evergreen',dc:'d-h',desc:"Study black holes, exoplanets, and the cosmos — at India's world-class space institutions.",salary:'₹5–25 LPA',growth:'JRF → Postdoc → Scientist → Senior Scientist',skills:['Python', 'TIFR', 'IUCAA', 'AstroSat'],url:'career-astrophysicist.html'},
+  {icon:'🌿',name:'Environmental Scientist',ind:'Environment & Sustainability',demand:'Rapidly Growing',dc:'d-vh',desc:"Protect ecosystems and build India's green economy — ESG mandate creating thousands of new roles.",salary:'₹4–25 LPA',growth:'Executive → Senior → ESG Director',skills:['GIS', 'EIA', 'ESG Reporting', 'Carbon Markets'],url:'career-environmental-scientist.html'},
+  {icon:'🏥',name:'Nurse',ind:'Healthcare & Nursing',demand:'Very High',dc:'d-vh',desc:"Provide frontline patient care — India's most in-demand healthcare career with exceptional Gulf opportunity.",salary:'₹3–20 LPA',growth:'Staff Nurse → Sr.Nurse → Matron',skills:['ICU Nursing', 'B.Sc Nursing', 'MOH Exam', 'NCLEX'],url:'career-nurse.html'},
+  {icon:'💊',name:'Pharmacist',ind:'Pharmaceutical & Drug Sciences',demand:'High',dc:'d-h',desc:"India is the pharmacy of the world — supply 40% of US generics and 25% of UK medicines.",salary:'₹3–30 LPA',growth:'D.Pharm/B.Pharm → Sr.Pharmacist → Head',skills:['Pharmacology', 'GMP', 'GPAT', 'Regulatory Affairs'],url:'career-pharmacist.html'},
+  {icon:'🎬',name:'Film Director',ind:'Film, Television & OTT Content',demand:'High',dc:'d-h',desc:"Tell stories that move millions — India is the world's most prolific film producer.",salary:'₹5L–3Cr/film',growth:'2nd AD → 1st AD → Associate → Director',skills:['Storytelling', 'FTII', 'Editing', 'OTT'],url:'career-film-director.html'},
+  {icon:'🌳',name:'Landscape Architect',ind:'Architecture & Urban Design',demand:'Steady & Growing',dc:'d-h',desc:"Design parks, campuses, and urban green spaces — where architecture meets ecology.",salary:'₹4–30 LPA',growth:'Jr.Architect → Senior → Principal',skills:['AutoCAD', 'GIS', 'Planting Design', 'NATA'],url:'career-architect-landscape.html'},
+  {icon:'🎨',name:'Graphic Designer',ind:'Design & Visual Communication',demand:'High',dc:'d-h',desc:"Shape how brands look and feel — design is everywhere and always in demand.",salary:'₹4–45 LPA',growth:'Jr.Designer → Mid → Senior → Creative Dir',skills:['Illustrator', 'Photoshop', 'Figma', 'After Effects'],url:'career-graphic-designer.html'},
+  {icon:'🤝',name:'Social Worker',ind:'Social Development & NGO',demand:'High',dc:'d-h',desc:"Drive systemic change — work with communities, governments, and international organisations.",salary:'₹3–20 LPA',growth:'Field Worker → Prog.Mgr → Director → UN',skills:['Community Mobilisation', 'TISS', 'M&E', 'Grant Writing'],url:'career-social-worker.html'},
+  {icon:'📊',name:'Economist',ind:'Economics, Policy & Research',demand:'High',dc:'d-h',desc:"Understand and shape economies — from RBI and NITI Aayog to IMF and World Bank.",salary:'₹5–50 LPA',growth:'Research Asst → Economist → Chief Economist',skills:['Econometrics', 'Stata/R', 'DSE/ISI', 'RBI'],url:'career-economist.html'},
+  {icon:'📚',name:'Teacher / Educator',ind:'Education & EdTech',demand:'Evergreen',dc:'d-h',desc:"Shape the next generation — the most impactful career, transformed by EdTech and NEP 2020.",salary:'₹3–30 LPA',growth:'Teacher → Sr.Teacher → HOD → Principal',skills:['B.Ed', 'CTET', 'EdTech', 'Subject Expertise'],url:'career-teacher.html'},
+  {icon:'👗',name:'Fashion Designer',ind:'Fashion, Textile & Lifestyle',demand:'Steady & Growing',dc:'d-h',desc:"Dress the world — India's textile industry is the second-largest employer in the country.",salary:'₹4–40 LPA',growth:'Jr.Designer → Senior → Creative Director',skills:['Fashion Illustration', 'NIFT', 'Pattern Making', 'CLO 3D'],url:'career-fashion-designer.html'},
+  {icon:'🦷',name:'Dentist',ind:'Healthcare & Dentistry',demand:'High',dc:'d-h',desc:'Treat oral health — one of the most financially rewarding healthcare careers. India has 1 dentist per 10,000 people, far below WHO recommended ratio.',salary:'₹5–50 LPA',growth:'Intern → GP → Specialist → Own Clinic',skills:['NEET-UG', 'BDS 5yr', 'Clinic Owner', 'MDS Option'],url:'career-dentist.html'},
+  {icon:'🐾',name:'Veterinarian',ind:'Veterinary & Animal Science',demand:'Growing',dc:'d-h',desc:'Treat and protect animal health — pet population boom, dairy industry, and wildlife conservation create diverse career paths.',salary:'₹4–30 LPA',growth:'Govt Vet → Private → Research',skills:['NEET-UG', 'BVSc 5.5yr', 'Animal Care', 'VCI Reg'],url:'career-veterinarian.html'},
+  {icon:'🏙️',name:'Urban Planner',ind:'Urban Planning & Smart Cities',demand:'Very High',dc:'d-vh',desc:'Design India's cities of tomorrow — Smart Cities Mission and 600M urbanising citizens create massive demand for planners.',salary:'₹5–35 LPA',growth:'Junior → Project → Senior → Director',skills:['JEE Paper2', 'B.Plan', 'SPA Delhi', 'Smart Cities'],url:'career-urban-planner.html'},
+  {icon:'🔬',name:'Radiologist',ind:'Healthcare — Medical Imaging',demand:'Very High',dc:'d-vh',desc:'Use MRI, CT, and X-ray to diagnose disease — among the highest-earning medical specialists in India with teleradiology opening global work.',salary:'₹15–80 LPA',growth:'Resident → Radiologist → Consultant',skills:['NEET-UG', 'NEET-PG', 'MD Radiology', 'Tele-rad'],url:'career-radiologist.html'},
+  {icon:'🏃',name:'Physiotherapist',ind:'Healthcare — Rehabilitation',demand:'High',dc:'d-h',desc:'Restore movement after injury or illness — sports physio, ortho, and neuro rehabilitation are all booming in India.',salary:'₹3–25 LPA',growth:'Hospital → Sports Team → Own Clinic',skills:['BPT 4.5yr', 'Sports Physio', 'IPL Teams', 'MPT'],url:'career-physiotherapist.html'},
+  {icon:'👨‍🍳',name:'Chef / Culinary Pro',ind:'Hospitality & Culinary Arts',demand:'High',dc:'d-h',desc:'Turn food into art and science — India's ₹7.5 lakh crore food service industry and cloud kitchen boom create new paths.',salary:'₹3–50 LPA+',growth:'Commis → Sous → Head → Celebrity',skills:['NCHM JEE', 'IHM Pusa', 'Oberoi School', 'Cloud Kitchen'],url:'career-chef-culinary.html'},
+  {icon:'✈️',name:'Commercial Pilot',ind:'Aviation & Aerospace',demand:'Very High',dc:'d-vh',desc:'Fly the world — India's aviation adds 100 aircraft per year and faces a structural pilot shortage. CPL training in 1.5–2 years after Class 12 PCM.',salary:'₹8–60 LPA',growth:'FO → Senior FO → Captain',skills:['CPL DGCA', 'Class 12 PCM', 'IGRUA', 'IndiGo/AI'],url:'career-pilot.html'},
+  {icon:'🏨',name:'Hotel Manager',ind:'Hospitality & Tourism',demand:'High',dc:'d-h',desc:'Run luxury hotels — India's tourism boom and 200+ new hotel openings by 2027 create thousands of management roles.',salary:'₹4–40 LPA',growth:'Mgmt Trainee → Dept Head → GM',skills:['NCHM JEE', 'IHM Pusa', 'Taj/Marriott', 'Revenue Mgmt'],url:'career-hotel-manager.html'},
+  {icon:'🏥',name:'Public Health Pro',ind:'Public Health & Global Health',demand:'Very High',dc:'d-vh',desc:'Protect populations from disease — Ayushman Bharat, COVID lessons, and global health careers make this one of India's most impactful careers.',salary:'₹5–30 LPA',growth:'MO → Manager → Epidemiologist → UN',skills:['NEET-UG', 'MPH', 'WHO/UN', 'Ayushman Bharat'],url:'career-public-health.html'},
+  {icon:'🔍',name:'Forensic Scientist',ind:'Forensic Science & Justice',demand:'Growing',dc:'d-h',desc:'Science solves crime — NFSU (India's first forensic university) opened in 2020 and digital forensics is India's fastest-growing investigative field.',salary:'₹4–20 LPA',growth:'FSL Junior → Senior → CFSL',skills:['NFSU', 'B.Sc Forensic', 'Digital Forensics', 'CFSL'],url:'career-forensic-scientist.html'},
+  {icon:'⚗️',name:'Nanotechnologist',ind:'Nanotechnology & Materials',demand:'High',dc:'d-h',desc:'Engineer matter at the atomic scale — nano underpins next-gen medicine, semiconductors, and clean energy. India NanoMission invested ₹1,000 crore.',salary:'₹5–35 LPA',growth:'JRF → Scientist → Principal → Prof',skills:['JEE/JAM', 'JNCASR', 'IIT Delhi', 'Nano Mission'],url:'career-nanotechnologist.html'},
+  {icon:'🏏',name:'Sports Professional',ind:'Sports, Fitness & Athletics',demand:'Growing',dc:'d-h',desc:'Play at the highest level — IPL, Pro Kabaddi, ISL, and 20+ leagues make India's sports economy one of Asia's fastest-growing.',salary:'₹3L–20Cr+',growth:'State → National → Pro League → Coach',skills:['SAI Academy', 'Sports Quota', 'IPL Auction', 'PSU Jobs'],url:'career-sports-professional.html'},
+  {icon:'📱',name:'Content Creator',ind:'Digital Media & Creator Economy',demand:'High',dc:'d-h',desc:'Build audiences that matter — India has 50M+ creators and the second-largest YouTube audience globally. Physics Wallah built a ₹9,000Cr company from YouTube.',salary:'₹3L–10Cr+',growth:'Micro → Mid → Top Creator → Agency',skills:['No Exam', 'YouTube', 'Brand Deals', 'Own Course'],url:'career-content-creator.html'},
+  {icon:'☀️',name:'Renewable Energy Engr',ind:'Renewable Energy & Clean Tech',demand:'Very High',dc:'d-vh',desc:'Power India's green transition — 500 GW renewable target by 2030 needs 500,000+ engineers. Solar, wind, green hydrogen, and EV charging are all booming.',salary:'₹5–35 LPA',growth:'Junior Engr → Project → Senior → VP',skills:['JEE', 'GATE EE', 'NTPC/SECI', 'Green Hydrogen'],url:'career-renewable-energy.html'},
+  {icon:'🏗️',name:'Structural Engineer',ind:'Civil & Structural Engineering',demand:'High',dc:'d-h',desc:'Build India's infrastructure — ₹111 lakh crore National Infrastructure Pipeline means decades of demand for civil and structural engineers.',salary:'₹4–40 LPA',growth:'Site Engr → Project → Senior → VP',skills:['JEE', 'GATE CE', 'NHAI/CPWD', 'IIT Civil'],url:'career-chartered-engineer.html'},
+  {icon:'🧬',name:'Genetic Counsellor',ind:'Genomics & Precision Medicine',demand:'Very High',dc:'d-vh',desc:'Decode the human genome — Genome India Project, CRISPR therapy, and cancer genomics are making genetics the most exciting science of this decade.',salary:'₹5–30 LPA',growth:'Counsellor → Senior → Lab Director',skills:['PGIMER', 'M.Sc Genetics', 'NEET/JAM', 'Genome India'],url:'career-genetic-counsellor.html'},
+  {icon:'🎬',name:'Animator / VFX Artist',ind:'Animation, VFX & Entertainment',demand:'High',dc:'d-h',desc:'Create visual effects for Bollywood and Hollywood — India is the world's second-largest animation workforce and Brahmastra spent ₹200Cr on VFX.',salary:'₹3–40 LPA',growth:'Junior → Mid → Senior → VFX Supervisor',skills:['NID/CEED', 'Arena/MAAC', 'Prime Focus', 'DNEG India'],url:'career-animation-vfx.html'},
+  {icon:'🌊',name:'Marine Biologist',ind:'Marine Science & Oceanography',demand:'Growing',dc:'d-h',desc:'Study Earth's last frontier — India's 7,517 km coastline and Samudrayaan deep-sea mission are opening new marine science careers.',salary:'₹4–25 LPA',growth:'JRF → CMFRI Scientist → Research Lead',skills:['IISER Apt.', 'IIT JAM', 'CSIR-NIO', 'Samudrayaan'],url:'career-marine-biologist.html'},
+  {icon:'🏛️',name:'State PCS Officer',ind:'State Government & Admin',demand:'Evergreen',dc:'d-h',desc:'Run your state — State PSC exams are far less competitive than UPSC but carry near-equivalent administrative power at district level.',salary:'₹50K–1.5L/mo',growth:'Tehsildar → Deputy Collector → Collector',skills:['State PSC', 'MPSC/TNPSC/UPPSC', 'NCERT', 'State Admin'],url:'career-civil-services-state.html'},
+  {icon:'📦',name:'Logistics & SCM Pro',ind:'Logistics & Supply Chain',demand:'Very High',dc:'d-vh',desc:'Move goods, optimise flow — India's ₹22 lakh crore logistics market and e-commerce boom need thousands of supply chain managers.',salary:'₹5–40 LPA',growth:'Analyst → Manager → Director → VP',skills:['JEE/CAT', 'NITIE', 'APICS CSCP', 'Delhivery/Amazon'],url:'career-logistics-supply-chain.html'},
+
+];
+
+/* ── RENDER INDUSTRIES ── */
+function renderInd(filter='all'){
+  const g=document.getElementById('indGrid');
+  const list=filter==='all'?INDUSTRIES:INDUSTRIES.filter(x=>x.cat.includes(filter));
+  g.innerHTML=list.map(d=>`
+    <div class="icard" style="--ic1:${d.c1};--ic2:${d.c2};" onclick="openModal('${d.id}')">
+      <div class="ii">${d.icon}</div>
+      <div class="iname">${d.name}</div>
+      <div>
+        <span class="itag" style="background:${d.tc};color:${d.tt}">${d.tag}</span>
+      </div>
+      <div class="imeta">
+        <span class="icount">${d.count}</span>
+        <span class="ia">Explore →</span>
+      </div>
+    </div>
+  `).join('');
+}
+renderInd();
+
+function filterInd(f,btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  renderInd(f);
+}
+
+/* ── ORBITAL MAP ── */
+(function buildOrbital(){
+  const container=document.querySelector('.orbital-map-container');
+  const canvas=document.getElementById('orbitalCanvas');
+  const nodesEl=document.getElementById('orbitNodes');
+  let W,H,cx,cy;
+
+  function resize(){
+    W=container.offsetWidth;H=container.offsetHeight;
+    canvas.width=W;canvas.height=H;
+    cx=W/2;cy=H/2;
+    drawOrbits();
+    positionNodes();
+  }
+
+  function drawOrbits(){
+    const ctx=canvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    const mobile=W<600;
+    const r1=mobile?90:140;
+    const r2=mobile?160:240;
+    [r1,r2].forEach(r=>{
+      ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.strokeStyle='rgba(91,156,246,0.12)';ctx.lineWidth=1;
+      ctx.setLineDash([4,8]);ctx.stroke();ctx.setLineDash([]);
+    });
+  }
+
+  const inner=[
+    {id:'ai',icon:'🤖',color:'rgba(91,156,246,0.6)'},
+    {id:'health',icon:'🏥',color:'rgba(52,211,153,0.6)'},
+    {id:'space',icon:'🚀',color:'rgba(167,139,250,0.6)'},
+    {id:'software',icon:'💻',color:'rgba(91,156,246,0.5)'},
+    {id:'ias',icon:'🏛️',color:'rgba(251,191,36,0.6)'},
+    {id:'defence',icon:'🎖️',color:'rgba(248,113,113,0.6)'},
+  ];
+  const outer=[
+    {id:'cyber',icon:'🔐',color:'rgba(248,113,113,0.5)'},
+    {id:'finance',icon:'💰',color:'rgba(251,191,36,0.5)'},
+    {id:'engineering',icon:'⚙️',color:'rgba(251,191,36,0.5)'},
+    {id:'biotech',icon:'🧬',color:'rgba(52,211,153,0.5)'},
+    {id:'climate',icon:'🌱',color:'rgba(52,211,153,0.5)'},
+    {id:'creative',icon:'🎨',color:'rgba(167,139,250,0.5)'},
+    {id:'edu',icon:'📚',color:'rgba(45,212,191,0.5)'},
+    {id:'agri',icon:'🌾',color:'rgba(251,191,36,0.5)'},
+    {id:'hospitality',icon:'✈️',color:'rgba(45,212,191,0.5)'},
+  ];
+
+  function positionNodes(){
+    nodesEl.innerHTML='';
+    const mobile=W<600;
+    const r1=mobile?90:140, r2=mobile?160:240;
+    const sz=mobile?50:68;
+
+    [...inner.map((n,i)=>({...n,r:r1,a:(i/inner.length)*Math.PI*2-Math.PI/2})),
+     ...outer.map((n,i)=>({...n,r:r2,a:(i/outer.length)*Math.PI*2-Math.PI/3}))].forEach(n=>{
+      const x=cx+n.r*Math.cos(n.a);
+      const y=cy+n.r*Math.sin(n.a);
+      const ind=INDUSTRIES.find(x=>x.id===n.id);
+      const el=document.createElement('div');
+      el.className='orbit-node';
+      el.style.cssText=`left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${n.color.replace('0.6','0.12').replace('0.5','0.1')};border-color:${n.color};`;
+      el.innerHTML=`<span class="on-icon">${n.icon}</span><div class="on-label">${ind?ind.name:''}</div>`;
+      el.onclick=()=>openModal(n.id);
+      nodesEl.appendChild(el);
+    });
+    // Animate rotation
+    animateOrbits(inner,outer,r1,r2);
+  }
+
+  let angle1=0,angle2=0;
+  function animateOrbits(inn,out,r1,r2){
+    const nodes=nodesEl.querySelectorAll('.orbit-node');
+    function tick(){
+      angle1+=0.002;angle2-=0.0015;
+      let idx=0;
+      inn.forEach((n,i)=>{
+        const a=(i/inn.length)*Math.PI*2-Math.PI/2+angle1;
+        const x=cx+r1*Math.cos(a);
+        const y=cy+r1*Math.sin(a);
+        if(nodes[idx]){nodes[idx].style.left=x+'px';nodes[idx].style.top=y+'px';}
+        idx++;
+      });
+      out.forEach((n,i)=>{
+        const a=(i/out.length)*Math.PI*2-Math.PI/3+angle2;
+        const x=cx+r2*Math.cos(a);
+        const y=cy+r2*Math.sin(a);
+        if(nodes[idx]){nodes[idx].style.left=x+'px';nodes[idx].style.top=y+'px';}
+        idx++;
+      });
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  resize();
+  window.addEventListener('resize',resize);
+})();
+
+/* ── SUBJECTS ── */
+const subjectData=[
+  {icon:'📐',name:'Mathematics',count:'120+ careers'},
+  {icon:'🧬',name:'Biology',count:'90+ careers'},
+  {icon:'⚛️',name:'Physics',count:'85+ careers'},
+  {icon:'🧪',name:'Chemistry',count:'70+ careers'},
+  {icon:'💻',name:'Computer Science',count:'200+ careers'},
+  {icon:'📊',name:'Economics',count:'95+ careers'},
+  {icon:'🌍',name:'Geography',count:'60+ careers'},
+  {icon:'📜',name:'History & Civics',count:'55+ careers'},
+  {icon:'✍️',name:'English & Literature',count:'80+ careers'},
+  {icon:'🎨',name:'Arts & Design',count:'75+ careers'},
+  {icon:'🎵',name:'Music & Performing Arts',count:'45+ careers'},
+  {icon:'⚽',name:'Physical Education & Sports',count:'40+ careers'},
+  {icon:'💼',name:'Business Studies',count:'70+ careers'},
+  {icon:'🧠',name:'Psychology',count:'55+ careers'},
+];
+document.getElementById('subjGrid').innerHTML=subjectData.map(s=>`
+  <div class="subj-btn" onclick="showSubj('${s.name}','${s.icon}')">
+    <span class="sbicon">${s.icon}</span>
+    <span class="sbname">${s.name}</span>
+    <span class="sbcount">${s.count}</span>
+  </div>
+`).join('');
+
+function showSubj(name,icon){
+  const r=document.getElementById('subjResults');
+  const list=SUBJECTS[name]||[];
+  document.getElementById('srTitle').textContent=`${icon} Careers for ${name}`;
+  document.getElementById('srCareers').innerHTML=list.map(c=>`
+    <span class="sr-career" onclick="window.location.href='career.html'">${c}</span>
+  `).join('');
+  r.classList.add('open');
+  r.style.display='block';
+  r.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeSubjResults(){
+  const r=document.getElementById('subjResults');
+  r.classList.remove('open');r.style.display='none';
+}
+
+/* ── SPOTLIGHTS ── */
+document.getElementById('spotGrid').innerHTML=SPOTLIGHTS.map(c=>`
+  <div class="scard" onclick="window.location.href='${c.url}'">
+    <div class="scard-top">
+      <div class="scard-icon">${c.icon}</div>
+      <span class="scard-demand ${c.dc}">▲ ${c.demand}</span>
+    </div>
+    <h3>${c.name}</h3>
+    <div class="scard-ind">${c.ind}</div>
+    <p class="scard-desc">${c.desc}</p>
+    <div class="scard-meta">
+      <div class="smeta"><strong>${c.salary}</strong>Typical Salary</div>
+      <div class="smeta"><strong>${c.growth.split('→')[0].trim()}</strong>Entry Role</div>
+    </div>
+    <div class="scard-footer">
+      <div class="skill-chips">${c.skills.slice(0,3).map(s=>`<span class="schip">${s}</span>`).join('')}</div>
+      <a href="${c.url}" class="scard-link">Full Guide →</a>
+    </div>
+  </div>
+`).join('');
+
+/* ── ROADMAP ── */
+const rmKeys=Object.keys(ROADMAPS);
+document.getElementById('rmSelector').innerHTML=rmKeys.map((k,i)=>`
+  <button class="rm-btn ${i===0?'on':''}" onclick="showRoadmap('${k}',this)">
+    <span class="rmb-dot"></span>${ROADMAPS[k].title}
+  </button>
+`).join('');
+
+function showRoadmap(id,btn){
+  document.querySelectorAll('.rm-btn').forEach(b=>b.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  const r=ROADMAPS[id];
+  document.getElementById('rmPanel').innerHTML=`
+    <div class="rm-head">
+      <div class="rm-bigicon">${r.icon}</div>
+      <div><div class="rm-title">${r.title}</div><div class="rm-sub">${r.sub}</div></div>
+    </div>
+    <div class="timeline">
+      ${r.m.map(m=>`
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-grade">${m.g}</div>
+          <div class="tl-title">${m.t}</div>
+          <p class="tl-desc">${m.d}</p>
+          <div class="tl-tags">${m.tags.map(t=>`<span class="tl-tag">${t}</span>`).join('')}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+showRoadmap('engineer',null);
+
+/* ── ZONES ── */
+document.getElementById('zonesGrid').innerHTML=ZONES.map(z=>`
+  <div class="zcard ${z.style}" onclick="window.location.href='${z.url}'" style="cursor:pointer;">
+    <span class="zcard-icon">${z.icon}</span>
+    <h3>${z.h3}</h3>
+    <p>${z.p}</p>
+    <div class="zcard-roles">
+      ${z.roles.map(r=>`<span class="zcard-role">${r}</span>`).join('')}
+    </div>
+    <span class="zcard-arrow">→</span>
+  </div>
+`).join('');
+
+/* ── MODAL ── */
+function openModal(id){
+  const ind=INDUSTRIES.find(x=>x.id===id);
+  if(!ind) return;
+  document.getElementById('mTitle').innerHTML=`${ind.icon} ${ind.name}`;
+  document.getElementById('mBody').innerHTML=`
+    <p class="m-intro">Explore the career landscape within <strong>${ind.name}</strong>. Every industry contains both specialist (vertical) careers and cross-industry (horizontal) professionals.</p>
+    <div class="m-section-label">Specialist Careers in This Industry</div>
+    <div class="careers-grid-2">
+      ${ind.careers.map(c=>`
+        <a class="cmc" href="career.html">
+          <div class="cmc-icon">${c.i}</div>
+          <div class="cmc-name">${c.n}</div>
+          <div class="cmc-type">${c.t}</div>
+        </a>
+      `).join('')}
+    </div>
+    <div class="m-section-label">Horizontal Careers (Functions Within ${ind.name})</div>
+    <p style="font-size:0.79rem;color:var(--muted);margin-bottom:0.7rem;">These professionals work <em>inside</em> this industry using skills that exist across all industries:</p>
+    <div class="hchips">${ind.horiz.map(h=>`<span class="hchip">${h}</span>`).join('')}</div>
+  `;
+  document.getElementById('indModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('indModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('indModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+/* ── HELPERS ── */
+function scrollToSection(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+function showAllIndustries(){
+  scrollToSection('map-section');
+  setTimeout(()=>{
+    document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+    document.querySelector('.ftab').classList.add('on');
+  }, 300);
+}
+</script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>

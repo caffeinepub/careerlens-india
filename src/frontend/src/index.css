@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    /* Warm off-white background */
+    --background: 0.975 0.006 60;
+    --foreground: 0.15 0.02 240;
+
+    /* Pure white cards */
+    --card: 1 0 0;
+    --card-foreground: 0.15 0.02 240;
+    --popover: 1 0 0;
+    --popover-foreground: 0.15 0.02 240;
+
+    /* Deep navy-indigo primary */
+    --primary: 0.3 0.12 255;
+    --primary-foreground: 1 0 0;
+
+    /* Light secondary */
+    --secondary: 0.95 0.008 60;
+    --secondary-foreground: 0.3 0.12 255;
+
+    --muted: 0.94 0.006 60;
+    --muted-foreground: 0.5 0.02 240;
+
+    /* Vibrant teal accent */
+    --accent: 0.55 0.12 195;
+    --accent-foreground: 1 0 0;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 1 0 0;
+
+    --border: 0.9 0.008 60;
+    --input: 0.88 0.008 60;
+    --ring: 0.55 0.12 195;
+
+    /* Sector color tokens */
+    --sector-primary-text: 0.45 0.13 145;
+    --sector-primary-bg: 0.95 0.03 145;
+    --sector-secondary-text: 0.45 0.1 220;
+    --sector-secondary-bg: 0.94 0.025 220;
+    --sector-services-text: 0.5 0.12 55;
+    --sector-services-bg: 0.96 0.04 55;
+
+    /* Dark accent zone tokens */
+    --dark-navy: 0.18 0.08 255;
+    --dark-navy-mid: 0.25 0.1 240;
+    --dark-teal: 0.3 0.1 195;
+
+    --chart-1: 0.646 0.222 41.116;
+    --chart-2: 0.6 0.118 184.704;
+    --chart-3: 0.398 0.07 227.392;
+    --chart-4: 0.828 0.189 84.429;
+    --chart-5: 0.769 0.188 70.08;
+
+    --sidebar: 1 0 0;
+    --sidebar-foreground: 0.15 0.02 240;
+    --sidebar-primary: 0.3 0.12 255;
+    --sidebar-primary-foreground: 1 0 0;
+    --sidebar-accent: 0.95 0.008 60;
+    --sidebar-accent-foreground: 0.3 0.12 255;
+    --sidebar-border: 0.9 0.008 60;
+    --sidebar-ring: 0.55 0.12 195;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>My Career Universe Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="career-style.css"/>
+<style>
+.profile-page{max-width:700px;margin:0 auto;padding:1.5rem 1.25rem 3rem;}
+.pcard{background:linear-gradient(160deg,#070b14 0%,#0d1b30 100%);border:1px solid rgba(91,156,246,0.22);border-radius:20px;overflow:hidden;margin-bottom:1.25rem;position:relative;}
+.pcard-glow{position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(167,139,250,0.12),transparent 70%);pointer-events:none;}
+.pcard-accent{height:4px;background:linear-gradient(90deg,#a78bfa,#5b9cf6,#2dd4bf);}
+.pcard-body{padding:1.8rem 1.8rem 1.4rem;position:relative;}
+.p-top{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.6rem;flex-wrap:wrap;}
+.p-avatar{width:76px;height:76px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.2rem;background:rgba(91,156,246,0.1);border:2px solid rgba(91,156,246,0.3);}
+.p-info{flex:1;min-width:0;}
+.p-name{font-size:1.5rem;font-weight:700;margin-bottom:.2rem;word-break:break-word;}
+.p-grade{font-size:.75rem;color:var(--accent3);font-weight:600;margin-bottom:.3rem;}
+.p-level{font-size:.8rem;color:var(--accent);margin-bottom:.55rem;}
+.p-xp-row{display:flex;align-items:center;gap:.75rem;}
+.p-xp-track{flex:1;max-width:220px;height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.p-xp-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#5b9cf6,#2dd4bf);}
+.p-xp-label{font-size:.7rem;color:var(--muted);white-space:nowrap;}
+.p-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin-bottom:1.4rem;}
+.pstat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:.7rem .5rem;text-align:center;}
+.pstat-val{font-size:1.25rem;font-weight:700;color:var(--text);line-height:1.2;}
+.pstat-lbl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem;}
+.p-stitle{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.6rem;}
+.p-badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+.p-badge{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .65rem;border-radius:20px;font-size:.71rem;background:rgba(251,191,36,0.09);border:1px solid rgba(251,191,36,0.22);color:var(--accent4);}
+.p-badge.locked{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.07);color:var(--muted2);opacity:.4;}
+.p-chips{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.p-chip{font-size:.71rem;padding:.24rem .62rem;border-radius:7px;background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);color:var(--accent2);text-decoration:none;transition:all .18s;}
+.p-chip:hover{background:rgba(45,212,191,0.16);}
+.p-chip.bm{background:rgba(248,113,113,0.08);border-color:rgba(248,113,113,0.2);color:#f87171;}
+.pcard-footer{padding:.8rem 1.8rem;border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem;}
+.pf-brand{font-size:.68rem;color:var(--muted2);}
+.pf-date{font-size:.65rem;color:var(--muted2);}
+.action-row{display:flex;gap:.65rem;flex-wrap:wrap;margin-bottom:1.25rem;}
+.act-btn{flex:1;min-width:130px;padding:.65rem 1rem;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:1px solid var(--border);color:var(--muted);background:transparent;transition:all .2s;text-align:center;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;}
+.act-btn:hover{border-color:var(--accent);color:var(--text);text-decoration:none;}
+.act-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.act-btn.primary:hover{background:#4a8ae8;}
+.act-btn.copied{background:rgba(52,211,153,0.15);color:var(--green);border-color:rgba(52,211,153,0.3);}
+.share-box{display:none;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:1.25rem;}
+.share-box.visible{display:block;}
+.share-box-label{font-size:.7rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;}
+.share-box-input{width:100%;background:#060a16;border:1px solid var(--border);border-radius:7px;padding:.5rem .75rem;color:var(--accent2);font-size:.75rem;font-family:monospace;outline:none;cursor:text;box-sizing:border-box;}
+.share-box-hint{font-size:.68rem;color:var(--muted2);margin-top:.35rem;}
+.viewing-banner{background:rgba(91,156,246,0.07);border:1px solid rgba(91,156,246,0.2);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:var(--muted);margin-bottom:1.1rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;}
+.viewing-banner a{color:var(--accent);font-weight:600;}
+.empty-state{text-align:center;padding:3.5rem 1.5rem;}
+.es-icon{font-size:3rem;margin-bottom:.9rem;}
+.es-title{font-size:1.2rem;font-weight:700;margin-bottom:.5rem;}
+.es-desc{color:var(--muted);font-size:.85rem;max-width:380px;margin:0 auto 1.5rem;line-height:1.7;}
+.es-btns{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;}
+.es-btn{padding:.6rem 1.3rem;border-radius:10px;font-size:.84rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all .2s;text-decoration:none;}
+.es-btn.primary{background:var(--accent);color:#fff;}
+.es-btn.sec{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+.privacy-note{background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.15);border-radius:9px;padding:.75rem 1rem;font-size:.73rem;color:var(--muted);line-height:1.6;}
+.privacy-note strong{color:var(--accent4);}
+@media(max-width:480px){
+  .p-stats{grid-template-columns:repeat(2,1fr);}
+  .p-name{font-size:1.25rem;}
+  .pcard-body{padding:1.3rem;}
+  .pcard-footer{padding:.7rem 1.3rem;}
+  .action-row{flex-direction:column;}
+  .act-btn{min-width:unset;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="index.html">Career<em>Universe</em></a>
+  <div class="nav-right">
+    <a class="nav-link" href="index.html">← Home</a>
+    <a class="nav-link" href="account.html">My Dashboard</a>
+    <a class="nav-link" href="ai-advisor.html">🤖 AI Advisor</a>
+    <a class="nav-link" href="teacher.html">👩‍🏫 Teachers</a>
+    <a class="nav-cta" href="quiz.html">Career Quiz</a>
+  </div>
+</nav>
+
+<div class="profile-page" id="profileRoot">
+  <div class="empty-state" id="loadingState">
+    <div class="es-icon">🌌</div>
+    <div class="es-title">Loading…</div>
+  </div>
+</div>
+
+<!-- auth.js MUST load before inline script so CU is defined -->
+<script src="auth.js"></script>
+<script>
+
+/* ── data ── */
+const ALL_BADGES = [
+  {id:'first_explore',   icon:'🗺️', name:'First Explorer',    desc:'Visited first career page'},
+  {id:'quiz_taker',      icon:'🎯', name:'Quiz Taker',         desc:'Completed Career Quiz'},
+  {id:'career_5',        icon:'⭐', name:'Career Curious',     desc:'Explored 5 careers'},
+  {id:'career_10',       icon:'🌟', name:'Career Enthusiast',  desc:'Explored 10 careers'},
+  {id:'career_all',      icon:'🏆', name:'Career Master',      desc:'Explored all deep-dives'},
+  {id:'bookmark_3',      icon:'❤️', name:'Dream Collector',    desc:'Bookmarked 3+ careers'},
+  {id:'scholarship_hunt',icon:'🎓', name:'Scholarship Hunter', desc:'Visited Scholarship DB'},
+  {id:'vocational',      icon:'🛠️', name:'Skill Seeker',       desc:'Explored Vocational paths'},
+  {id:'streak_3',        icon:'🔥', name:'On Fire',            desc:'3-day visit streak'},
+  {id:'streak_7',        icon:'💎', name:'Dedicated Learner',  desc:'7-day visit streak'},
+  {id:'tier_set',        icon:'📚', name:'Grade Set',          desc:'Selected grade level'},
+  {id:'profile_shared',  icon:'📤', name:'Sharer',             desc:'Shared profile card'},
+];
+const LEVELS = [
+  {name:'Stargazer',      min:0,    icon:'⭐'},
+  {name:'Explorer',       min:100,  icon:'🔭'},
+  {name:'Navigator',      min:300,  icon:'🧭'},
+  {name:'Pioneer',        min:700,  icon:'🚀'},
+  {name:'Universe Master',min:1500, icon:'🌌'},
+];
+const GRADE_LABELS = {
+  explorer:'🔭 Explorer — Grade 7–8', discoverer:'🔍 Discoverer — Grade 9–10',
+  decider:'🎯 Decider — Grade 11–12', beyond:'🎓 College / Beyond',
+};
+const CAREER_META = {
+  'career-aerospace-engineer.html':   {n:'Aerospace Engineer',     e:'🚀'},
+  'career-ai-engineer.html':          {n:'AI Engineer',            e:'🤖'},
+  'career-animation-vfx.html':        {n:'Animator / VFX Artist',  e:'🎬'},
+  'career-architect.html':            {n:'Architect',              e:'🏗️'},
+  'career-architect-landscape.html':  {n:'Landscape Architect',    e:'🌿'},
+  'career-astrophysicist.html':       {n:'Astrophysicist',         e:'🔭'},
+  'career-biotech-researcher.html':   {n:'Biotech Researcher',     e:'🧬'},
+  'career-chartered-accountant.html': {n:'Chartered Accountant',   e:'📊'},
+  'career-chartered-engineer.html':   {n:'Structural Engineer',    e:'🏗️'},
+  'career-chef-culinary.html':        {n:'Chef / Culinary Pro',    e:'👨‍🍳'},
+  'career-civil-engineer.html':       {n:'Civil Engineer',         e:'🏗️'},
+  'career-civil-services-state.html': {n:'State PCS Officer',      e:'🏛️'},
+  'career-climate-scientist.html':    {n:'Climate Scientist',      e:'🌍'},
+  'career-content-creator.html':      {n:'Content Creator',        e:'📱'},
+  'career-cybersecurity.html':        {n:'Cybersecurity Engineer', e:'🔒'},
+  'career-data-scientist.html':       {n:'Data Scientist',         e:'📈'},
+  'career-dentist.html':              {n:'Dentist',                e:'🦷'},
+  'career-designer-ux.html':          {n:'UX / Product Designer',  e:'🎨'},
+  'career-doctor.html':               {n:'Doctor / Physician',     e:'👨‍⚕️'},
+  'career-economist.html':            {n:'Economist',              e:'📉'},
+  'career-electrical-engineer.html':  {n:'Electrical Engineer',    e:'⚡'},
+  'career-environmental-scientist.html':{n:'Environmental Scientist',e:'🌱'},
+  'career-fashion-designer.html':     {n:'Fashion Designer',       e:'👗'},
+  'career-film-director.html':        {n:'Film Director',          e:'🎬'},
+  'career-financial-analyst.html':    {n:'Financial Analyst / IB', e:'💹'},
+  'career-forensic-scientist.html':   {n:'Forensic Scientist',     e:'🔍'},
+  'career-game-developer.html':       {n:'Game Developer',         e:'🎮'},
+  'career-genetic-counsellor.html':   {n:'Genetic Counsellor',     e:'🧬'},
+  'career-graphic-designer.html':     {n:'Graphic Designer',       e:'🖼️'},
+  'career-hotel-manager.html':        {n:'Hotel Manager',          e:'🏨'},
+  'career-ias.html':                  {n:'IAS Officer',            e:'🏛️'},
+  'career-investment-banker.html':    {n:'Investment Banker',      e:'💰'},
+  'career-journalist.html':           {n:'Journalist',             e:'📰'},
+  'career-lawyer.html':               {n:'Lawyer / Advocate',      e:'⚖️'},
+  'career-logistics-supply-chain.html':{n:'Logistics & SCM',       e:'📦'},
+  'career-marine-biologist.html':     {n:'Marine Biologist',       e:'🌊'},
+  'career-marketing-manager.html':    {n:'Marketing Manager',      e:'📢'},
+  'career-mechanical-engineer.html':  {n:'Mechanical Engineer',    e:'⚙️'},
+  'career-nanotechnologist.html':     {n:'Nanotechnologist',       e:'⚗️'},
+  'career-nurse.html':                {n:'Nurse',                  e:'💉'},
+  'career-pharmacist.html':           {n:'Pharmacist',             e:'💊'},
+  'career-physiotherapist.html':      {n:'Physiotherapist',        e:'🏃'},
+  'career-pilot.html':                {n:'Commercial Pilot',       e:'✈️'},
+  'career-product-manager.html':      {n:'Product Manager',        e:'🎯'},
+  'career-psychologist.html':         {n:'Psychologist',           e:'🧠'},
+  'career-public-health.html':        {n:'Public Health Pro',      e:'🏥'},
+  'career-radiologist.html':          {n:'Radiologist',            e:'🔬'},
+  'career-renewable-energy.html':     {n:'Renewable Energy Engr',  e:'☀️'},
+  'career-social-worker.html':        {n:'Social Worker',          e:'🤲'},
+  'career-software-engineer.html':    {n:'Software Engineer',      e:'💻'},
+  'career-sports-professional.html':  {n:'Sports Professional',    e:'🏏'},
+  'career-teacher.html':              {n:'Teacher / Educator',     e:'📚'},
+  'career-urban-planner.html':        {n:'Urban Planner',          e:'🏙️'},
+  'career-veterinarian.html':         {n:'Veterinarian',           e:'🐾'},
+};
+
+/* ── helpers ── */
+function getLevel(xp){let l=LEVELS[0];for(const x of LEVELS){if(xp>=x.min)l=x;else break;}return l;}
+function getLevelProgress(xp){
+  let cur=LEVELS[0],next=null;
+  for(let i=0;i<LEVELS.length;i++){if(xp>=LEVELS[i].min){cur=LEVELS[i];next=LEVELS[i+1]||null;}}
+  const pct=next?Math.min(100,Math.round(((xp-cur.min)/(next.min-cur.min))*100)):100;
+  return{cur,next,pct};
+}
+function cLabel(f){const m=CAREER_META[f];return m?`${m.e} ${m.n}`:f.replace('career-','').replace('.html','').replace(/-/g,' ');}
+function safeXML(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDate(){return new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'});}
+
+/* ── encode / decode ── */
+function encodeProfile(u){
+  const p={n:u.name,x:u.xp||0,g:u.grade||'',b:u.badges||[],s:(u.streak||{}).count||0,v:u.visitedCareers||[],bm:u.bookmarks||[]};
+  try{return btoa(unescape(encodeURIComponent(JSON.stringify(p))));}catch(e){return btoa(JSON.stringify(p));}
+}
+function decodeProfile(enc){
+  try{const d=JSON.parse(decodeURIComponent(escape(atob(enc))));if(!d.n)return null;
+    return{name:d.n,xp:d.x||0,grade:d.g||'',badges:d.b||[],streak:{count:d.s||0},visitedCareers:d.v||[],bookmarks:d.bm||[]};}
+  catch(e){return null;}
+}
+
+/* ── render ── */
+function renderProfile(user, isOwn){
+  const root=document.getElementById('profileRoot');
+  const lp=getLevelProgress(user.xp||0);
+  const visited=user.visitedCareers||[];
+  const bms=user.bookmarks||[];
+  const earned=user.badges||[];
+  const streak=(user.streak||{}).count||0;
+  const grade=GRADE_LABELS[user.grade]||'';
+
+  const badgesHTML=ALL_BADGES.map(b=>`<span class="p-badge ${earned.includes(b.id)?'':'locked'}" title="${b.desc}">${b.icon} ${b.name}</span>`).join('');
+
+  const visitedHTML=visited.length
+    ?visited.map(f=>isOwn?`<a class="p-chip" href="${f}">${cLabel(f)}</a>`:`<span class="p-chip">${cLabel(f)}</span>`).join('')
+    :'<span style="font-size:.78rem;color:var(--muted2)">No careers explored yet.</span>';
+
+  const bmHTML=bms.length
+    ?'<div class="p-stitle" style="margin-top:.4rem">Bookmarked</div><div class="p-chips">'+bms.map(f=>isOwn?`<a class="p-chip bm" href="${f}">❤️ ${cLabel(f)}</a>`:`<span class="p-chip bm">❤️ ${cLabel(f)}</span>`).join('')+'</div>'
+    :'';
+
+  const banner=isOwn?'':`<div class="viewing-banner">👁️ You're viewing <strong>${user.name}</strong>'s Career Universe profile. <a href="account.html">Create your own →</a></div>`;
+
+  const actions=isOwn
+    ?`<div class="action-row">
+        <button class="act-btn primary" id="copyBtn" onclick="handleCopy()">🔗 Copy Share Link</button>
+        <button class="act-btn" onclick="handleDownload()">⬇ Download Card</button>
+        <a class="act-btn" href="account.html">📊 Dashboard</a>
+      </div>
+      <div class="share-box" id="shareBox">
+        <div class="share-box-label">Share this link — anyone can view your profile:</div>
+        <input class="share-box-input" id="shareInput" readonly onclick="this.select()"/>
+        <div class="share-box-hint">Profile data is in the URL itself. No login needed to view.</div>
+      </div>`
+    :`<div class="action-row">
+        <a class="act-btn primary" href="account.html">🚀 Create My Profile</a>
+        <a class="act-btn" href="index.html">🌌 Explore Careers</a>
+        <a class="act-btn" href="quiz.html">🎯 Career Quiz</a>
+      </div>`;
+
+  root.innerHTML=`
+    ${banner}
+    <div class="pcard" id="pcardEl">
+      <div class="pcard-glow"></div>
+      <div class="pcard-accent"></div>
+      <div class="pcard-body">
+        <div class="p-top">
+          <div class="p-avatar">${lp.cur.icon}</div>
+          <div class="p-info">
+            <div class="p-name">${user.name}</div>
+            ${grade?`<div class="p-grade">${grade}</div>`:''}
+            <div class="p-level">${lp.cur.icon} ${lp.cur.name} ${lp.next?`· <span style="color:var(--muted)">${lp.next.min-(user.xp||0)} XP to ${lp.next.name}</span>`:'· <span style="color:var(--accent2)">Max Level 🌌</span>'}</div>
+            <div class="p-xp-row">
+              <div class="p-xp-track"><div class="p-xp-fill" style="width:${lp.pct}%"></div></div>
+              <span class="p-xp-label">${(user.xp||0).toLocaleString()} XP</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-stats">
+          <div class="pstat"><div class="pstat-val">${(user.xp||0).toLocaleString()}</div><div class="pstat-lbl">Total XP</div></div>
+          <div class="pstat"><div class="pstat-val">${visited.length}</div><div class="pstat-lbl">Careers Explored</div></div>
+          <div class="pstat"><div class="pstat-val">${earned.length}</div><div class="pstat-lbl">Badges</div></div>
+          <div class="pstat"><div class="pstat-val">${streak}🔥</div><div class="pstat-lbl">Streak</div></div>
+        </div>
+        <div class="p-stitle">Badges (${earned.length} / ${ALL_BADGES.length})</div>
+        <div class="p-badges">${badgesHTML}</div>
+        <div class="p-stitle">Careers Explored (${visited.length})</div>
+        <div class="p-chips">${visitedHTML}</div>
+        ${bmHTML}
+      </div>
+      <div class="pcard-footer">
+        <span class="pf-brand">🌌 Career Universe India · careruniverse.in</span>
+        <span class="pf-date">${fmtDate()}</span>
+      </div>
+    </div>
+    ${actions}
+    <div class="privacy-note"><strong>🔒 Privacy:</strong> All data is in the URL itself — nothing on any server. Your PIN is never included. DPDP Act 2023 compliant.</div>`;
+}
+
+/* ── share / download ── */
+function buildURL(){
+  try{
+    const users=JSON.parse(localStorage.getItem('cu_users')||'{}');
+    const sess=JSON.parse(localStorage.getItem('cu_session')||'null');
+    if(!sess||!users[sess.slug])return null;
+    return`${location.origin}${location.pathname}#share=${encodeProfile(users[sess.slug])}`;
+  }catch(e){return null;}
+}
+function handleCopy(){
+  const url=buildURL();if(!url)return;
+  const box=document.getElementById('shareBox');
+  const inp=document.getElementById('shareInput');
+  if(box&&inp){inp.value=url;box.classList.add('visible');inp.select();}
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(url).then(()=>{
+      const btn=document.getElementById('copyBtn');
+      if(btn){btn.classList.remove('primary');btn.classList.add('copied');btn.textContent='✓ Copied!';
+        setTimeout(()=>{btn.classList.remove('copied');btn.classList.add('primary');btn.textContent='🔗 Copy Share Link';},2500);}
+    }).catch(()=>{});
+  }
+  if(typeof CU!=='undefined')CU.awardBadge('profile_shared');
+  history.replaceState(null,'',`#share=${url.split('#share=')[1]}`);
+}
+function handleDownload(){
+  try{
+    const users=JSON.parse(localStorage.getItem('cu_users')||'{}');
+    const sess=JSON.parse(localStorage.getItem('cu_session')||'null');
+    if(!sess)return;const user=users[sess.slug];if(!user)return;
+    const lp=getLevelProgress(user.xp||0);
+    const icons=(user.badges||[]).slice(0,8).map(id=>{const b=ALL_BADGES.find(x=>x.id===id);return b?b.icon:'';}).join(' ');
+    const W=560,H=310,xpW=Math.round(432*lp.pct/100);
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" font-family="system-ui,sans-serif">
+  <defs>
+    <linearGradient id="gbg" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#04060e"/><stop offset="100%" stop-color="#0c1828"/>
+    </linearGradient>
+    <linearGradient id="gbar" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0%" stop-color="#a78bfa"/><stop offset="50%" stop-color="#5b9cf6"/><stop offset="100%" stop-color="#2dd4bf"/>
+    </linearGradient>
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#gbg)" rx="16"/>
+  <circle cx="${W-60}" cy="60" r="150" fill="rgba(167,139,250,0.06)"/>
+  <rect width="${W}" height="4" fill="url(#gbar)" rx="2"/>
+  <circle cx="52" cy="74" r="30" fill="rgba(91,156,246,0.12)" stroke="rgba(91,156,246,0.3)" stroke-width="1.5"/>
+  <text x="52" y="84" font-size="26" text-anchor="middle">${lp.cur.icon}</text>
+  <text x="96" y="62" font-size="22" font-weight="700" fill="#dce8ff">${safeXML(user.name)}</text>
+  <text x="96" y="82" font-size="12" fill="#5b9cf6" font-weight="600">${safeXML(lp.cur.icon+' '+lp.cur.name)}</text>
+  <rect x="44" y="110" width="${W-88}" height="0.8" fill="rgba(255,255,255,0.07)"/>
+  <text x="64"  y="142" font-size="26" font-weight="700" fill="#dce8ff">${(user.xp||0).toLocaleString()}</text>
+  <text x="64"  y="158" font-size="9"  fill="#6b89aa" letter-spacing="0.5">XP</text>
+  <text x="200" y="142" font-size="26" font-weight="700" fill="#dce8ff">${(user.visitedCareers||[]).length}</text>
+  <text x="200" y="158" font-size="9"  fill="#6b89aa" letter-spacing="0.5">CAREERS</text>
+  <text x="330" y="142" font-size="26" font-weight="700" fill="#dce8ff">${(user.badges||[]).length}</text>
+  <text x="330" y="158" font-size="9"  fill="#6b89aa" letter-spacing="0.5">BADGES</text>
+  <text x="430" y="142" font-size="26" font-weight="700" fill="#dce8ff">${(user.streak||{}).count||0}🔥</text>
+  <text x="430" y="158" font-size="9"  fill="#6b89aa" letter-spacing="0.5">STREAK</text>
+  <rect x="44" y="174" width="${W-88}" height="8" fill="rgba(255,255,255,0.05)" rx="4"/>
+  <rect x="44" y="174" width="${xpW}"  height="8" fill="url(#gbar)" rx="4"/>
+  <text x="44" y="196" font-size="9" fill="#3d5470">${lp.cur.min.toLocaleString()} XP</text>
+  <text x="${W-44}" y="196" font-size="9" fill="#3d5470" text-anchor="end">${lp.next?lp.next.min.toLocaleString()+' XP':'MAX'}</text>
+  <text x="44" y="228" font-size="20">${icons||'—'}</text>
+  <rect x="0" y="${H-34}" width="${W}" height="34" fill="rgba(0,0,0,0.25)"/>
+  <text x="${W/2}" y="${H-12}" font-size="9" fill="#3d5470" text-anchor="middle">Career Universe India · careruniverse.in · Data on device only</text>
+</svg>`;
+    const blob=new Blob([svg],{type:'image/svg+xml'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download=`career-universe-${(user.name||'profile').replace(/[^a-zA-Z0-9]/g,'-')}.svg`;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  }catch(e){}
+}
+
+/* ── init — runs after auth.js ── */
+function init(){
+  const root=document.getElementById('profileRoot');
+  const hash=location.hash;
+
+  if(hash.startsWith('#share=')){
+    const enc=hash.slice('#share='.length);
+    const user=decodeProfile(enc);
+    if(!user){
+      root.innerHTML=`<div class="empty-state"><div class="es-icon">❌</div><div class="es-title">Broken Link</div><p class="es-desc">This profile link is corrupted. Ask the person to share it again.</p><div class="es-btns"><a href="index.html" class="es-btn primary">Go Home</a></div></div>`;
+      return;
+    }
+    let isOwn=false;
+    try{const s=JSON.parse(localStorage.getItem('cu_session')||'null');const u=JSON.parse(localStorage.getItem('cu_users')||'{}');if(s&&u[s.slug]&&u[s.slug].name===user.name)isOwn=true;}catch(e){}
+    renderProfile(user,isOwn);
+    return;
+  }
+
+  try{
+    const sess=JSON.parse(localStorage.getItem('cu_session')||'null');
+    const users=JSON.parse(localStorage.getItem('cu_users')||'{}');
+    if(sess&&users[sess.slug]){
+      const user=users[sess.slug];
+      renderProfile(user,true);
+      history.replaceState(null,'',`#share=${encodeProfile(user)}`);
+      return;
+    }
+  }catch(e){}
+
+  root.innerHTML=`
+    <div class="empty-state">
+      <div class="es-icon">🌌</div>
+      <div class="es-title">Your Career Universe Profile</div>
+      <p class="es-desc">Create a free account to get a shareable profile showing your XP, badges, explored careers, and streak. All data stays on this device only.</p>
+      <div class="es-btns">
+        <button class="es-btn primary" onclick="CU.openModal('signup')">🚀 Create Free Account</button>
+        <button class="es-btn sec" onclick="CU.openModal('login')">Sign In</button>
+      </div>
+    </div>
+    <br/>
+    <div class="privacy-note"><strong>🔒 Privacy first:</strong> No email required. No data leaves your device. Your profile is encoded into a URL — no server needed to view. DPDP Act 2023 compliant.</div>`;
+}
+
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+</script>
+<script src="chatbot.js"></script>
+<script src="i18n.js"></script>
+</body>
+</html>
