@@ -9,6 +9,9 @@ import {
   BookOpen,
   Briefcase,
   CheckCircle2,
+  ChevronDown,
+  ChevronUp,
+  Clock,
   Code2,
   Globe,
   GraduationCap,
@@ -25,6 +28,7 @@ import {
 import { motion } from "motion/react";
 import { useState } from "react";
 import { PageBreadcrumb } from "../components/Breadcrumb";
+import type { DayBlock, TimeTier } from "../data/techDigitalCareers";
 import { careerProfilesMap } from "../data/techDigitalCareers";
 import { useGetSubtypeDetail } from "../hooks/useQueries";
 import type { NavState } from "../types/navigation";
@@ -52,6 +56,252 @@ function formatWorkers(n: bigint): string {
   return num.toLocaleString("en-IN");
 }
 
+// ─── Day in Life: Structured Timeline Component ─────────────────────────────────
+
+function DayTimeline({ blocks }: { blocks: DayBlock[] }) {
+  return (
+    <div className="relative">
+      {/* Vertical line */}
+      <div
+        className="absolute left-[5.5rem] top-2 bottom-2 w-0.5"
+        style={{ background: "oklch(0.88 0.04 60)" }}
+      />
+      <div className="space-y-5">
+        {blocks.map((block, idx) => (
+          <motion.div
+            key={`${block.time}-${idx}`}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.07 }}
+            className="flex gap-4"
+          >
+            {/* Time column */}
+            <div
+              className="w-16 flex-shrink-0 text-right pt-0.5"
+              style={{ color: "oklch(0.55 0.04 60)" }}
+            >
+              <span className="text-xs font-mono leading-tight">
+                {block.time}
+              </span>
+            </div>
+            {/* Dot */}
+            <div className="flex-shrink-0 flex flex-col items-center">
+              <div
+                className="w-3 h-3 rounded-full mt-1 z-10 ring-2 ring-white"
+                style={{ background: "oklch(0.55 0.12 55)" }}
+              />
+            </div>
+            {/* Content */}
+            <div className="flex-1 pb-1">
+              <p className="font-semibold text-sm text-foreground leading-snug">
+                {block.title}
+              </p>
+              <p
+                className="text-xs leading-relaxed mt-0.5"
+                style={{ color: "oklch(0.40 0.04 60)" }}
+              >
+                {block.detail}
+              </p>
+              {block.tools && block.tools.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {block.tools.map((tool) => (
+                    <span
+                      key={tool}
+                      className="bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0.5 rounded font-medium"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Time-to-Career Tier Component ────────────────────────────────────────────
+
+function TimeTierSection({ tiers }: { tiers: TimeTier[] }) {
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const [showLadder, setShowLadder] = useState(false);
+  const selected = tiers[selectedIdx];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-card rounded-xl border border-border shadow-card p-6"
+    >
+      <div className="flex items-center gap-2 mb-1">
+        <Clock className="w-5 h-5" style={{ color: "oklch(0.45 0.12 255)" }} />
+        <h2 className="font-bold text-foreground text-lg">
+          ⏱️ Time-to-Career Pathways
+        </h2>
+      </div>
+      <p className="text-sm text-muted-foreground mb-4">
+        Choose based on how many years you can invest right now.
+      </p>
+
+      {/* Year selector buttons */}
+      <div className="flex flex-wrap gap-2 mb-5">
+        {tiers.map((tier, idx) => (
+          <button
+            key={tier.years}
+            type="button"
+            onClick={() => setSelectedIdx(idx)}
+            className={`px-3.5 py-1.5 rounded-lg text-sm font-semibold border-2 transition-all ${
+              idx === selectedIdx
+                ? "border-blue-600 bg-blue-600 text-white shadow-sm"
+                : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:bg-blue-50"
+            }`}
+            data-ocid="subtype.tier.toggle"
+          >
+            {tier.years}
+          </button>
+        ))}
+      </div>
+
+      {/* Selected tier card */}
+      <motion.div
+        key={selectedIdx}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border-2 p-5"
+        style={{
+          borderColor: "oklch(0.78 0.08 255)",
+          background: "oklch(0.97 0.015 255)",
+        }}
+      >
+        <div className="mb-3">
+          <div
+            className="text-base font-bold"
+            style={{ color: "oklch(0.30 0.12 255)" }}
+          >
+            {selected.years} — {selected.label}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm mb-4">
+          <div>
+            <span className="font-semibold text-foreground">
+              Qualification:{" "}
+            </span>
+            <span className="text-muted-foreground">
+              {selected.qualification}
+            </span>
+          </div>
+          <div>
+            <span className="font-semibold text-foreground">Route: </span>
+            <span className="text-muted-foreground">{selected.route}</span>
+          </div>
+          <div>
+            <span className="font-semibold text-foreground">Entry Role: </span>
+            <span className="text-muted-foreground">{selected.entryRole}</span>
+          </div>
+          <div>
+            <span className="font-semibold text-foreground">
+              Starting Salary:{" "}
+            </span>
+            <span className="text-muted-foreground">
+              {selected.salaryRange}
+            </span>
+          </div>
+          <div className="sm:col-span-2">
+            <span className="font-semibold text-foreground">
+              Estimated Cost:{" "}
+            </span>
+            <span className="text-muted-foreground">{selected.cost}</span>
+          </div>
+        </div>
+        <div
+          className="rounded-lg px-4 py-3 text-sm"
+          style={{
+            background: "oklch(0.94 0.03 145)",
+            color: "oklch(0.30 0.10 145)",
+          }}
+        >
+          <span className="font-semibold">💡 Want to go further?</span>{" "}
+          {selected.ladderNote}
+        </div>
+      </motion.div>
+
+      {/* Full ladder toggle */}
+      <button
+        type="button"
+        onClick={() => setShowLadder((v) => !v)}
+        className="mt-4 flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+        data-ocid="subtype.ladder.toggle"
+      >
+        {showLadder ? (
+          <>
+            <ChevronUp className="w-4 h-4" /> Hide full ladder
+          </>
+        ) : (
+          <>
+            <ChevronDown className="w-4 h-4" /> See full career ladder
+          </>
+        )}
+      </button>
+
+      {showLadder && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="mt-3 space-y-2"
+        >
+          {tiers.map((tier, idx) => (
+            <button
+              type="button"
+              key={tier.years}
+              onClick={() => setSelectedIdx(idx)}
+              className={`w-full text-left rounded-lg border px-4 py-2.5 cursor-pointer transition-all ${
+                idx === selectedIdx
+                  ? "border-blue-400 bg-blue-50"
+                  : "border-slate-200 bg-slate-50 opacity-60 hover:opacity-80"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span
+                  className={`text-sm font-semibold ${
+                    idx === selectedIdx ? "text-blue-700" : "text-slate-600"
+                  }`}
+                >
+                  {tier.years}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {tier.label}
+                </span>
+              </div>
+              <div className="text-xs text-muted-foreground mt-0.5">
+                {tier.entryRole} • {tier.salaryRange}
+              </div>
+            </button>
+          ))}
+        </motion.div>
+      )}
+
+      <p
+        className="text-xs mt-5 leading-relaxed"
+        style={{
+          color: "oklch(0.50 0.04 195)",
+          background: "oklch(0.95 0.02 195)",
+          borderRadius: "0.5rem",
+          padding: "0.625rem 0.75rem",
+        }}
+      >
+        Costs are approximate 2024 estimates. Government college fees are
+        subsidized. Scholarships and education loans are available for all tiers
+        — don’t let cost alone determine your path.
+      </p>
+    </motion.div>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
+
 export function SubtypeDetailPage({
   subtypeId,
   subtypeName,
@@ -64,6 +314,9 @@ export function SubtypeDetailPage({
   const { data: subtype, isLoading } = useGetSubtypeDetail(subtypeId);
   const richProfile = careerProfilesMap[subtypeId];
   const [gradeView, setGradeView] = useState<"9-10" | "11-12">("11-12");
+  const [dayVariant, setDayVariant] = useState<"earlyCareer" | "established">(
+    "earlyCareer",
+  );
 
   const breadcrumbItems = [
     ...(categoryId
@@ -243,34 +496,73 @@ export function SubtypeDetailPage({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
-              className="rounded-xl border p-6 mb-6 flex gap-4"
+              className="rounded-xl border p-6 mb-6"
               style={{
                 background: "oklch(0.98 0.025 60)",
                 borderColor: "oklch(0.88 0.04 60)",
               }}
             >
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
-                style={{
-                  background: "oklch(0.55 0.12 55)",
-                }}
-              >
-                <MessageSquareQuote className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2
-                  className="font-bold text-lg mb-2"
-                  style={{ color: "oklch(0.35 0.10 55)" }}
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: "oklch(0.55 0.12 55)" }}
                 >
-                  A Day in the Life
-                </h2>
+                  <MessageSquareQuote className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h2
+                    className="font-bold text-lg"
+                    style={{ color: "oklch(0.35 0.10 55)" }}
+                  >
+                    A Day in the Life
+                  </h2>
+                  {richProfile.dayInTheLifeStructured && (
+                    <div className="flex gap-2 mt-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setDayVariant("earlyCareer")}
+                        className={`px-3 py-0.5 rounded-full text-xs font-semibold border transition-all ${
+                          dayVariant === "earlyCareer"
+                            ? "bg-amber-600 border-amber-600 text-white"
+                            : "bg-white border-amber-300 text-amber-700 hover:bg-amber-50"
+                        }`}
+                        data-ocid="subtype.day_early.toggle"
+                      >
+                        Early Career
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDayVariant("established")}
+                        className={`px-3 py-0.5 rounded-full text-xs font-semibold border transition-all ${
+                          dayVariant === "established"
+                            ? "bg-amber-600 border-amber-600 text-white"
+                            : "bg-white border-amber-300 text-amber-700 hover:bg-amber-50"
+                        }`}
+                        data-ocid="subtype.day_established.toggle"
+                      >
+                        Established
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {richProfile.dayInTheLifeStructured ? (
+                <DayTimeline
+                  blocks={
+                    dayVariant === "earlyCareer"
+                      ? richProfile.dayInTheLifeStructured.earlyCareer
+                      : richProfile.dayInTheLifeStructured.established
+                  }
+                />
+              ) : (
                 <p
                   className="text-sm leading-relaxed"
                   style={{ color: "oklch(0.40 0.04 60)" }}
                 >
                   {richProfile.dayInTheLife}
                 </p>
-              </div>
+              )}
             </motion.div>
           )}
 
@@ -556,6 +848,18 @@ export function SubtypeDetailPage({
                 </div>
               )}
 
+              {/* Time-to-Career Pathways — rich profile with timeTierRoadmap only */}
+              {richProfile?.timeTierRoadmap &&
+                richProfile.timeTierRoadmap.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.12 }}
+                  >
+                    <TimeTierSection tiers={richProfile.timeTierRoadmap} />
+                  </motion.div>
+                )}
+
               {/* Top Institutes — rich profile only */}
               {richProfile && (
                 <div className="bg-card rounded-xl border border-border shadow-card p-6">
@@ -606,28 +910,6 @@ export function SubtypeDetailPage({
                       ))}
                     </TabsContent>
                   </Tabs>
-                  <p className="text-xs text-muted-foreground mt-4 pt-3 border-t border-border">
-                    To explore more colleges, search "{subtype.name} colleges"
-                    on{" "}
-                    <a
-                      href="https://www.shiksha.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-foreground"
-                    >
-                      Shiksha.com
-                    </a>{" "}
-                    or{" "}
-                    <a
-                      href="https://www.topuniversities.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-foreground"
-                    >
-                      QS Rankings
-                    </a>
-                    .
-                  </p>
                 </div>
               )}
 
@@ -637,7 +919,7 @@ export function SubtypeDetailPage({
                   <h2 className="font-bold text-foreground text-lg mb-4 flex items-center gap-2">
                     <Shield
                       className="w-5 h-5"
-                      style={{ color: "oklch(0.50 0.12 145)" }}
+                      style={{ color: "oklch(0.45 0.12 280)" }}
                     />
                     Common Myths — Busted
                   </h2>
@@ -645,35 +927,23 @@ export function SubtypeDetailPage({
                     {richProfile.mythsVsReality.map((item) => (
                       <div
                         key={item.myth}
-                        className="rounded-xl overflow-hidden border border-border"
+                        className="rounded-xl border border-border p-4"
                       >
-                        <div
-                          className="px-4 py-3 flex items-start gap-3"
-                          style={{ background: "oklch(0.97 0.015 20)" }}
-                        >
+                        <div className="flex items-start gap-2 mb-2">
                           <XCircle
                             className="w-4 h-4 flex-shrink-0 mt-0.5"
-                            style={{ color: "oklch(0.55 0.20 25)" }}
+                            style={{ color: "oklch(0.55 0.18 25)" }}
                           />
-                          <p
-                            className="text-sm line-through"
-                            style={{ color: "oklch(0.45 0.08 25)" }}
-                          >
+                          <p className="text-sm font-semibold text-foreground line-through opacity-60">
                             {item.myth}
                           </p>
                         </div>
-                        <div
-                          className="px-4 py-3 flex items-start gap-3"
-                          style={{ background: "oklch(0.97 0.02 145)" }}
-                        >
+                        <div className="flex items-start gap-2">
                           <CheckCircle2
                             className="w-4 h-4 flex-shrink-0 mt-0.5"
-                            style={{ color: "oklch(0.45 0.15 145)" }}
+                            style={{ color: "oklch(0.50 0.15 145)" }}
                           />
-                          <p
-                            className="text-sm"
-                            style={{ color: "oklch(0.30 0.08 145)" }}
-                          >
+                          <p className="text-sm text-muted-foreground">
                             {item.reality}
                           </p>
                         </div>
@@ -683,20 +953,20 @@ export function SubtypeDetailPage({
                 </div>
               )}
 
-              {/* Salary Table */}
+              {/* Salary Breakdown */}
               <div className="bg-card rounded-xl border border-border shadow-card p-6">
                 <h2 className="font-bold text-foreground text-lg mb-4 flex items-center gap-2">
                   <TrendingUp
                     className="w-5 h-5"
-                    style={{ color: "oklch(0.50 0.12 55)" }}
+                    style={{ color: "oklch(0.45 0.12 145)" }}
                   />
-                  Salary Ranges in India
+                  Salary Benchmarks
                 </h2>
-                {richProfile && gradeView === "9-10" ? (
+                {gradeView === "9-10" ? (
                   <div
-                    className="rounded-lg px-4 py-3 text-sm"
+                    className="text-xs leading-relaxed rounded-lg px-4 py-3"
                     style={{
-                      background: "oklch(0.95 0.025 195)",
+                      background: "oklch(0.95 0.03 195)",
                       color: "oklch(0.35 0.08 195)",
                     }}
                   >
@@ -949,7 +1219,7 @@ export function SubtypeDetailPage({
   );
 }
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
+// ─── Sub-components ────────────────────────────────────────────────────────────
 
 interface RoadmapStepProps {
   step: number;

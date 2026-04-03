@@ -4,6 +4,7 @@ export type ViewType =
   | "type"
   | "subtype"
   | "search"
+  | "student-profile"
   | "subject-gateway"
   | "assessment"
   | "legal";
@@ -18,4 +19,7 @@ export interface NavState {
   subtypeName?: string;
   searchQuery?: string;
   legalPage?: "disclaimer" | "privacy" | "terms" | "accuracy";
+  grade?: string;
+  stream?: string;
+  selectedSubjects?: string[];
 }

@@ -15,9 +15,34 @@ export interface MythVsReality {
   reality: string;
 }
 
+export interface DayBlock {
+  time: string;
+  title: string;
+  detail: string;
+  tools?: string[];
+}
+
+export interface DayInTheLifeStructured {
+  earlyCareer: DayBlock[];
+  established: DayBlock[];
+}
+
+export interface TimeTier {
+  years: string;
+  label: string;
+  qualification: string;
+  route: string;
+  entryRole: string;
+  salaryRange: string;
+  cost: string;
+  ladderNote: string;
+}
+
 export interface CareerProfile {
   id: string;
   dayInTheLife: string;
+  dayInTheLifeStructured?: DayInTheLifeStructured;
+  timeTierRoadmap?: TimeTier[];
   skillsTechnical: string[];
   skillsSoft: string[];
   educationRoadmapGrade10: string;
@@ -38,6 +63,161 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
     id: "software-engineering",
     dayInTheLife:
       "Priya starts her day reviewing pull requests from her team at 9 AM, leaving comments on code architecture. By 10, she's in a 30-minute sprint stand-up with her product manager and designer. The rest of the morning is focused coding — she's building a new payment flow feature. After lunch, she debugs a production issue reported by a client, traces it to a database query, and deploys a fix. Late afternoon is a code review session and updating her team's technical documentation. She wraps up at 6:30, pushes her code, and queues tomorrow's tasks.",
+    dayInTheLifeStructured: {
+      earlyCareer: [
+        {
+          time: "9:00 AM",
+          title: "Morning sync & code review",
+          detail:
+            "Join daily stand-up (15 min): share what you did yesterday, what you're doing today, any blockers. Then review pull requests assigned to you — read code carefully, leave specific comments.",
+          tools: ["Slack", "GitHub / GitLab", "Jira"],
+        },
+        {
+          time: "10:00 AM",
+          title: "Deep work: feature development",
+          detail:
+            "Pick the top ticket from your sprint board. Write code, run unit tests, and refactor. Expect to spend 60-70% of your day here. Interruptions are the enemy — put on headphones.",
+          tools: ["VS Code", "Git", "Postman (for API testing)"],
+        },
+        {
+          time: "1:30 PM",
+          title: "Debugging a production issue",
+          detail:
+            "A bug was reported by a user. You search logs, reproduce it locally, trace the root cause (often a database query or race condition), fix it, test the fix, get it reviewed, and deploy — all under pressure.",
+          tools: [
+            "Datadog / CloudWatch (logs)",
+            "Chrome DevTools",
+            "SQL client",
+          ],
+        },
+        {
+          time: "4:00 PM",
+          title: "Sprint planning & documentation",
+          detail:
+            "Your team estimates upcoming tickets, breaks down a large feature into smaller tasks, and updates technical documentation. As a junior, you're learning to break down problems — this skill grows over time.",
+          tools: ["Confluence", "Notion", "Figma (reading designs)"],
+        },
+        {
+          time: "6:00 PM",
+          title: "Push, wrap up, plan tomorrow",
+          detail:
+            "Commit and push your code. Write a brief update in the team channel. Check if you're on-call rotation tonight (every 3-4 weeks). Most days end here — crunch is occasional, not constant.",
+          tools: ["GitHub PR", "Slack"],
+        },
+      ],
+      established: [
+        {
+          time: "9:00 AM",
+          title: "Architecture review",
+          detail:
+            "Senior engineers often start by reviewing system design documents, architecture proposals, or RFC (Request for Comments) documents. You're thinking about scalability, security, and maintainability — not just whether code runs.",
+          tools: ["Notion", "Miro (diagramming)", "draw.io"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Cross-team technical alignment",
+          detail:
+            "Meet with product, design, and infrastructure teams on an upcoming major feature. You're the technical voice — flagging risks, estimating complexity, and negotiating scope.",
+          tools: ["Google Meet / Zoom", "JIRA", "Figma"],
+        },
+        {
+          time: "1:00 PM",
+          title: "Hands-on coding — still happening",
+          detail:
+            "Even senior engineers write code — typically on the hardest, highest-stakes parts of the system. Performance optimization, security fixes, or the core algorithm of a new product.",
+          tools: ["VS Code / IntelliJ", "Profilers", "AWS / GCP Console"],
+        },
+        {
+          time: "3:30 PM",
+          title: "Mentoring junior engineers",
+          detail:
+            "Pair programming sessions, code review feedback, and 1:1 career conversations with 2-3 team members. Your technical knowledge multiplies through your team.",
+          tools: ["GitHub", "VS Code Live Share"],
+        },
+        {
+          time: "5:30 PM",
+          title: "Incident review & system health",
+          detail:
+            "Review dashboards for system health. If there was an incident this week, lead the post-mortem: what broke, why, how to prevent recurrence. No blame — only learning.",
+          tools: ["Datadog", "PagerDuty", "Confluence"],
+        },
+      ],
+    },
+    timeTierRoadmap: [
+      {
+        years: "1 yr",
+        label: "Certificate / Short Program",
+        qualification: "Programming Certificate (Python/Web Dev)",
+        route: "NIIT, Aptech, or online (freeCodeCamp + portfolio)",
+        entryRole: "Junior Programmer, IT Support, Data Entry Automation",
+        salaryRange: "₹1.8L–₹3.5L/yr",
+        cost: "₹10K–₹80K",
+        ladderNote:
+          "A strong GitHub portfolio from this year can qualify you for junior roles at startups. Many companies care more about projects than certificates. You can laterally enter a BCA/B.Tech later with work experience.",
+      },
+      {
+        years: "2 yrs",
+        label: "Diploma in CS / IT",
+        qualification: "Diploma in Computer Science or Information Technology",
+        route: "State Polytechnic, DOEACC, or CDAC Post-Diploma",
+        entryRole: "Junior Developer, Technical Support Engineer",
+        salaryRange: "₹2.5L–₹4.5L/yr",
+        cost: "₹30K–₹1.5L",
+        ladderNote:
+          "Diploma holders can apply for lateral entry into Year 2 of B.Tech at most state and private universities, allowing you to complete a degree in 3 more years instead of 4.",
+      },
+      {
+        years: "3 yrs",
+        label: "BCA or B.Sc Computer Science",
+        qualification: "BCA (Bachelor of Computer Applications) or B.Sc CS",
+        route:
+          "Any NAAC-accredited college; distance learning via IGNOU also valid",
+        entryRole: "Software Developer, Web Developer, QA Engineer",
+        salaryRange: "₹3.5L–₹7L/yr",
+        cost: "₹60K–₹3L (total)",
+        ladderNote:
+          "BCA is accepted by most IT companies for entry-level roles. You can pursue MCA (2 years) later to reach the same level as a B.Tech graduate for senior roles.",
+      },
+      {
+        years: "4 yrs",
+        label: "B.Tech / BE in CSE or IT",
+        qualification: "B.Tech Computer Science & Engineering (or IT)",
+        route:
+          "IITs (JEE Advanced), NITs (JEE Main), BITS (BITSAT), Private colleges (VITEEE, SRMJEE)",
+        entryRole: "Software Engineer, Full Stack Developer, Data Engineer",
+        salaryRange: "₹5L–₹20L/yr (IIT: ₹20L–₹60L+)",
+        cost: "₹1.5L–₹15L/yr",
+        ladderNote:
+          "B.Tech is the benchmark qualification for software engineering. After 2-3 years of work experience, you can pursue M.Tech (GATE) or MBA (CAT) to accelerate to senior/leadership roles.",
+      },
+      {
+        years: "6 yrs",
+        label: "B.Tech + M.Tech / PG Diploma",
+        qualification:
+          "M.Tech Computer Science or PG Diploma in Specialization (AI/Cloud/Cybersecurity)",
+        route:
+          "IITs/NITs via GATE; CDAC PG Diplomas; Online MS (OMSCS Georgia Tech, IIT Madras)",
+        entryRole: "Senior Software Engineer, Specialist / Tech Lead",
+        salaryRange: "₹12L–₹35L/yr",
+        cost: "₹1L–₹5L for M.Tech (subsidized); OMSCS ~₹1.5L total",
+        ladderNote:
+          "M.Tech or a strong specialization PG diploma significantly boosts compensation and opens research / specialist roles. Online MS programs from Georgia Tech or IIT Madras are globally recognized at a fraction of on-campus cost.",
+      },
+      {
+        years: "8+ yrs",
+        label: "PhD / Research Fellowship",
+        qualification:
+          "PhD in Computer Science (Algorithms, AI, Systems, Security)",
+        route:
+          "IISc Bangalore, IITs (via GATE+interview), or abroad (MIT, CMU, Stanford — often fully funded)",
+        entryRole:
+          "Research Scientist, Principal Engineer, Faculty / Professor",
+        salaryRange: "₹20L–₹1Cr+ (Research labs, FAANG Research)",
+        cost: "Often fully funded (stipend provided) at top institutions",
+        ladderNote:
+          "PhD opens doors to research labs (Google DeepMind, Microsoft Research, Meta AI) and tenured academic positions. At IITs and abroad, PhD students often receive a monthly stipend — it is not purely a cost but partially self-sustaining.",
+      },
+    ],
     skillsTechnical: [
       "Data Structures & Algorithms",
       "Python / Java / JavaScript",
@@ -171,7 +351,157 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
   "data-science": {
     id: "data-science",
     dayInTheLife:
-      "Arjun opens his day reviewing the overnight model performance metrics for a fraud detection system he built. By 9:30 he's cleaning a messy customer dataset — filling missing values and removing duplicates. At 11, he presents last week's churn analysis to the product team, explaining why certain user segments are dropping off. After lunch, he trains a new classification model, comparing accuracy across three algorithms. At 3 PM, a data engineer connects to discuss pipeline improvements. He ends the day writing a notebook documenting his model results so the team can reproduce his work.",
+      "Arjun opens his day reviewing the overnight model performance metrics for a fraud detection system he built. By 9:30 he's cleaning a messy customer dataset — filling missing values and removing duplicates. At 11, he presents last week's churn analysis to the product team. After lunch, he trains a new classification model, comparing accuracy across three algorithms. At 3 PM, a data engineer connects to discuss pipeline improvements. He ends the day writing a notebook documenting his model results.",
+    dayInTheLifeStructured: {
+      earlyCareer: [
+        {
+          time: "9:00 AM",
+          title: "Data cleaning & exploration",
+          detail:
+            "Open the raw dataset you've been assigned. Check for missing values, inconsistent formatting, and outliers. This is 50-70% of a junior data analyst's time — unglamorous but mission-critical.",
+          tools: ["Jupyter Notebook", "Pandas", "Excel"],
+        },
+        {
+          time: "11:00 AM",
+          title: "Build and run basic analysis",
+          detail:
+            "Calculate summary statistics, plot distributions, run correlation analysis. Write a short findings summary. You're answering a specific business question: 'Why did sales drop in Q3?'",
+          tools: ["Python (Matplotlib / Seaborn)", "Tableau", "SQL"],
+        },
+        {
+          time: "1:30 PM",
+          title: "Dashboard update",
+          detail:
+            "Update the weekly KPI dashboard with the latest data. Add a callout for an anomaly you spotted. Share with the business team via Slack with a 2-line explanation.",
+          tools: ["Tableau / Power BI", "Looker", "Notion"],
+        },
+        {
+          time: "3:00 PM",
+          title: "First ML experiment",
+          detail:
+            "Train a simple logistic regression model for customer churn prediction. Evaluate accuracy, precision, recall. Compare against baseline. Document everything in a notebook so the team can reproduce.",
+          tools: ["Scikit-learn", "Jupyter", "MLflow (experiment tracking)"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Team stand-up & learning",
+          detail:
+            "Brief daily check-in with the data team. Then spend 30 minutes on a Kaggle competition or reading a new technique. Junior data scientists who invest in learning grow 3x faster.",
+          tools: ["Kaggle", "Towards Data Science", "Arxiv (papers)"],
+        },
+      ],
+      established: [
+        {
+          time: "9:00 AM",
+          title: "Model performance review",
+          detail:
+            "Check automated model monitoring dashboards. Are production models drifting? Is the fraud detection model showing unusual false-positive rates? Investigate anomalies before the business team notices.",
+          tools: ["MLflow", "Great Expectations", "Evidently AI"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Stakeholder presentation",
+          detail:
+            "Present last week's churn analysis to the product and marketing team. Translate technical findings into business decisions: 'Customers who don't use Feature X within 14 days churn at 3x rate.'",
+          tools: ["Google Slides", "Tableau", "Streamlit (live demo app)"],
+        },
+        {
+          time: "1:00 PM",
+          title: "Designing a new model pipeline",
+          detail:
+            "Work with data engineers to design a real-time recommendation model pipeline. Define data contracts, feature stores, retraining frequency. You're an architect now, not just an analyst.",
+          tools: ["Apache Airflow", "Feature Store (Feast)", "AWS SageMaker"],
+        },
+        {
+          time: "3:30 PM",
+          title: "Research reading & hypothesis generation",
+          detail:
+            "Read 1-2 recent papers or technical blog posts. Identify a technique that could improve your current model. Write a 1-page proposal to test it next sprint.",
+          tools: ["Arxiv", "Papers With Code", "Google Scholar"],
+        },
+        {
+          time: "5:30 PM",
+          title: "Mentoring & documentation",
+          detail:
+            "Review junior team members' notebooks. Leave specific, constructive feedback. Update the team's model registry and documentation so institutional knowledge doesn't disappear when people leave.",
+          tools: ["GitHub", "Confluence", "MLflow Model Registry"],
+        },
+      ],
+    },
+    timeTierRoadmap: [
+      {
+        years: "1 yr",
+        label: "Certificate / Short Program",
+        qualification: "Data Analytics Certificate",
+        route:
+          "Google Data Analytics Certificate (Coursera) + Excel + SQL + Tableau",
+        entryRole: "Junior Data Analyst, Business Intelligence Analyst",
+        salaryRange: "₹2.5L–₹4.5L/yr",
+        cost: "₹15K–₹50K",
+        ladderNote:
+          "Entry-level data analyst roles are increasingly accessible with certificates + a strong portfolio of Kaggle projects. You can pursue B.Sc Data Science (IIT Madras online) alongside work to upgrade qualifications.",
+      },
+      {
+        years: "2 yrs",
+        label: "Diploma in Data Science",
+        qualification: "PG Diploma in Data Science or Business Analytics",
+        route: "CDAC, UpGrad, Great Learning, IIIT Bangalore PG programs",
+        entryRole: "Data Analyst, Analytics Associate",
+        salaryRange: "₹3.5L–₹7L/yr",
+        cost: "₹80K–₹2.5L",
+        ladderNote:
+          "PG diploma programs with placement support are effective entry points. Choose programs with real project work and an active alumni network. After 2 years of work experience, you can apply for senior analyst / junior data scientist roles.",
+      },
+      {
+        years: "3 yrs",
+        label: "B.Sc Statistics / Mathematics / CS",
+        qualification: "B.Sc Statistics, Mathematics, or Computer Science",
+        route:
+          "Any NAAC-A accredited college; IIT Madras BS Data Science (online qualifier)",
+        entryRole: "Data Scientist, ML Analyst",
+        salaryRange: "₹4L–₹9L/yr",
+        cost: "₹60K–₹2.5L/yr",
+        ladderNote:
+          "B.Sc Statistics or Mathematics combined with self-taught Python / ML skills is a powerful combination. After 1-2 years of experience, you can pursue M.Sc Statistics or Data Science for accelerated growth.",
+      },
+      {
+        years: "4 yrs",
+        label: "B.Tech CSE / B.Sc + Online Specialization",
+        qualification:
+          "B.Tech CSE or B.Sc + Machine Learning Specialization (Coursera/edX)",
+        route: "IITs, NITs (JEE), IIT Madras BS Data Science, BITS Pilani",
+        entryRole: "Data Scientist, ML Engineer (Junior)",
+        salaryRange: "₹7L–₹18L/yr",
+        cost: "₹1L–₹12L/yr depending on institution",
+        ladderNote:
+          "B.Tech CSE is the most direct path to data science at top companies. Strong Python, SQL, and Statistics skills are more important than the degree tier for most mid-market roles.",
+      },
+      {
+        years: "6 yrs",
+        label: "Masters in Data Science / Statistics",
+        qualification: "M.Tech Data Science or MSc Statistics / Analytics",
+        route:
+          "IIT Hyderabad, IIT Madras, IIIT Hyderabad, ISI Kolkata, or Online MS (Georgia Tech, IIT Madras)",
+        entryRole: "Senior Data Scientist, ML Engineer, Research Scientist",
+        salaryRange: "₹14L–₹35L/yr",
+        cost: "₹1L–₹6L (M.Tech, subsidized); Online MS ~₹2L total",
+        ladderNote:
+          "Masters degree significantly improves access to research-oriented roles and senior positions. ISI Kolkata and IGIDR are India's most respected statistics programs for quantitative careers.",
+      },
+      {
+        years: "8+ yrs",
+        label: "PhD / Research Fellowship",
+        qualification:
+          "PhD in Machine Learning, Statistics, or Computational Science",
+        route:
+          "IISc, IIT Madras, CMU, Stanford, MIT, University of Toronto (often fully funded)",
+        entryRole: "Principal Scientist, Research Lead, Faculty",
+        salaryRange: "₹25L–₹1Cr+ (top research labs)",
+        cost: "Often fully funded with stipend",
+        ladderNote:
+          "A PhD in ML/Statistics opens doors to top AI research labs globally (Google DeepMind, Microsoft Research, Meta AI). Many PhD graduates return to India at significantly higher compensation than industry peers.",
+      },
+    ],
     skillsTechnical: [
       "Python (Pandas, NumPy, Scikit-learn)",
       "SQL",
@@ -305,7 +635,145 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
   cybersecurity: {
     id: "cybersecurity",
     dayInTheLife:
-      "Kiran's morning starts with reviewing the SIEM dashboard for overnight alerts — she spots an unusual login pattern from a foreign IP and escalates it to the incident response team. By 10 she's on a call reviewing the security architecture for a new payment feature. After lunch, she runs a vulnerability scan on the company's public-facing APIs using Burp Suite and documents the findings. At 3 PM she presents her quarterly penetration test report to the CTO. She closes the day writing a brief for the HR team on a new phishing simulation exercise to run next month.",
+      "Kiran's morning starts with reviewing the SIEM dashboard for overnight alerts — she spots an unusual login pattern from a foreign IP and escalates it to the incident response team. By 10 she's on a call reviewing the security architecture for a new payment feature. After lunch, she runs a vulnerability scan on the company's public-facing APIs using Burp Suite and documents the findings. At 3 PM she presents her quarterly penetration test report to the CTO.",
+    dayInTheLifeStructured: {
+      earlyCareer: [
+        {
+          time: "8:30 AM",
+          title: "SIEM alert triage",
+          detail:
+            "Review Security Information and Event Management (SIEM) dashboard. Last night generated 47 alerts — 43 are false positives, 3 need investigation, 1 needs escalation. Learning to separate noise from signal is the core junior analyst skill.",
+          tools: ["Splunk / QRadar", "SIEM Dashboard", "Threat Intel feeds"],
+        },
+        {
+          time: "10:00 AM",
+          title: "Vulnerability scanning",
+          detail:
+            "Run automated vulnerability scans on scheduled systems. Review the output — a new CVE (Common Vulnerability) was flagged on the web server. Research its severity, write a remediation ticket, and notify the sysadmin team.",
+          tools: ["Nessus / OpenVAS", "CVE Database", "JIRA"],
+        },
+        {
+          time: "1:00 PM",
+          title: "Phishing simulation analysis",
+          detail:
+            "Analyze results of last week's simulated phishing campaign. 12% of employees clicked the link. Prepare a brief report for HR: which departments, what time of day, recommended awareness training topics.",
+          tools: ["GoPhish", "Excel / Sheets", "PowerPoint"],
+        },
+        {
+          time: "3:00 PM",
+          title: "CTF practice & skill building",
+          detail:
+            "Junior security analysts are expected to practice. Spend 45 minutes on a TryHackMe or HackTheBox challenge. Learning attack techniques makes you better at defense.",
+          tools: ["TryHackMe", "Kali Linux", "Burp Suite"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Documentation & shift handover",
+          detail:
+            "Document all incidents handled today with evidence and actions taken. Brief the night shift (if applicable) on any open investigations. Cybersecurity documentation is a legal requirement at most companies.",
+          tools: ["Confluence / Notion", "Incident Ticketing System"],
+        },
+      ],
+      established: [
+        {
+          time: "9:00 AM",
+          title: "Penetration test planning",
+          detail:
+            "Plan this week's pentest engagement for a client's e-commerce platform. Define scope, attack vectors, rules of engagement. Review their architecture diagram for attack surface analysis.",
+          tools: ["Metasploit", "Burp Suite Pro", "Nmap"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Security architecture review",
+          detail:
+            "Review the new payment feature's security design with the engineering team. Flag a misconfigured OAuth flow that could allow token theft. Propose a fix. You're now the expert others bring problems to.",
+          tools: ["OWASP Top 10", "Threat Modeling (STRIDE)", "Draw.io"],
+        },
+        {
+          time: "1:00 PM",
+          title: "Active penetration testing",
+          detail:
+            "Execute the pentest scope: network scanning, web app testing, credential attacks. Every finding gets documented with evidence, severity, and remediation. The goal: find vulnerabilities before attackers do.",
+          tools: ["Kali Linux", "Metasploit", "Burp Suite", "Wireshark"],
+        },
+        {
+          time: "3:30 PM",
+          title: "Incident response (if triggered)",
+          detail:
+            "A ransomware alert fires in the SIEM. You lead the response: isolate the affected machine, identify the attack vector, begin forensic analysis. Under pressure, clarity of process is everything.",
+          tools: ["Volatility (memory forensics)", "Autopsy", "SIEM"],
+        },
+        {
+          time: "5:30 PM",
+          title: "Report writing & client briefing",
+          detail:
+            "Write the pentest executive summary: findings ranked by severity, evidence, business impact, and remediation roadmap. Cybersecurity professionals who communicate clearly earn significantly more than those who can't.",
+          tools: ["Notion / Word", "CVSS Scoring", "OWASP Testing Guide"],
+        },
+      ],
+    },
+    timeTierRoadmap: [
+      {
+        years: "1 yr",
+        label: "Foundation Certificate",
+        qualification: "CompTIA Security+ or Google Cybersecurity Certificate",
+        route:
+          "CompTIA (self-study), Google Cybersecurity Certificate on Coursera, TryHackMe SOC Level 1 path",
+        entryRole: "SOC Analyst Tier 1, IT Security Helpdesk",
+        salaryRange: "₹2L–₹4L/yr",
+        cost: "₹20K–₹80K (exam fees + prep)",
+        ladderNote:
+          "CompTIA Security+ is globally recognized and accepted by MNCs for SOC Analyst roles. After 1 year of experience, you can pursue CEH (Certified Ethical Hacker) to move into offensive security.",
+      },
+      {
+        years: "2 yrs",
+        label: "Diploma + Professional Certifications",
+        qualification: "CDAC PG Diploma in Cybersecurity or NIELIT Level B",
+        route: "CDAC centers (Pan-India, government-run), NIELIT courses",
+        entryRole: "Security Analyst, Network Security Engineer",
+        salaryRange: "₹3.5L–₹6.5L/yr",
+        cost: "₹60K–₹1.5L",
+        ladderNote:
+          "CDAC programs are government-certified, affordable, and respected by PSUs, Banks, and Defence. After completion, CEH or OSCP certification significantly boosts career trajectory.",
+      },
+      {
+        years: "3–4 yrs",
+        label: "B.Tech / B.Sc in CS or IT",
+        qualification: "B.Tech CSE/IT with cybersecurity electives",
+        route:
+          "Any NIT, IIIT, or private engineering college with CS/IT program",
+        entryRole: "Cybersecurity Engineer, Penetration Tester (Junior)",
+        salaryRange: "₹4L–₹10L/yr",
+        cost: "₹1L–₹8L/yr",
+        ladderNote:
+          "A B.Tech with hands-on security skills (TryHackMe, CEH, bug bounty findings) is the benchmark for mid-market cybersecurity roles. After 2-3 years of experience, OSCP (Offensive Security) certification opens elite pentesting roles.",
+      },
+      {
+        years: "6 yrs",
+        label: "B.Tech + M.Tech / Specialized MS",
+        qualification: "M.Tech Information Security or MS Cybersecurity",
+        route:
+          "IIT Kanpur (C3i Hub), IIIT Hyderabad, NIT Calicut, or Georgia Tech OMSCS (online)",
+        entryRole: "Senior Security Engineer, Security Architect",
+        salaryRange: "₹12L–₹28L/yr",
+        cost: "₹1L–₹5L (M.Tech); Georgia Tech OMSCS ~₹1.5L total",
+        ladderNote:
+          "M.Tech in Information Security from IIT Kanpur (home of India's C3i Hub) is the most respected security postgraduate degree in India. Opens government/defence research roles not accessible with just a B.Tech.",
+      },
+      {
+        years: "8+ yrs",
+        label: "PhD / Research Fellowship",
+        qualification:
+          "PhD in Cryptography, Malware Analysis, or Security Systems",
+        route: "IIT Kanpur C3i Hub, IISc, Carnegie Mellon CyLab, Purdue CERIAS",
+        entryRole:
+          "Security Researcher, Principal Architect, Government Advisor",
+        salaryRange: "₹20L–₹60L+ (research labs, government advisory)",
+        cost: "Typically funded with stipend",
+        ladderNote:
+          "Security researchers with PhDs from top institutions advise governments, testify in courts on digital evidence, and lead CERT-In (India's national CERT) level positions. This is a high-impact, rare career path.",
+      },
+    ],
     skillsTechnical: [
       "Networking fundamentals (TCP/IP, DNS, HTTP)",
       "Linux operating systems",
@@ -438,7 +906,135 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
   "ai-ml-engineering": {
     id: "ai-ml-engineering",
     dayInTheLife:
-      "Meera begins her day reviewing the overnight training run of a recommendation model — loss curves look good but there's a bias issue flagged by the fairness monitor. She spends the morning adjusting the training data pipeline and re-queuing the experiment. After lunch, she joins a research reading group where her team discusses a new paper on efficient transformers. At 3 PM she demos a prototype voice assistant feature to the product team. She closes the day pushing a model serving optimization that cuts inference time by 40ms — a big win for the mobile app team.",
+      "Meera begins her day reviewing the overnight training run of a recommendation model — loss curves look good but there's a bias issue flagged by the fairness monitor. She spends the morning adjusting the training data pipeline and re-queuing the experiment. After lunch, she joins a research reading group where her team discusses a new paper on efficient transformers. At 3 PM she demos a prototype voice assistant feature to the product team.",
+    dayInTheLifeStructured: {
+      earlyCareer: [
+        {
+          time: "9:00 AM",
+          title: "Experiment run review",
+          detail:
+            "An overnight model training job finished. Check loss curves, validation accuracy, and fairness metrics. Identify the 2 hyperparameters that most explain the gap. Plan next experiment configuration.",
+          tools: ["MLflow / Weights & Biases", "TensorBoard", "Jupyter"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Data pipeline debugging",
+          detail:
+            "A data preprocessing bug caused 5% of training samples to have incorrect labels. Trace the issue through the pipeline, fix it, document the root cause, retrigger the job. This happens more often than model architecture work.",
+          tools: ["Apache Airflow", "Pandas", "Great Expectations"],
+        },
+        {
+          time: "1:00 PM",
+          title: "Research paper reading group",
+          detail:
+            "Your team reads 1 research paper per week together. Today's paper: a new efficient transformer architecture. You present a 5-minute summary: what problem does it solve, what did they prove, can we apply it?",
+          tools: ["Arxiv", "Papers With Code", "Google Scholar"],
+        },
+        {
+          time: "2:30 PM",
+          title: "Model implementation",
+          detail:
+            "Implement a simplified version of the paper's technique on your current task. Write clean, documented code. If it improves validation score by 1%+ you'll propose it to the team.",
+          tools: ["PyTorch", "HuggingFace Transformers", "GitHub"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Infrastructure & deployment",
+          detail:
+            "Your last model is being containerized for deployment. Work with the MLOps engineer to ensure the model serving API handles latency requirements. This cross-functional work is increasingly part of ML roles.",
+          tools: ["Docker", "FastAPI", "AWS SageMaker / GCP Vertex AI"],
+        },
+      ],
+      established: [
+        {
+          time: "9:00 AM",
+          title: "Production model monitoring",
+          detail:
+            "Review dashboards for 3 production models. One recommendation model's click-through rate dropped 4% overnight. Investigate: is it a data drift, model issue, or product change? Root cause before the product meeting.",
+          tools: ["Evidently AI", "Grafana", "CloudWatch"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Research direction setting",
+          detail:
+            "Lead a whiteboard session with your team to evaluate 3 research directions for Q3. What will have the highest product impact? What's technically feasible in 3 months? You're making bets that affect 12+ engineers.",
+          tools: ["Miro", "Notion", "Google Docs"],
+        },
+        {
+          time: "1:30 PM",
+          title: "Hands-on model architecture work",
+          detail:
+            "Work on the core architecture of the new LLM fine-tuning pipeline. This is the hardest technical problem in the roadmap — reserved for senior ML engineers who understand both theory and systems.",
+          tools: ["PyTorch", "DeepSpeed", "HuggingFace", "CUDA"],
+        },
+        {
+          time: "3:30 PM",
+          title: "Cross-functional product alignment",
+          detail:
+            "Meet with Product and Engineering to align on model integration. Negotiate feasibility: what the model can and cannot do, latency constraints, error tolerance. You're translating ML reality into product decisions.",
+          tools: ["JIRA", "Figma (model UI mockups)", "Google Slides"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Mentoring & research contribution",
+          detail:
+            "Review a junior's experiment write-up. Suggest 2 specific improvements. Then spend 30 minutes on an open-source contribution or internal RFC. Senior ML engineers grow by teaching and writing.",
+          tools: ["GitHub", "Arxiv (pre-print)", "Confluence"],
+        },
+      ],
+    },
+    timeTierRoadmap: [
+      {
+        years: "1 yr",
+        label: "Online Specialization Certificate",
+        qualification: "Machine Learning Specialization (Andrew Ng / fast.ai)",
+        route:
+          "Coursera ML Specialization (free to audit) + Kaggle competitions portfolio",
+        entryRole: "Junior ML Analyst, AI Research Intern",
+        salaryRange: "₹3L–₹5.5L/yr (internship/junior roles)",
+        cost: "₹0–₹30K (free audit + Kaggle is free)",
+        ladderNote:
+          "A strong Kaggle portfolio (top 20% in 3 competitions) + GitHub projects can open junior ML roles at startups without a degree. You can pursue formal education alongside work.",
+      },
+      {
+        years: "4 yrs",
+        label: "B.Tech CSE (core path)",
+        qualification:
+          "B.Tech Computer Science & Engineering with ML/AI electives",
+        route:
+          "IITs (JEE Advanced), IISc (KVPY), IIIT Hyderabad (UGEE), NITs (JEE Main)",
+        entryRole: "ML Engineer, AI Software Engineer",
+        salaryRange: "₹8L–₹25L/yr (IIT: ₹20L–₹80L+)",
+        cost: "₹1.5L–₹15L/yr",
+        ladderNote:
+          "B.Tech CSE from a top institution is the most reliable path into ML engineering. After 2 years of industry experience, apply for MS/MTech to specialize or for top research labs that prefer advanced degrees.",
+      },
+      {
+        years: "6 yrs",
+        label: "B.Tech + M.Tech / MS in AI",
+        qualification: "M.Tech AI/ML or MS Machine Learning",
+        route:
+          "IIT Madras, IIT Bombay, IISc, IIIT Hyderabad, Carnegie Mellon MS, Stanford MS, Georgia Tech OMSCS",
+        entryRole: "Senior ML Engineer, Research Scientist",
+        salaryRange: "₹18L–₹50L/yr",
+        cost: "₹1L–₹8L (India); $20K–$80K (abroad, often funded)",
+        ladderNote:
+          "MS/M.Tech in ML is increasingly required for research scientist roles at top labs. Georgia Tech OMSCS (online, ~₹1.5L total) is the most accessible international option with an IIT-equivalent reputation.",
+      },
+      {
+        years: "8+ yrs",
+        label: "PhD in ML / AI",
+        qualification:
+          "PhD in Machine Learning, Deep Learning, or Computational Neuroscience",
+        route:
+          "IISc Bangalore, IIT Madras, CMU ML Department, Stanford AI Lab, MIT CSAIL, University of Toronto",
+        entryRole: "Research Scientist / Principal Researcher / Faculty",
+        salaryRange: "₹25L–₹2Cr+ (top AI labs globally)",
+        cost: "Almost always fully funded with monthly stipend",
+        ladderNote:
+          "PhD from a top lab is the ticket to working on frontier AI (foundation models, reinforcement learning, robotics). Compensation at FAANG Research and top AI labs significantly exceeds industry ML engineering roles.",
+      },
+    ],
     skillsTechnical: [
       "Python (PyTorch/TensorFlow)",
       "Linear Algebra and Calculus",
@@ -569,7 +1165,121 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
   "product-management": {
     id: "product-management",
     dayInTheLife:
-      "Rahul starts his day reviewing the previous day's product metrics — a new onboarding flow launched last week shows a 12% improvement in activation. He spends the morning in back-to-back user research calls, listening to how small business owners use the invoicing feature. After lunch, he writes a PRD for a new feature. At 3 PM he runs the weekly sprint review, grooming the backlog with his engineering lead. He ends the day presenting a quarterly roadmap to the VP, fielding tough questions on prioritization tradeoffs.",
+      "Rahul starts his day reviewing the previous day's product metrics — a new onboarding flow launched last week shows a 12% improvement in activation. He spends the morning in user research calls, listening to how small business owners use the invoicing feature. After lunch, he writes a PRD for a new feature. At 3 PM he runs the weekly sprint review, grooming the backlog with his engineering lead.",
+    dayInTheLifeStructured: {
+      earlyCareer: [
+        {
+          time: "9:00 AM",
+          title: "Metrics review & anomaly hunting",
+          detail:
+            "Open the product dashboard. Are DAU, retention, and activation moving as expected? A new feature launched 3 days ago. Does the data show it's working? Spot the anomaly before your PM does.",
+          tools: ["Mixpanel / Amplitude", "Metabase", "Google Analytics 4"],
+        },
+        {
+          time: "10:30 AM",
+          title: "User research interviews",
+          detail:
+            "30-minute calls with 3 users who recently churned. You're listening for the 'real reason' — not what they say, but what they're frustrated by. Write a 1-page insight summary. This is PM gold.",
+          tools: ["Calendly", "Zoom", "Dovetail (research notes)"],
+        },
+        {
+          time: "1:00 PM",
+          title: "PRD drafting",
+          detail:
+            "Write a Product Requirements Document for a new feature. Define: problem statement, user stories, success metrics, edge cases, and what you're NOT building. Engineers need this to estimate effort accurately.",
+          tools: ["Notion", "Confluence", "Figma (wireframes)"],
+        },
+        {
+          time: "3:00 PM",
+          title: "Sprint grooming with engineering",
+          detail:
+            "Review the backlog with the engineering lead. Estimate complexity, prioritize using the ICE framework (Impact × Confidence ÷ Effort), and finalize next sprint's scope. This negotiation is the heart of PM work.",
+          tools: ["JIRA", "Linear", "Miro"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Competitor analysis",
+          detail:
+            "Spend 30 minutes testing a competitor's app. Document 3 features they have that we don't. Assess if any address our users' top complaints. Share findings in the team Slack channel.",
+          tools: ["Notion", "Loom (screen recording)", "ProductBoard"],
+        },
+      ],
+      established: [
+        {
+          time: "9:00 AM",
+          title: "Quarterly roadmap review",
+          detail:
+            "Present the Q3 roadmap to the VP and CEO. Justify each bet: what user problem it solves, what revenue impact is expected, and what you're deprioritizing. Be ready for tough questions on tradeoffs.",
+          tools: ["Google Slides", "Amplitude (data)", "Productboard"],
+        },
+        {
+          time: "11:00 AM",
+          title: "Cross-functional leadership",
+          detail:
+            "Lead the weekly product sync: Engineering, Design, Marketing, and Customer Success. Align everyone on launch plans, unblock cross-team dependencies, and surface risks early. You own the outcome, not any single function.",
+          tools: ["JIRA", "Notion", "Slack Huddles"],
+        },
+        {
+          time: "1:30 PM",
+          title: "Strategic customer discovery",
+          detail:
+            "Interview a key enterprise customer to understand their workflow and pain points. You're not just gathering feedback — you're testing whether there's a ₹10Cr opportunity hiding in their use case.",
+          tools: ["Zoom", "Dovetail", "Customer Success platform"],
+        },
+        {
+          time: "3:00 PM",
+          title: "A/B test analysis & decision",
+          detail:
+            "The A/B test on the new checkout flow has enough data. Analyze statistical significance, segment by user type, check for novelty effects. Write a 1-page decision memo: ship it, iterate, or kill it.",
+          tools: ["Amplitude", "Statsig", "Google Optimize"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Team development & mentoring",
+          detail:
+            "1:1 with a junior PM on your team. Review their PRD, give structured feedback on how to sharpen the problem statement. Senior PMs who develop others create organizational leverage.",
+          tools: ["Notion", "Loom"],
+        },
+      ],
+    },
+    timeTierRoadmap: [
+      {
+        years: "1–2 yrs",
+        label: "PM Certification / APM Program",
+        qualification:
+          "Product Management Certificate (Product School, Pragmatic Institute)",
+        route:
+          "Product School PM Certificate, Reforge Program, or direct APM (Associate PM) hiring at startups",
+        entryRole: "Associate Product Manager (APM), Product Analyst",
+        salaryRange: "₹5L–₹10L/yr",
+        cost: "₹50K–₹2L (certificate programs)",
+        ladderNote:
+          "Many startups hire APMs directly from engineering or data backgrounds without an MBA. Building a product portfolio (case studies, product teardowns) and networking on LinkedIn is as effective as formal certification for startup PM roles.",
+      },
+      {
+        years: "3–4 yrs",
+        label: "UG Degree + APM Entry",
+        qualification: "B.Tech / BBA / BA Economics or any graduation",
+        route:
+          "Any college + Google APM, Microsoft APM, Uber APM, Flipkart APM programs (applied in final year)",
+        entryRole: "Product Manager (Junior), Growth Analyst",
+        salaryRange: "₹8L–₹18L/yr (FAANG APMs: ₹25L–₹50L+)",
+        cost: "College fees vary",
+        ladderNote:
+          "FAANG and top tech APM programs are the fastest path. After 3-4 years as PM, you can target MBA programs (IIM, ISB, HBS) to accelerate to CPO / Director level roles.",
+      },
+      {
+        years: "6–7 yrs",
+        label: "Graduation + MBA",
+        qualification: "MBA from IIM / ISB / top global B-school",
+        route: "IIM A/B/C (CAT), ISB (GMAT), HBS/Wharton/INSEAD (GMAT)",
+        entryRole: "Senior Product Manager, Group PM",
+        salaryRange: "₹20L–₹60L/yr (IIM/ISB placements)",
+        cost: "₹20L–₹80L (MBA fees, varies by institution)",
+        ladderNote:
+          "MBA from IIM/ISB/HBS significantly accelerates the path to Director/VP of Product and CPO. Not required for individual PM contributor roles, but almost essential for executive product leadership at large companies.",
+      },
+    ],
     skillsTechnical: [
       "Product Metrics and Analytics (Mixpanel, Amplitude)",
       "SQL basics for self-serve data queries",
@@ -668,10 +1378,7 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
         name: "GMAT",
         description: "For international MBA programmes — HBS, Wharton, INSEAD",
       },
-      {
-        name: "XAT",
-        description: "For XLRI and other top private B-schools",
-      },
+      { name: "XAT", description: "For XLRI and other top private B-schools" },
     ],
     pros: [
       "High compensation without requiring deep technical expertise",
@@ -702,7 +1409,138 @@ export const careerProfilesMap: Record<string, CareerProfile> = {
   "digital-marketing": {
     id: "digital-marketing",
     dayInTheLife:
-      "Neha checks her campaign dashboards first thing — the Google Ads campaign for a product launch is running at a higher cost-per-click than budgeted. She adjusts the bid strategy and pauses two underperforming ad groups. By 10 she's in a content planning meeting, mapping next month's Instagram calendar. After lunch, she analyzes the email campaign she sent last week — open rate at 32%, above industry average. At 3 PM she presents the monthly growth report to the marketing head, showing a 22% improvement in organic traffic from SEO changes made last quarter.",
+      "Neha checks her campaign dashboards first thing — the Google Ads campaign for a product launch is running at a higher cost-per-click than budgeted. She adjusts the bid strategy and pauses two underperforming ad groups. By 10 she's in a content planning meeting, mapping next month's Instagram calendar. After lunch, she analyzes an email campaign she sent last week — open rate at 32%, above industry average.",
+    dayInTheLifeStructured: {
+      earlyCareer: [
+        {
+          time: "9:00 AM",
+          title: "Campaign dashboard review",
+          detail:
+            "Open Google Ads and Meta Ads dashboards. Check yesterday's spend, CPC, CTR, and conversions. The Google campaign CPC jumped 18% overnight — likely a competitor increased bids. Adjust bid strategy and note it in the daily report.",
+          tools: ["Google Ads", "Meta Business Suite", "Google Analytics 4"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Content planning & creation",
+          detail:
+            "Plan next month's Instagram and LinkedIn content calendar. Write 5 post captions, design 3 graphics in Canva, and schedule them. Content creation is 40-50% of a junior digital marketer's job.",
+          tools: ["Canva", "Buffer / Hootsuite", "Instagram Creator Studio"],
+        },
+        {
+          time: "1:00 PM",
+          title: "SEO analysis & optimization",
+          detail:
+            "Review last week's Google Search Console data. 3 blog posts are ranking on page 2 — update them with better headings, internal links, and a stronger meta description. SEO improvements take 4-6 weeks to show results.",
+          tools: [
+            "Google Search Console",
+            "Ahrefs / SEMrush",
+            "WordPress / CMS",
+          ],
+        },
+        {
+          time: "3:00 PM",
+          title: "Email campaign setup",
+          detail:
+            "Build this week's newsletter in Mailchimp. Write the subject line (A/B test 2 variants), design the email, set up the automated sequence for new subscribers. Open rate goal: >25%.",
+          tools: ["Mailchimp / CleverTap", "Canva", "Litmus (email testing)"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Performance reporting",
+          detail:
+            "Compile the weekly marketing report: all channel metrics, wins, learnings, and next week's priorities. Marketers who explain their data clearly get promoted faster than those who just execute.",
+          tools: ["Google Looker Studio", "Sheets / Excel", "Notion"],
+        },
+      ],
+      established: [
+        {
+          time: "9:00 AM",
+          title: "Growth strategy review",
+          detail:
+            "Review monthly growth metrics across all channels: organic (SEO/content), paid (SEM/social), email, referral. Identify which channel has the best LTV:CAC ratio and propose increasing budget there.",
+          tools: ["Amplitude", "Looker Studio", "Tableau"],
+        },
+        {
+          time: "10:30 AM",
+          title: "Agency and vendor management",
+          detail:
+            "Brief the content agency on Q3 campaign direction. Review their creative proposals against brand guidelines. Approve 3, send 2 back for revision. Senior marketers manage vendors, not just execute themselves.",
+          tools: ["Notion (briefs)", "Slack", "Asana"],
+        },
+        {
+          time: "1:00 PM",
+          title: "Product launch campaign planning",
+          detail:
+            "Plan the full-funnel campaign for a new product feature launch: awareness (social/PR), consideration (content/retargeting), conversion (email/paid). Define the budget split and success metrics.",
+          tools: ["Miro (campaign canvas)", "Google Slides", "HubSpot CRM"],
+        },
+        {
+          time: "3:30 PM",
+          title: "A/B test analysis & optimization",
+          detail:
+            "Two landing page variants have been running for 14 days. Variant B has 23% higher conversion. Analyze why: headline, hero image, or CTA? Roll out the winner, start the next test.",
+          tools: ["VWO / Optimizely", "Google Optimize", "Hotjar"],
+        },
+        {
+          time: "5:00 PM",
+          title: "Market research & trend spotting",
+          detail:
+            "Spend 30 minutes reading about emerging platforms (what's growing on LinkedIn vs. Instagram vs. YouTube Shorts), competitor campaign analysis, and industry trend reports. Senior marketers see the next wave before it hits.",
+          tools: ["SimilarWeb", "SparkToro", "Think with Google"],
+        },
+      ],
+    },
+    timeTierRoadmap: [
+      {
+        years: "0–6 months",
+        label: "Free Certifications + Portfolio",
+        qualification: "Google Digital Marketing Certificate + Meta Blueprint",
+        route:
+          "Google Digital Garage (free, 40 hrs) + Meta Blueprint (free) + start a social media page on any passion",
+        entryRole: "Social Media Executive, Digital Marketing Intern",
+        salaryRange: "₹1.5L–₹3.5L/yr",
+        cost: "₹0 (entirely free)",
+        ladderNote:
+          "Digital marketing is the most accessible career path — zero financial barrier to entry. Real-world results (growing a page from 0 to 5,000 followers) are more valuable than any certificate. You can grow while earning.",
+      },
+      {
+        years: "1 yr",
+        label: "Professional Certificate / Bootcamp",
+        qualification:
+          "PG Certificate in Digital Marketing (IIDE, Digital Vidya, Simplilearn)",
+        route:
+          "IIDE Mumbai, Digital Vidya (online), Google + Meta + HubSpot triple certification",
+        entryRole: "Digital Marketing Executive, SEO Analyst",
+        salaryRange: "₹2.5L–₹5L/yr",
+        cost: "₹50K–₹1.5L",
+        ladderNote:
+          "Certificate programs with placement support are effective for career switchers. Choose programs that require you to run real campaigns with real budgets — not just theory. After 1 year of experience, salary jumps significantly.",
+      },
+      {
+        years: "3 yrs",
+        label: "UG Degree in Marketing / Mass Comm",
+        qualification: "BBA Marketing, BA Mass Communication, or B.Com",
+        route:
+          "Christ University, Symbiosis, Manipal, MICA (BBA), Delhi University (BA)",
+        entryRole: "Marketing Executive, Brand Manager (Trainee)",
+        salaryRange: "₹3L–₹7L/yr",
+        cost: "₹1L–₹5L/yr",
+        ladderNote:
+          "A marketing degree builds strategic and analytical foundation beyond social media. After 2-3 years of work experience, target MBA in Marketing from IIM/MICA/MDI for senior brand management roles.",
+      },
+      {
+        years: "5–6 yrs",
+        label: "UG + MBA Marketing",
+        qualification: "MBA in Marketing (IIM / MICA / MDI)",
+        route:
+          "IIM Calcutta / Kozhikode (CAT), MICA Ahmedabad (MICAT+CAT/XAT), MDI Gurgaon (CAT)",
+        entryRole: "Brand Manager, Marketing Manager, Growth Lead",
+        salaryRange: "₹12L–₹30L/yr",
+        cost: "₹15L–₹25L (MBA fees)",
+        ladderNote:
+          "MBA from MICA Ahmedabad (India's best marketing school) or IIM with marketing specialization opens senior brand management roles at FMCG, tech, and D2C companies. MICAT exam specifically tests creativity — unique to marketing MBAs.",
+      },
+    ],
     skillsTechnical: [
       "Google Ads and Meta Ads management",
       "SEO (Search Engine Optimization)",

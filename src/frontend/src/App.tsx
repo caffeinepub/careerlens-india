@@ -6,6 +6,7 @@ import { CategoryPage } from "./pages/CategoryPage";
 import { HomePage } from "./pages/HomePage";
 import { LegalPage } from "./pages/LegalPage";
 import { SearchPage } from "./pages/SearchPage";
+import { StudentProfilePage } from "./pages/StudentProfilePage";
 import { SubjectGatewayPage } from "./pages/SubjectGatewayPage";
 import { SubtypeDetailPage } from "./pages/SubtypeDetailPage";
 import { TypePage } from "./pages/TypePage";
@@ -71,11 +72,28 @@ export default function App() {
           />
         );
 
+      case "student-profile":
+        return <StudentProfilePage onNavigate={handleNavigate} />;
+
       case "subject-gateway":
-        return <SubjectGatewayPage onNavigate={handleNavigate} />;
+        return (
+          <SubjectGatewayPage
+            onNavigate={handleNavigate}
+            grade={nav.grade}
+            stream={nav.stream}
+            selectedSubjects={nav.selectedSubjects}
+          />
+        );
 
       case "assessment":
-        return <AssessmentPage onNavigate={handleNavigate} />;
+        return (
+          <AssessmentPage
+            onNavigate={handleNavigate}
+            initialGrade={nav.grade}
+            initialStream={nav.stream}
+            initialSubjects={nav.selectedSubjects}
+          />
+        );
 
       case "legal":
         return (

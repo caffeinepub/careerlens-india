@@ -4,7 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -32,7 +34,6 @@ import { useCallback, useState } from "react";
 import {
   type AssessmentModule,
   assessmentModules,
-  subjectCategories,
 } from "../data/assessmentModules";
 import {
   type AssessmentQuestion,
@@ -40,22 +41,27 @@ import {
   type RiasecType,
   questionsByModule,
 } from "../data/assessmentQuestions";
+import {
+  computeBridgeMatchScore,
+  getBridgeSteps,
+} from "../data/careerBridgeData";
+import {
+  dreamCareerGroups,
+  dreamCareerNameMap,
+} from "../data/dreamCareerOptions";
 import { careerProfilesMap } from "../data/techDigitalCareers";
 import type { NavState } from "../types/navigation";
 
 interface AssessmentPageProps {
   onNavigate: (state: NavState) => void;
+  initialGrade?: string;
+  initialStream?: string;
+  initialSubjects?: string[];
 }
 
 // ─── Types ────────────────────────────────────────────────────────
 
-type Phase =
-  | "intro"
-  | "grade-select"
-  | "subject-preference"
-  | "module"
-  | "module-transition"
-  | "results";
+type Phase = "intro" | "module" | "module-transition" | "results";
 
 type Confidence = "sure" | "not-sure" | "guesswork";
 
@@ -68,6 +74,7 @@ interface Answer {
 interface SessionState {
   phase: Phase;
   grade: string;
+  stream: string;
   selectedSubjects: string[];
   currentModuleIndex: number;
   currentQuestionIndex: number;
@@ -161,40 +168,28 @@ function calculateResults(
     if (mod.scoringType === "aptitude") {
       let points = 0;
       let maxPoints = 0;
+
       for (const q of qs) {
         const ans = answerMap.get(q.id);
         if (!ans) continue;
-        maxPoints += 3;
-        if (ans.selectedOptionId === q.correctOptionId) {
-          const conf = ans.confidence;
-          if (conf === "sure") points += 3;
-          else if (conf === "not-sure") points += 2;
-          else points += 1;
+        const confMultiplier =
+          ans.confidence === "sure"
+            ? 1
+            : ans.confidence === "not-sure"
+              ? 0.7
+              : 0.4;
+        if (q.correctOptionId && ans.selectedOptionId === q.correctOptionId) {
+          points += confMultiplier;
         }
+        maxPoints += 1;
       }
-      const pct = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
-      const band: ModuleScore["band"] =
-        pct >= 70 ? "High" : pct >= 40 ? "Medium" : "Low";
-      const insights: Record<ModuleScore["band"], string> = {
-        High: `Strong ${mod.title} ability — excellent foundation for technical careers`,
-        Medium: `Developing ${mod.title} skills — targeted practice will strengthen this`,
-        Low: `${mod.title} needs focused attention — practice with structured resources`,
-      };
+
+      const score = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 50;
+      const band: "High" | "Medium" | "Low" =
+        score >= 70 ? "High" : score >= 45 ? "Medium" : "Low";
       moduleScores.push({
         moduleId: mod.id,
-        score: pct,
-        band,
-        insight: insights[band],
-      });
-    } else if (mod.scoringType === "preference") {
-      // Count answered / total as engagement proxy
-      const answered = qs.filter((q) => answerMap.has(q.id)).length;
-      const pct = qs.length > 0 ? Math.round((answered / qs.length) * 100) : 0;
-      const band: ModuleScore["band"] =
-        pct >= 80 ? "High" : pct >= 50 ? "Medium" : "Low";
-      moduleScores.push({
-        moduleId: mod.id,
-        score: pct,
+        score,
         band,
         insight:
           band === "High"
@@ -330,16 +325,44 @@ function calculateResults(
   };
 }
 
-// ─── Career name map ──────────────────────────────────────────────────
+// ─── DISC Derivation ──────────────────────────────────────────────────
 
-const careerNames: Record<string, string> = {
-  "software-engineering": "Software Engineering",
-  "data-science": "Data Science",
-  cybersecurity: "Cybersecurity",
-  "ai-ml-engineering": "AI / ML Engineering",
-  "product-management": "Product Management",
-  "digital-marketing": "Digital Marketing",
-};
+function deriveDiscScores(
+  results: Results,
+): Record<"D" | "I" | "S" | "C", number> {
+  const raw = {
+    D: Math.round(
+      (results.moduleScores.find((m) => m.moduleId === "leadership")?.score ||
+        0) *
+        0.6 +
+        (results.riasecCounts.E || 0) * 5,
+    ),
+    I: Math.round(
+      (results.moduleScores.find((m) => m.moduleId === "verbal")?.score || 0) *
+        0.5 +
+        ((results.riasecCounts.S || 0) + (results.riasecCounts.A || 0)) * 4,
+    ),
+    S: Math.round(
+      results.gritProfile.gritScore * 0.6 + (results.riasecCounts.S || 0) * 4,
+    ),
+    C: Math.round(
+      (((results.moduleScores.find((m) => m.moduleId === "logical")?.score ||
+        0) +
+        (results.moduleScores.find((m) => m.moduleId === "numerical")?.score ||
+          0)) /
+        2) *
+        0.7 +
+        (results.riasecCounts.C || 0) * 4,
+    ),
+  };
+  const maxVal = Math.max(...Object.values(raw), 1);
+  return {
+    D: Math.min(Math.round((raw.D / maxVal) * 100), 100),
+    I: Math.min(Math.round((raw.I / maxVal) * 100), 100),
+    S: Math.min(Math.round((raw.S / maxVal) * 100), 100),
+    C: Math.min(Math.round((raw.C / maxVal) * 100), 100),
+  };
+}
 
 const riasecLabels: Record<RiasecType, string> = {
   R: "Realistic",
@@ -386,13 +409,129 @@ function ScoreBar({
   );
 }
 
+// ─── DISC Profile Card ──────────────────────────────────────────────────
+
+function DiscProfileCard({ results }: { results: Results }) {
+  const disc = deriveDiscScores(results);
+  const maxDim = (Object.entries(disc) as [string, number][]).sort(
+    (a, b) => b[1] - a[1],
+  )[0][0];
+
+  const discMeta: Record<
+    "D" | "I" | "S" | "C",
+    { name: string; color: string; bg: string; descriptor: string }
+  > = {
+    D: {
+      name: "Dominance",
+      color: "bg-red-500",
+      bg: "bg-red-50",
+      descriptor:
+        "Task-oriented, direct, results-driven — natural leader and problem-solver",
+    },
+    I: {
+      name: "Influence",
+      color: "bg-yellow-400",
+      bg: "bg-yellow-50",
+      descriptor:
+        "People-oriented, expressive, enthusiastic — builds rapport and inspires others",
+    },
+    S: {
+      name: "Steadiness",
+      color: "bg-emerald-500",
+      bg: "bg-emerald-50",
+      descriptor:
+        "Reliable, calm, supportive — excels in team stability and consistent delivery",
+    },
+    C: {
+      name: "Conscientiousness",
+      color: "bg-blue-500",
+      bg: "bg-blue-50",
+      descriptor:
+        "Analytical, detail-oriented, quality-focused — thrives in structured, precise work",
+    },
+  };
+
+  const balancedDescriptor =
+    "Versatile profile — adapts well across different work environments";
+  const highDims = (
+    Object.entries(disc) as ["D" | "I" | "S" | "C", number][]
+  ).filter(([, v]) => v > 60);
+  const topDescriptor =
+    highDims.length === 0
+      ? balancedDescriptor
+      : discMeta[maxDim as "D" | "I" | "S" | "C"].descriptor;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm"
+      data-ocid="results.disc.card"
+    >
+      <h2 className="text-lg font-bold text-slate-900 mb-1">
+        🧩 DISC Behavioural Profile
+      </h2>
+      <p className="text-xs text-slate-500 mb-4">
+        Derived from your Verbal, Leadership, RIASEC, and Grit scores. Use
+        alongside your full profile for best insight.
+      </p>
+
+      <div className="space-y-3">
+        {(["D", "I", "S", "C"] as const).map((key) => {
+          const meta = discMeta[key];
+          const score = disc[key];
+          return (
+            <div key={key} className="space-y-1">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-slate-800 w-5">{key}</span>
+                  <span className="text-sm text-slate-600">{meta.name}</span>
+                </div>
+                <span className="text-xs font-semibold text-slate-500">
+                  {score}%
+                </span>
+              </div>
+              <div className="w-full bg-slate-100 rounded-full h-2.5">
+                <div
+                  className={`${meta.color} h-2.5 rounded-full transition-all duration-700`}
+                  style={{ width: `${score}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        className={`mt-4 rounded-lg px-4 py-3 text-sm font-medium ${
+          discMeta[maxDim as "D" | "I" | "S" | "C"]?.bg || "bg-slate-50"
+        } text-slate-700`}
+      >
+        {topDescriptor}
+      </div>
+
+      <p className="text-[10px] text-slate-400 mt-3 leading-relaxed">
+        DISC profile is derived from your assessment scores — not a standalone
+        assessment. Use alongside your full module scores and RIASEC Holland
+        Code for complete career insight.
+      </p>
+    </motion.div>
+  );
+}
+
 // ─── Main Component ──────────────────────────────────────────────────
 
-export function AssessmentPage({ onNavigate }: AssessmentPageProps) {
+export function AssessmentPage({
+  onNavigate,
+  initialGrade = "",
+  initialStream = "",
+  initialSubjects = [],
+}: AssessmentPageProps) {
   const [session, setSession] = useState<SessionState>({
     phase: "intro",
-    grade: "",
-    selectedSubjects: [],
+    grade: initialGrade,
+    stream: initialStream,
+    selectedSubjects: initialSubjects,
     currentModuleIndex: 0,
     currentQuestionIndex: 0,
     sessionQuestions: [],
@@ -410,27 +549,13 @@ export function AssessmentPage({ onNavigate }: AssessmentPageProps) {
   const currentQuestion: AssessmentQuestion | undefined =
     currentModuleQuestions[session.currentQuestionIndex];
 
-  const handleStartAssessment = useCallback((grade: string) => {
+  const handleBeginModules = useCallback(() => {
     const sessionQuestions = buildSessionQuestions();
     setSession((prev) => ({
       ...prev,
-      phase: "subject-preference",
-      grade,
+      phase: "module",
       sessionQuestions,
     }));
-  }, []);
-
-  const handleSubjectToggle = useCallback((subject: string) => {
-    setSession((prev) => ({
-      ...prev,
-      selectedSubjects: prev.selectedSubjects.includes(subject)
-        ? prev.selectedSubjects.filter((s) => s !== subject)
-        : [...prev.selectedSubjects, subject],
-    }));
-  }, []);
-
-  const handleBeginModules = useCallback(() => {
-    setSession((prev) => ({ ...prev, phase: "module" }));
   }, []);
 
   const handleSelectOption = useCallback((optionId: string) => {
@@ -447,53 +572,41 @@ export function AssessmentPage({ onNavigate }: AssessmentPageProps) {
         confidence,
       };
 
-      const isLastQuestionInModule =
+      const newAnswers = [...session.answers, newAnswer];
+      const isLastQuestion =
         session.currentQuestionIndex >= currentModuleQuestions.length - 1;
       const isLastModule =
         session.currentModuleIndex >= assessmentModules.length - 1;
 
-      const updatedAnswers = [...session.answers, newAnswer];
-
-      if (isLastQuestionInModule) {
-        if (isLastModule) {
-          // Compute results
-          const computed = calculateResults(
-            session.sessionQuestions,
-            updatedAnswers,
-          );
-          setResults(computed);
-          setSession((prev) => ({
-            ...prev,
-            answers: updatedAnswers,
-            pendingAnswer: null,
-            phase: "results",
-          }));
-        } else {
-          setSession((prev) => ({
-            ...prev,
-            answers: updatedAnswers,
-            pendingAnswer: null,
-            phase: "module-transition",
-          }));
-        }
+      if (isLastQuestion && isLastModule) {
+        const calcResults = calculateResults(
+          session.sessionQuestions,
+          newAnswers,
+        );
+        setResults(calcResults);
+        setSession((prev) => ({
+          ...prev,
+          answers: newAnswers,
+          pendingAnswer: null,
+          phase: "results",
+        }));
+      } else if (isLastQuestion) {
+        setSession((prev) => ({
+          ...prev,
+          answers: newAnswers,
+          pendingAnswer: null,
+          phase: "module-transition",
+        }));
       } else {
         setSession((prev) => ({
           ...prev,
-          answers: updatedAnswers,
+          answers: newAnswers,
           pendingAnswer: null,
           currentQuestionIndex: prev.currentQuestionIndex + 1,
         }));
       }
     },
-    [
-      currentQuestion,
-      session.pendingAnswer,
-      session.currentQuestionIndex,
-      currentModuleQuestions.length,
-      session.currentModuleIndex,
-      session.answers,
-      session.sessionQuestions,
-    ],
+    [currentQuestion, session, currentModuleQuestions],
   );
 
   const handleNextModule = useCallback(() => {
@@ -510,6 +623,7 @@ export function AssessmentPage({ onNavigate }: AssessmentPageProps) {
     setSession({
       phase: "intro",
       grade: "",
+      stream: "",
       selectedSubjects: [],
       currentModuleIndex: 0,
       currentQuestionIndex: 0,
@@ -542,20 +656,11 @@ export function AssessmentPage({ onNavigate }: AssessmentPageProps) {
           {session.phase === "intro" && (
             <IntroScreen
               key="intro"
-              onStart={() =>
-                setSession((p) => ({ ...p, phase: "grade-select" }))
-              }
-            />
-          )}
-          {session.phase === "grade-select" && (
-            <GradeSelectScreen key="grade" onSelect={handleStartAssessment} />
-          )}
-          {session.phase === "subject-preference" && (
-            <SubjectPreferenceScreen
-              key="subjects"
+              grade={session.grade}
+              stream={session.stream}
               selectedSubjects={session.selectedSubjects}
-              onToggle={handleSubjectToggle}
-              onContinue={handleBeginModules}
+              onStart={handleBeginModules}
+              onChangeProfile={() => onNavigate({ view: "student-profile" })}
             />
           )}
           {session.phase === "module" && currentModule && currentQuestion && (
@@ -604,7 +709,29 @@ export function AssessmentPage({ onNavigate }: AssessmentPageProps) {
 
 // ─── Screen: Intro ──────────────────────────────────────────────────
 
-function IntroScreen({ onStart }: { onStart: () => void }) {
+function IntroScreen({
+  grade,
+  stream,
+  selectedSubjects,
+  onStart,
+  onChangeProfile,
+}: {
+  grade: string;
+  stream: string;
+  selectedSubjects: string[];
+  onStart: () => void;
+  onChangeProfile: () => void;
+}) {
+  const streamLabels: Record<string, string> = {
+    pcm: "Science (PCM)",
+    pcb: "Science (PCB)",
+    "pcm-cs": "Science + CS",
+    commerce: "Commerce",
+    humanities: "Humanities / Arts",
+    vocational: "Vocational",
+    undecided: "Not decided yet",
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -628,6 +755,43 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
           personality, and values.
         </p>
       </div>
+
+      {/* Student Profile Summary Card */}
+      {(grade || stream || selectedSubjects.length > 0) && (
+        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-lg mx-auto text-left">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-semibold text-blue-800">
+              Your Profile
+            </span>
+            <button
+              type="button"
+              onClick={onChangeProfile}
+              className="text-xs text-blue-600 hover:text-blue-800 underline"
+              data-ocid="assessment.link"
+            >
+              ← Change my profile
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {grade && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
+                🎓 Grade {grade}
+              </span>
+            )}
+            {stream && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
+                📚 {streamLabels[stream] || stream}
+              </span>
+            )}
+            {selectedSubjects.length > 0 && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">
+                📌 {selectedSubjects.length} subject
+                {selectedSubjects.length > 1 ? "s" : ""} selected
+              </span>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
         {[
@@ -677,147 +841,6 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
         Start Assessment
         <ArrowRight className="ml-2 h-5 w-5" />
       </Button>
-    </motion.div>
-  );
-}
-
-// ─── Screen: Grade Select ─────────────────────────────────────────────
-
-function GradeSelectScreen({
-  onSelect,
-}: { onSelect: (grade: string) => void }) {
-  const [grade, setGrade] = useState("");
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -40 }}
-      className="max-w-md mx-auto py-16 space-y-8 text-center"
-      data-ocid="grade.section"
-    >
-      <div>
-        <div className="text-5xl mb-4">🎓</div>
-        <h2 className="text-2xl font-bold text-slate-900">
-          Which grade are you in?
-        </h2>
-        <p className="text-slate-500 mt-2">
-          This personalizes recommendations and content depth.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        {["9", "10", "11", "12"].map((g) => (
-          <button
-            type="button"
-            key={g}
-            onClick={() => setGrade(g)}
-            className={`rounded-xl border-2 py-6 text-center font-semibold text-lg transition-all ${
-              grade === g
-                ? "border-blue-600 bg-blue-50 text-blue-700 shadow-md"
-                : "border-slate-200 bg-white text-slate-700 hover:border-blue-300 hover:bg-blue-50/50"
-            }`}
-            data-ocid="grade.button"
-          >
-            Grade {g}
-          </button>
-        ))}
-      </div>
-
-      <Button
-        size="lg"
-        disabled={!grade}
-        onClick={() => grade && onSelect(grade)}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold"
-        data-ocid="grade.submit_button"
-      >
-        Continue
-        <ChevronRight className="ml-1 h-4 w-4" />
-      </Button>
-    </motion.div>
-  );
-}
-
-// ─── Screen: Subject Preference ─────────────────────────────────────────
-
-function SubjectPreferenceScreen({
-  selectedSubjects,
-  onToggle,
-  onContinue,
-}: {
-  selectedSubjects: string[];
-  onToggle: (s: string) => void;
-  onContinue: () => void;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -40 }}
-      className="space-y-6"
-      data-ocid="subjects.section"
-    >
-      <div className="text-center py-4">
-        <div className="text-4xl mb-3">📚</div>
-        <h2 className="text-2xl font-bold text-slate-900">
-          What subjects do you enjoy?
-        </h2>
-        <p className="text-slate-500 mt-1 text-sm">
-          Select all subjects you enjoy or do well in across any board (CBSE,
-          ICSE, IB, IGCSE, etc.)
-        </p>
-        {selectedSubjects.length > 0 && (
-          <div className="mt-2">
-            <Badge variant="secondary" className="text-xs">
-              {selectedSubjects.length} selected
-            </Badge>
-          </div>
-        )}
-      </div>
-
-      <div className="space-y-5">
-        {subjectCategories.map((cat) => (
-          <div key={cat.category}>
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2 px-1">
-              {cat.category}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {cat.subjects.map((subject) => (
-                <button
-                  type="button"
-                  key={subject}
-                  onClick={() => onToggle(subject)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
-                    selectedSubjects.includes(subject)
-                      ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-                      : "bg-white text-slate-700 border-slate-200 hover:border-blue-300 hover:bg-blue-50"
-                  }`}
-                  data-ocid="subjects.toggle"
-                >
-                  {subject}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="sticky bottom-4 pt-4">
-        <Button
-          onClick={onContinue}
-          size="lg"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg"
-          data-ocid="subjects.primary_button"
-        >
-          Begin Assessment — Module 1 of 8
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-        {selectedSubjects.length === 0 && (
-          <p className="text-center text-xs text-slate-400 mt-2">
-            You can skip this and proceed
-          </p>
-        )}
-      </div>
     </motion.div>
   );
 }
@@ -945,7 +968,11 @@ function QuestionScreen({
                 {opt.id.toUpperCase()}
               </div>
               <span
-                className={`text-sm leading-relaxed ${pendingAnswer === opt.id ? "text-blue-800 font-medium" : "text-slate-700"}`}
+                className={`text-sm leading-relaxed ${
+                  pendingAnswer === opt.id
+                    ? "text-blue-800 font-medium"
+                    : "text-slate-700"
+                }`}
               >
                 {opt.text}
               </span>
@@ -1141,40 +1168,46 @@ function ResultsScreen({
     results.confidenceDist.notSure +
     results.confidenceDist.guesswork;
 
-  // Dream career bridge
-  const dreamProfile = dreamCareer ? careerProfilesMap[dreamCareer] : null;
+  // Dream career bridge using computeBridgeMatchScore
   const dreamCareerName = dreamCareer
-    ? careerNames[dreamCareer] || dreamCareer
+    ? dreamCareerNameMap[dreamCareer] || dreamCareer
+    : "";
+  const dreamProfile = dreamCareer ? careerProfilesMap[dreamCareer] : null;
+  const hasProfile = !!dreamProfile;
+
+  const bridgeResult = dreamCareer
+    ? computeBridgeMatchScore(
+        dreamCareer,
+        results.moduleScores,
+        results.riasecCounts as unknown as Record<string, number>,
+        results.hollandCode,
+        results.gritProfile.gritLevel,
+        results.gritProfile.mindsetType,
+      )
+    : null;
+
+  const bridgeSteps = dreamCareer ? getBridgeSteps(dreamCareer, grade) : [];
+
+  const matchLabel = bridgeResult
+    ? bridgeResult.score >= 70
+      ? "Strong Alignment"
+      : bridgeResult.score >= 50
+        ? "Good Fit"
+        : bridgeResult.score >= 35
+          ? "Gap Identified"
+          : "Significant Gap"
     : "";
 
-  const getBridgeAnalysis = () => {
-    if (!dreamCareer) return null;
-    const cluster = results.topClusters[0] || "";
-    const isDreamInTopCluster =
-      ["software-engineering", "data-science", "ai-ml-engineering"].some(
-        (k) => k === dreamCareer,
-      ) && cluster.includes("Engineering");
-
-    return {
-      match: isDreamInTopCluster,
-      gritGap: results.gritProfile.gritLevel === "Low",
-      mindsetGap: results.gritProfile.mindsetType === "Fixed",
-      steps:
-        grade === "9" || grade === "10"
-          ? [
-              `Start exploring ${dreamCareerName} through free online resources and school projects`,
-              `Focus on strengthening ${highestAptitude?.moduleId || "your core"} skills this year`,
-              "Join a related school club or extracurricular to build real exposure",
-            ]
-          : [
-              `Research the specific entrance exams and qualifying criteria for ${dreamCareerName}`,
-              "Build a portfolio or project that demonstrates relevant skills",
-              `Connect with professionals in ${dreamCareerName} through LinkedIn or school mentors`,
-            ],
-    };
-  };
-
-  const bridgeAnalysis = getBridgeAnalysis();
+  // Suppress unused import warnings
+  void highestAptitude;
+  void Flame;
+  void Lightbulb;
+  void Star;
+  void Target;
+  void TrendingUp;
+  void Users;
+  void Zap;
+  void BookOpen;
 
   return (
     <motion.div
@@ -1284,6 +1317,9 @@ function ResultsScreen({
           })}
         </div>
       </div>
+
+      {/* DISC Profile Card — inserted after module scores */}
+      <DiscProfileCard results={results} />
 
       {/* RIASEC breakdown */}
       <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
@@ -1456,56 +1492,85 @@ function ResultsScreen({
         <h2 className="text-lg font-bold text-slate-900 mb-2">
           🌉 Dream Career Bridge
         </h2>
-        <p className="text-sm text-slate-500 mb-4">
+        <p className="text-sm text-slate-500 mb-1">
           Select a career you're drawn to and see how your profile aligns — plus
           the gap steps to get there.
         </p>
+        <p className="text-xs text-slate-400 mb-4">
+          <span className="font-semibold text-slate-500">✦</span> = Coming soon
+          — bridge guidance available for all careers
+        </p>
+
         <Select value={dreamCareer} onValueChange={onSetDreamCareer}>
           <SelectTrigger className="w-full" data-ocid="bridge.select">
             <SelectValue placeholder="Select your dream career..." />
           </SelectTrigger>
-          <SelectContent>
-            {Object.keys(careerProfilesMap).map((key) => (
-              <SelectItem key={key} value={key}>
-                {careerNames[key] || key}
-              </SelectItem>
+          <SelectContent className="max-h-80">
+            {dreamCareerGroups.map((group) => (
+              <SelectGroup key={group.sector}>
+                <SelectLabel>
+                  {group.emoji} {group.sector}
+                </SelectLabel>
+                {group.careers.map((career) => (
+                  <SelectItem key={career.id} value={career.id}>
+                    {career.name}
+                    {!career.hasProfile && " ✦"}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             ))}
           </SelectContent>
         </Select>
 
-        {bridgeAnalysis && dreamProfile && (
+        {dreamCareer && bridgeResult && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-4 space-y-4"
             data-ocid="bridge.panel"
           >
+            {/* Match score header */}
             <div
               className={`rounded-xl p-4 ${
-                bridgeAnalysis.match
+                bridgeResult.match
                   ? "bg-emerald-50 border border-emerald-200"
                   : "bg-amber-50 border border-amber-200"
               }`}
             >
-              <div
-                className={`font-semibold text-sm ${
-                  bridgeAnalysis.match ? "text-emerald-700" : "text-amber-700"
-                }`}
-              >
-                {bridgeAnalysis.match
-                  ? `✅ Strong Alignment with ${dreamCareerName}`
-                  : `🛥 Gap Identified — ${dreamCareerName} is achievable with focused effort`}
+              <div className="flex items-center justify-between mb-1">
+                <div
+                  className={`font-semibold text-sm ${
+                    bridgeResult.match ? "text-emerald-700" : "text-amber-700"
+                  }`}
+                >
+                  {bridgeResult.match
+                    ? `✅ Strong Alignment with ${dreamCareerName}`
+                    : `🛤 Gap Identified — ${dreamCareerName} is achievable with focused effort`}
+                </div>
+                <div
+                  className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                    bridgeResult.score >= 70
+                      ? "bg-emerald-100 text-emerald-700"
+                      : bridgeResult.score >= 50
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-amber-100 text-amber-700"
+                  }`}
+                >
+                  Match Score: {bridgeResult.score}% — {matchLabel}
+                </div>
               </div>
               <p
-                className={`text-xs mt-1 ${bridgeAnalysis.match ? "text-emerald-600" : "text-amber-600"}`}
+                className={`text-xs ${
+                  bridgeResult.match ? "text-emerald-600" : "text-amber-600"
+                }`}
               >
-                {bridgeAnalysis.match
+                {bridgeResult.match
                   ? "Your aptitude and personality profile strongly supports this career path."
                   : "Your assessment highlights areas to strengthen. Here are your bridge steps:"}
               </p>
             </div>
 
-            {bridgeAnalysis.gritGap && (
+            {bridgeResult.gritGap && (
               <div className="bg-rose-50 border border-rose-200 rounded-xl p-3 text-sm">
                 <strong className="text-rose-700">🔥 Grit Gap:</strong>{" "}
                 <span className="text-rose-600">
@@ -1516,7 +1581,7 @@ function ResultsScreen({
               </div>
             )}
 
-            {bridgeAnalysis.mindsetGap && (
+            {bridgeResult.mindsetGap && (
               <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 text-sm">
                 <strong className="text-orange-700">
                   🧠 Mindset Shift Needed:
@@ -1528,41 +1593,77 @@ function ResultsScreen({
               </div>
             )}
 
-            <div>
-              <div className="text-sm font-semibold text-slate-700 mb-2">
-                📈 Your Bridge Steps (Grade {grade}):
-              </div>
-              <div className="space-y-2">
-                {bridgeAnalysis.steps.map((step, i) => (
-                  <div
-                    key={step.slice(0, 20)}
-                    className="flex gap-3 items-start bg-slate-50 rounded-lg p-3"
-                  >
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">
-                      {i + 1}
+            {/* Career-specific bridge steps */}
+            {bridgeSteps.length > 0 && (
+              <div>
+                <div className="text-sm font-semibold text-slate-700 mb-3">
+                  📈 Your Bridge Steps (Grade {grade}):
+                </div>
+                <div className="space-y-3">
+                  {bridgeSteps.map((step, i) => (
+                    <div
+                      key={`${step.label}-${i}`}
+                      className="flex gap-3 items-start bg-slate-50 rounded-xl p-3.5 border border-slate-100"
+                    >
+                      <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mt-0.5">
+                        {i + 1}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-sm text-blue-700">
+                          {step.label}
+                        </div>
+                        <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                          {step.detail}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-sm text-slate-700">{step}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() =>
-                onNavigate({
-                  view: "subtype",
-                  subtypeId: dreamCareer,
-                  subtypeName: dreamCareerName,
-                })
-              }
-              className="w-full mt-2"
-              data-ocid="bridge.secondary_button"
-            >
-              Explore {dreamCareerName} Career Profile
-              <ChevronRight className="ml-1 h-3 w-3" />
-            </Button>
+            {/* Missing profile fallback */}
+            {!hasProfile && (
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm">
+                <p className="text-blue-700 font-medium mb-1">
+                  ℹ️ Full profile coming in Phase 2
+                </p>
+                <p className="text-blue-600 text-xs">
+                  Full career profile for {dreamCareerName} is coming in Phase
+                  2. Bridge guidance above is based on your assessment results.
+                </p>
+              </div>
+            )}
+
+            {hasProfile ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  onNavigate({
+                    view: "subtype",
+                    subtypeId: dreamCareer,
+                    subtypeName: dreamCareerName,
+                  })
+                }
+                className="w-full mt-2"
+                data-ocid="bridge.secondary_button"
+              >
+                Explore {dreamCareerName} Career Profile
+                <ChevronRight className="ml-1 h-3 w-3" />
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                disabled
+                className="w-full mt-2 opacity-50 cursor-not-allowed"
+                data-ocid="bridge.secondary_button"
+              >
+                Profile Coming Soon
+                <ChevronRight className="ml-1 h-3 w-3" />
+              </Button>
+            )}
           </motion.div>
         )}
       </div>

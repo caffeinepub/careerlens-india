@@ -148,7 +148,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   data-ocid="hero.secondary_button"
                   size="lg"
                   variant="outline"
-                  onClick={() => onNavigate({ view: "assessment" })}
+                  onClick={() => onNavigate({ view: "student-profile" })}
                   className="border-white/30 text-white hover:bg-white/10 hover:text-white bg-transparent"
                 >
                   Find My Fit
@@ -213,7 +213,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               data-ocid="tracks.subject_gateway.card"
               className="group bg-card rounded-2xl border border-border shadow-sm p-8 flex flex-col hover:shadow-md transition-all duration-200 cursor-pointer"
               style={{ borderTop: "4px solid oklch(0.55 0.14 165)" }}
-              onClick={() => onNavigate({ view: "subject-gateway" })}
+              onClick={() => onNavigate({ view: "student-profile" })}
             >
               <div
                 className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
@@ -228,14 +228,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 I know what subjects I like
               </h3>
               <p className="text-muted-foreground leading-relaxed flex-1 mb-6">
-                Select your subjects and stream. See which careers naturally
-                match what you're already good at.
+                Tell us your grade, stream, and subjects — we'll instantly match
+                you to the right careers.
               </p>
               <Button
                 data-ocid="tracks.subject_gateway.button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onNavigate({ view: "subject-gateway" });
+                  onNavigate({ view: "student-profile" });
                 }}
                 className="w-full font-semibold group-hover:opacity-90"
                 style={{ background: "oklch(0.55 0.14 165)", color: "white" }}
@@ -252,7 +252,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               data-ocid="tracks.assessment.card"
               className="group bg-card rounded-2xl border border-border shadow-sm p-8 flex flex-col hover:shadow-md transition-all duration-200 cursor-pointer"
               style={{ borderTop: "4px solid oklch(0.45 0.18 275)" }}
-              onClick={() => onNavigate({ view: "assessment" })}
+              onClick={() => onNavigate({ view: "student-profile" })}
             >
               <div
                 className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
@@ -267,14 +267,14 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 I want to discover my fit
               </h3>
               <p className="text-muted-foreground leading-relaxed flex-1 mb-6">
-                Take a 20-question assessment covering aptitude, interests, and
-                personality. Get your career match and gap analysis.
+                Same quick profile, then a full 8-module assessment for deep
+                career guidance and gap analysis.
               </p>
               <Button
                 data-ocid="tracks.assessment.button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onNavigate({ view: "assessment" });
+                  onNavigate({ view: "student-profile" });
                 }}
                 className="w-full font-semibold group-hover:opacity-90"
                 style={{ background: "oklch(0.45 0.18 275)", color: "white" }}
