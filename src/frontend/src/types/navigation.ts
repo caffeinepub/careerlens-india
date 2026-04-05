@@ -1,5 +1,11 @@
 export type ViewType =
   | "home"
+  | "identity"
+  | "opportunity"
+  | "decision"
+  | "execution"
+  | "wow"
+  | "explore"
   | "category"
   | "type"
   | "subtype"
@@ -22,4 +28,5 @@ export interface NavState {
   grade?: string;
   stream?: string;
   selectedSubjects?: string[];
+  selectedCareer?: string;
 }

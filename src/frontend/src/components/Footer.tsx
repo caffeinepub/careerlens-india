@@ -1,4 +1,4 @@
-import { MapPin } from "lucide-react";
+import { BookOpen, Compass, MapPin, Scale, Target, Zap } from "lucide-react";
 import type { NavState } from "../types/navigation";
 
 interface FooterProps {
@@ -17,7 +17,7 @@ export function Footer({ onNavigate }: FooterProps) {
   return (
     <footer
       style={{ background: "oklch(0.18 0.08 255)" }}
-      className="text-white mt-auto"
+      className="text-white mt-auto print:hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -26,36 +26,98 @@ export function Footer({ onNavigate }: FooterProps) {
             <button
               type="button"
               data-ocid="footer.home.link"
-              onClick={() => onNavigate({ view: "home" })}
+              onClick={() => onNavigate({ view: "identity" })}
               className="flex items-center gap-2 mb-3 group"
             >
               <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors">
-                <MapPin className="w-4 h-4 text-white" />
+                <Target className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-white group-hover:text-white/90">
+              <span className="font-bold font-display text-white group-hover:text-white/90">
                 CareerLens India
               </span>
             </button>
             <p className="text-sm text-white/70 leading-relaxed">
-              Helping Indian students explore industry ecosystems and discover
-              their ideal career paths.
+              Helping Indian students discover their ideal career path with
+              scientific assessments and actionable data.
+            </p>
+            <p className="text-xs text-white/50 mt-2">
+              Your Career. Your Path.
             </p>
           </div>
 
-          {/* Navigate */}
+          {/* Engines */}
           <div>
             <h4 className="font-semibold text-white mb-3 text-sm uppercase tracking-wide">
-              Navigate
+              Engines
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <button
                   type="button"
-                  data-ocid="footer.home_nav.link"
-                  onClick={() => onNavigate({ view: "home" })}
+                  data-ocid="footer.identity.link"
+                  onClick={() => onNavigate({ view: "identity" })}
                   className={linkClass}
                 >
-                  Home
+                  Identity Engine
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  data-ocid="footer.opportunity.link"
+                  onClick={() => onNavigate({ view: "opportunity" })}
+                  className={linkClass}
+                >
+                  Opportunity Engine
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  data-ocid="footer.decision.link"
+                  onClick={() => onNavigate({ view: "decision" })}
+                  className={linkClass}
+                >
+                  Decision Engine
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  data-ocid="footer.execution.link"
+                  onClick={() => onNavigate({ view: "execution" })}
+                  className={linkClass}
+                >
+                  Execution Engine
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  data-ocid="footer.wow.link"
+                  onClick={() => onNavigate({ view: "wow" })}
+                  className={linkClass}
+                >
+                  WOW Blueprint
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Explore */}
+          <div>
+            <h4 className="font-semibold text-white mb-3 text-sm uppercase tracking-wide">
+              Explore
+            </h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <button
+                  type="button"
+                  data-ocid="footer.explore.link"
+                  onClick={() => onNavigate({ view: "explore" })}
+                  className={linkClass}
+                >
+                  Career Universe
                 </button>
               </li>
               <li>
@@ -68,39 +130,6 @@ export function Footer({ onNavigate }: FooterProps) {
                   Browse Industries
                 </button>
               </li>
-              <li>
-                <button
-                  type="button"
-                  data-ocid="footer.subject_gateway.link"
-                  onClick={() => onNavigate({ view: "subject-gateway" })}
-                  className={linkClass}
-                >
-                  Subject Gateway
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  data-ocid="footer.assessment.link"
-                  onClick={() => onNavigate({ view: "assessment" })}
-                  className={linkClass}
-                >
-                  Find My Fit
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Sectors */}
-          <div>
-            <h4 className="font-semibold text-white mb-3 text-sm uppercase tracking-wide">
-              Sectors
-            </h4>
-            <ul className="space-y-2 text-sm text-white/70">
-              <li>Primary Industries</li>
-              <li>Secondary Industries</li>
-              <li>Services Sector</li>
-              <li>Gig Economy</li>
             </ul>
           </div>
 
@@ -164,7 +193,7 @@ export function Footer({ onNavigate }: FooterProps) {
 
         <div className="border-t border-white/20 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-sm text-white/60">
-            © {year}. Built with ❤️ using{" "}
+            \u00a9 {year}. Built with \u2764 using{" "}
             <a
               href={caffeineUrl}
               target="_blank"
@@ -175,7 +204,8 @@ export function Footer({ onNavigate }: FooterProps) {
             </a>
           </p>
           <p className="text-xs text-white/40">
-            For educational and awareness purposes only.
+            For educational and awareness purposes only. No data is stored or
+            shared.
           </p>
         </div>
       </div>

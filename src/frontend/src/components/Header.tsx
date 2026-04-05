@@ -1,7 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { MapPin, Menu, Search, X } from "lucide-react";
+import {
+  BookOpen,
+  ChevronRight,
+  Compass,
+  Menu,
+  Target,
+  TrendingUp,
+  Trophy,
+  X,
+  Zap,
+} from "lucide-react";
 import { useState } from "react";
+import { useSession } from "../context/SessionContext";
 import type { NavState } from "../types/navigation";
 
 interface HeaderProps {
@@ -9,116 +19,193 @@ interface HeaderProps {
   currentView: string;
 }
 
-export function Header({ onNavigate, currentView }: HeaderProps) {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
+type Engine = {
+  id: NavState["view"];
+  label: string;
+  shortLabel: string;
+  icon: React.ReactNode;
+  color: string;
+  requiresProfile: boolean;
+};
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      onNavigate({ view: "search", searchQuery: searchQuery.trim() });
-      setSearchOpen(false);
+const engines: Engine[] = [
+  {
+    id: "identity",
+    label: "Identity",
+    shortLabel: "1",
+    icon: <Target className="w-3.5 h-3.5" />,
+    color: "oklch(0.55 0.18 260)",
+    requiresProfile: false,
+  },
+  {
+    id: "opportunity",
+    label: "Opportunity",
+    shortLabel: "2",
+    icon: <Compass className="w-3.5 h-3.5" />,
+    color: "oklch(0.52 0.15 162)",
+    requiresProfile: true,
+  },
+  {
+    id: "decision",
+    label: "Decision",
+    shortLabel: "3",
+    icon: <TrendingUp className="w-3.5 h-3.5" />,
+    color: "oklch(0.55 0.12 200)",
+    requiresProfile: true,
+  },
+  {
+    id: "execution",
+    label: "Execution",
+    shortLabel: "4",
+    icon: <Zap className="w-3.5 h-3.5" />,
+    color: "oklch(0.58 0.14 55)",
+    requiresProfile: true,
+  },
+  {
+    id: "wow",
+    label: "WOW",
+    shortLabel: "5",
+    icon: <Trophy className="w-3.5 h-3.5" />,
+    color: "oklch(0.58 0.2 30)",
+    requiresProfile: true,
+  },
+];
+
+const engineViews = new Set(engines.map((e) => e.id));
+
+export function Header({ onNavigate, currentView }: HeaderProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { session } = useSession();
+
+  const hasProfile = !!session.studentProfile;
+  const hasResults = !!session.results;
+
+  const isEngineView = engineViews.has(currentView as NavState["view"]);
+
+  const handleEngineClick = (engine: Engine) => {
+    if (engine.requiresProfile && !hasProfile) {
+      onNavigate({ view: "identity" });
+    } else if (["execution", "wow"].includes(engine.id) && !hasResults) {
+      onNavigate({ view: hasProfile ? "opportunity" : "identity" });
+    } else {
+      onNavigate({ view: engine.id });
     }
+    setMenuOpen(false);
   };
 
-  const navLinks: { label: string; view: NavState["view"] }[] = [
-    { label: "Home", view: "home" },
-    { label: "Browse Industries", view: "category" },
-    { label: "Subject Gateway", view: "subject-gateway" },
-    { label: "Find My Fit", view: "assessment" },
-  ];
+  const getStepState = (
+    engine: Engine,
+  ): "locked" | "available" | "active" | "completed" => {
+    if (currentView === engine.id) return "active";
+    if (engine.id === "identity") return hasProfile ? "completed" : "available";
+    if (["opportunity", "decision"].includes(engine.id)) {
+      if (!hasProfile) return "locked";
+      if (hasResults) return "completed";
+      return "available";
+    }
+    if (["execution", "wow"].includes(engine.id)) {
+      if (!hasResults) return "locked";
+      return "available";
+    }
+    return "locked";
+  };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
+    <header className="sticky top-0 z-50 bg-white border-b border-border shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <button
             type="button"
             data-ocid="header.link"
-            onClick={() => onNavigate({ view: "home" })}
-            className="flex items-center gap-2 group"
+            onClick={() => onNavigate({ view: "identity" })}
+            className="flex items-center gap-2.5 shrink-0 group"
           >
-            <div className="w-9 h-9 rounded-lg bg-[oklch(0.30_0.12_255)] flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-5 h-5 text-white" />
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: "oklch(0.28 0.11 255)" }}
+            >
+              <Target className="w-4 h-4 text-white" />
             </div>
             <div className="leading-tight">
-              <div className="text-sm font-bold text-[oklch(0.30_0.12_255)] tracking-tight">
+              <div
+                className="text-sm font-bold font-display tracking-tight"
+                style={{ color: "oklch(0.28 0.11 255)" }}
+              >
                 CareerLens
               </div>
               <div className="text-xs text-muted-foreground">India</div>
             </div>
           </button>
 
-          {/* Desktop Nav */}
+          {/* Engine Steps — Desktop */}
           <nav
             className="hidden md:flex items-center gap-1"
-            aria-label="Main navigation"
+            aria-label="Engine navigation"
           >
-            {navLinks.map((link) => (
-              <button
-                key={link.view}
-                type="button"
-                data-ocid="header.link"
-                onClick={() => onNavigate({ view: link.view })}
-                className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  currentView === link.view
-                    ? "text-[oklch(0.30_0.12_255)] border-b-2 border-[oklch(0.30_0.12_255)] rounded-none"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                } ${
-                  link.view === "assessment"
-                    ? currentView === "assessment"
-                      ? ""
-                      : "text-[oklch(0.45_0.13_195)] hover:text-[oklch(0.45_0.13_195)] hover:bg-[oklch(0.94_0.025_195)]"
-                    : ""
-                }`}
-              >
-                {link.label}
-              </button>
-            ))}
+            {engines.map((engine, idx) => {
+              const state = getStepState(engine);
+              const isLocked = state === "locked";
+              const isActive = state === "active";
+              const isCompleted = state === "completed";
+              return (
+                <div key={engine.id} className="flex items-center">
+                  <button
+                    type="button"
+                    data-ocid={`header.${engine.id}.link`}
+                    onClick={() => handleEngineClick(engine)}
+                    disabled={isLocked}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                      isActive
+                        ? "text-white shadow-sm"
+                        : isCompleted
+                          ? "text-white opacity-80 hover:opacity-100"
+                          : isLocked
+                            ? "text-muted-foreground bg-muted cursor-not-allowed"
+                            : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    }`}
+                    style={
+                      isActive || isCompleted
+                        ? { background: engine.color }
+                        : {}
+                    }
+                  >
+                    {engine.icon}
+                    <span>{engine.label}</span>
+                    {isCompleted && !isActive && (
+                      <span className="w-3.5 h-3.5 rounded-full bg-white/30 flex items-center justify-center text-[9px]">
+                        ✓
+                      </span>
+                    )}
+                  </button>
+                  {idx < engines.length - 1 && (
+                    <ChevronRight className="w-3 h-3 text-muted-foreground mx-0.5 shrink-0" />
+                  )}
+                </div>
+              );
+            })}
           </nav>
 
-          {/* Search */}
-          <div className="flex items-center gap-2">
-            {searchOpen ? (
-              <form onSubmit={handleSearch} className="flex items-center gap-2">
-                <Input
-                  data-ocid="header.search_input"
-                  autoFocus
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search careers..."
-                  className="w-40 sm:w-56 h-8 text-sm"
-                />
-                <Button type="submit" size="sm" className="h-8 px-3">
-                  Go
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 px-2"
-                  onClick={() => setSearchOpen(false)}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </form>
-            ) : (
-              <Button
-                data-ocid="header.button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setSearchOpen(true)}
-                className="h-8 px-2 text-muted-foreground hover:text-foreground"
-              >
-                <Search className="w-4 h-4" />
-              </Button>
-            )}
+          {/* Secondary links + mobile menu */}
+          <div className="flex items-center gap-2 shrink-0">
+            <Button
+              variant="ghost"
+              size="sm"
+              data-ocid="header.explore.link"
+              onClick={() => {
+                onNavigate({ view: "explore" });
+                setMenuOpen(false);
+              }}
+              className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground h-8 px-3"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              Explore
+            </Button>
             <button
               type="button"
-              className="md:hidden p-2 text-muted-foreground"
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground rounded-md"
               onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
             >
               {menuOpen ? (
                 <X className="w-5 h-5" />
@@ -129,22 +216,90 @@ export function Header({ onNavigate, currentView }: HeaderProps) {
           </div>
         </div>
 
-        {/* Mobile Nav */}
+        {/* Engine steps — Mobile (visible in header when on engine view) */}
+        {isEngineView && (
+          <div className="md:hidden flex items-center gap-1 pb-2 overflow-x-auto scrollbar-hide">
+            {engines.map((engine, idx) => {
+              const state = getStepState(engine);
+              const isActive = state === "active";
+              const isCompleted = state === "completed";
+              const isLocked = state === "locked";
+              return (
+                <div key={engine.id} className="flex items-center shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleEngineClick(engine)}
+                    disabled={isLocked}
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${
+                      isActive
+                        ? "text-white"
+                        : isCompleted
+                          ? "text-white opacity-75"
+                          : isLocked
+                            ? "text-muted-foreground bg-muted cursor-not-allowed"
+                            : "text-muted-foreground"
+                    }`}
+                    style={
+                      isActive || isCompleted
+                        ? { background: engine.color }
+                        : {}
+                    }
+                  >
+                    {engine.icon}
+                    <span>{engine.label}</span>
+                  </button>
+                  {idx < engines.length - 1 && (
+                    <ChevronRight className="w-3 h-3 text-muted-foreground mx-0.5" />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Mobile nav drawer */}
         {menuOpen && (
-          <div className="md:hidden border-t border-border py-2">
-            {navLinks.map((link) => (
+          <div className="md:hidden border-t border-border py-3 space-y-1">
+            {engines.map((engine) => {
+              const state = getStepState(engine);
+              const isLocked = state === "locked";
+              return (
+                <button
+                  key={engine.id}
+                  type="button"
+                  disabled={isLocked}
+                  onClick={() => handleEngineClick(engine)}
+                  className={`flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    isLocked
+                      ? "text-muted-foreground cursor-not-allowed"
+                      : "text-foreground hover:bg-secondary"
+                  }`}
+                >
+                  <span style={!isLocked ? { color: engine.color } : {}}>
+                    {engine.icon}
+                  </span>
+                  {engine.label}
+                  {isLocked && (
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      Complete Identity first
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+            <div className="border-t border-border pt-2 mt-2">
               <button
-                key={link.view}
                 type="button"
                 onClick={() => {
-                  onNavigate({ view: link.view });
+                  onNavigate({ view: "explore" });
                   setMenuOpen(false);
                 }}
-                className="block w-full text-left px-4 py-2 text-sm text-foreground hover:bg-secondary"
+                className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
               >
-                {link.label}
+                <BookOpen className="w-4 h-4" />
+                Explore Careers
               </button>
-            ))}
+            </div>
           </div>
         )}
       </div>

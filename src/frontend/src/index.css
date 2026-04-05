@@ -1,4 +1,24 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap");
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -6,67 +26,80 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
-    /* Warm off-white background */
-    --background: 0.975 0.006 60;
-    --foreground: 0.15 0.02 240;
+    /* Navy-slate backgrounds */
+    --background: 0.975 0.004 240;
+    --foreground: 0.15 0.025 235;
 
-    /* Pure white cards */
+    /* Pure white cards with warm tint */
     --card: 1 0 0;
-    --card-foreground: 0.15 0.02 240;
+    --card-foreground: 0.15 0.025 235;
     --popover: 1 0 0;
-    --popover-foreground: 0.15 0.02 240;
+    --popover-foreground: 0.15 0.025 235;
 
-    /* Deep navy-indigo primary */
-    --primary: 0.3 0.12 255;
-    --primary-foreground: 1 0 0;
+    /* Deep navy primary */
+    --primary: 0.28 0.11 255;
+    --primary-foreground: 0.99 0 0;
 
-    /* Light secondary */
-    --secondary: 0.95 0.008 60;
-    --secondary-foreground: 0.3 0.12 255;
+    /* Soft slate secondary */
+    --secondary: 0.94 0.006 240;
+    --secondary-foreground: 0.28 0.11 255;
 
-    --muted: 0.94 0.006 60;
-    --muted-foreground: 0.5 0.02 240;
+    --muted: 0.93 0.005 240;
+    --muted-foreground: 0.5 0.018 240;
 
-    /* Vibrant teal accent */
-    --accent: 0.55 0.12 195;
-    --accent-foreground: 1 0 0;
+    /* Emerald accent */
+    --accent: 0.52 0.15 162;
+    --accent-foreground: 0.99 0 0;
 
-    --destructive: 0.577 0.245 27.325;
-    --destructive-foreground: 1 0 0;
+    --destructive: 0.57 0.22 29;
+    --destructive-foreground: 0.99 0 0;
 
-    --border: 0.9 0.008 60;
-    --input: 0.88 0.008 60;
-    --ring: 0.55 0.12 195;
+    --border: 0.89 0.006 240;
+    --input: 0.87 0.006 240;
+    --ring: 0.52 0.15 162;
+
+    /* Engine color palette */
+    --engine-identity: 0.55 0.18 260; /* violet */
+    --engine-opportunity: 0.52 0.15 162; /* emerald */
+    --engine-decision: 0.55 0.12 200; /* teal */
+    --engine-execution: 0.58 0.14 55; /* amber */
+    --engine-wow: 0.58 0.2 30; /* orange */
 
     /* Sector color tokens */
-    --sector-primary-text: 0.45 0.13 145;
-    --sector-primary-bg: 0.95 0.03 145;
-    --sector-secondary-text: 0.45 0.1 220;
-    --sector-secondary-bg: 0.94 0.025 220;
-    --sector-services-text: 0.5 0.12 55;
-    --sector-services-bg: 0.96 0.04 55;
+    --sector-tech: 0.55 0.16 265;
+    --sector-tech-bg: 0.95 0.02 265;
+    --sector-health: 0.52 0.15 162;
+    --sector-health-bg: 0.95 0.03 162;
+    --sector-finance: 0.58 0.14 55;
+    --sector-finance-bg: 0.97 0.04 55;
+    --sector-law: 0.5 0.12 290;
+    --sector-law-bg: 0.96 0.02 290;
 
-    /* Dark accent zone tokens */
-    --dark-navy: 0.18 0.08 255;
-    --dark-navy-mid: 0.25 0.1 240;
-    --dark-teal: 0.3 0.1 195;
+    /* Score band colors */
+    --score-strong: 0.52 0.15 162;
+    --score-good: 0.58 0.14 55;
+    --score-stretch: 0.57 0.22 29;
 
-    --chart-1: 0.646 0.222 41.116;
-    --chart-2: 0.6 0.118 184.704;
-    --chart-3: 0.398 0.07 227.392;
-    --chart-4: 0.828 0.189 84.429;
-    --chart-5: 0.769 0.188 70.08;
+    /* Dark hero */
+    --hero-bg: 0.17 0.07 255;
+    --hero-mid: 0.22 0.09 250;
+
+    --chart-1: 0.55 0.16 265;
+    --chart-2: 0.52 0.15 162;
+    --chart-3: 0.58 0.14 55;
+    --chart-4: 0.57 0.22 29;
+    --chart-5: 0.55 0.12 200;
 
     --sidebar: 1 0 0;
-    --sidebar-foreground: 0.15 0.02 240;
-    --sidebar-primary: 0.3 0.12 255;
-    --sidebar-primary-foreground: 1 0 0;
-    --sidebar-accent: 0.95 0.008 60;
-    --sidebar-accent-foreground: 0.3 0.12 255;
-    --sidebar-border: 0.9 0.008 60;
-    --sidebar-ring: 0.55 0.12 195;
+    --sidebar-foreground: 0.15 0.025 235;
+    --sidebar-primary: 0.28 0.11 255;
+    --sidebar-primary-foreground: 0.99 0 0;
+    --sidebar-accent: 0.94 0.006 240;
+    --sidebar-accent-foreground: 0.28 0.11 255;
+    --sidebar-border: 0.89 0.006 240;
+    --sidebar-ring: 0.52 0.15 162;
   }
 
   * {
@@ -76,12 +109,30 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1,
   h2,
-  h3 {
-    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  h3,
+  h4 {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
     font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h5,
+  h6 {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-weight: 600;
+  }
+
+  .font-display {
+    font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  }
+
+  .font-instrument-italic {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
   }
 }

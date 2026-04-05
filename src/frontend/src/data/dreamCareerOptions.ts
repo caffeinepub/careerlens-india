@@ -37,7 +37,7 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
         name: "Cloud / DevOps Engineer",
         hasProfile: false,
       },
-      { id: "ux-design", name: "UX / UI Designer", hasProfile: false },
+      { id: "ux-ui-designer", name: "UX / UI Designer", hasProfile: false },
       { id: "blockchain", name: "Blockchain Developer", hasProfile: false },
       { id: "game-development", name: "Game Developer", hasProfile: false },
     ],
@@ -46,12 +46,16 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
     sector: "Healthcare & Medicine",
     emoji: "🏥",
     careers: [
-      { id: "doctor-mbbs", name: "Doctor (MBBS / MD)", hasProfile: false },
+      { id: "doctor-mbbs", name: "Doctor (MBBS / MD)", hasProfile: true },
       { id: "dentist", name: "Dentist (BDS)", hasProfile: false },
-      { id: "pharmacist", name: "Pharmacist", hasProfile: false },
-      { id: "physiotherapist", name: "Physiotherapist", hasProfile: false },
-      { id: "nurse", name: "Nurse (BSc / GNM)", hasProfile: false },
-      { id: "medical-research", name: "Medical Researcher", hasProfile: false },
+      { id: "pharmacist", name: "Pharmacist", hasProfile: true },
+      { id: "physiotherapist", name: "Physiotherapist", hasProfile: true },
+      { id: "nurse-bsc", name: "Nurse (BSc / GNM)", hasProfile: true },
+      {
+        id: "medical-researcher",
+        name: "Medical Researcher",
+        hasProfile: true,
+      },
       {
         id: "public-health",
         name: "Public Health Specialist",
@@ -71,15 +75,15 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
       {
         id: "chartered-accountant",
         name: "Chartered Accountant (CA)",
-        hasProfile: false,
+        hasProfile: true,
       },
       {
-        id: "investment-banking",
+        id: "investment-banker",
         name: "Investment Banker",
-        hasProfile: false,
+        hasProfile: true,
       },
-      { id: "financial-analyst", name: "Financial Analyst", hasProfile: false },
-      { id: "actuarial-science", name: "Actuary", hasProfile: false },
+      { id: "financial-analyst", name: "Financial Analyst", hasProfile: true },
+      { id: "actuary", name: "Actuary", hasProfile: true },
       { id: "cfa", name: "CFA / Portfolio Manager", hasProfile: false },
       {
         id: "banking-officer",
@@ -97,14 +101,22 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
     sector: "Law & Governance",
     emoji: "⚖️",
     careers: [
-      { id: "lawyer-advocate", name: "Lawyer / Advocate", hasProfile: false },
+      {
+        id: "lawyer-advocate",
+        name: "Advocate / Corporate Lawyer",
+        hasProfile: false,
+      },
       {
         id: "ias-ips-ifs",
-        name: "IAS / IPS / IFS (Civil Services)",
+        name: "IAS / IPS / IFS Officer",
+        hasProfile: false,
+      },
+      {
+        id: "public-policy-analyst",
+        name: "Public Policy Analyst",
         hasProfile: false,
       },
       { id: "judiciary", name: "Judge / Judicial Officer", hasProfile: false },
-      { id: "public-policy", name: "Public Policy Analyst", hasProfile: false },
       { id: "corporate-law", name: "Corporate Lawyer", hasProfile: false },
       {
         id: "human-rights-law",
@@ -114,18 +126,18 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
     ],
   },
   {
-    sector: "Engineering & Core Sciences",
-    emoji: "⚙️",
+    sector: "Engineering & Infrastructure",
+    emoji: "🏗️",
     careers: [
-      { id: "civil-engineering", name: "Civil Engineer", hasProfile: false },
+      { id: "civil-engineer", name: "Civil Engineer", hasProfile: false },
       {
-        id: "mechanical-engineering",
+        id: "mechanical-engineer",
         name: "Mechanical Engineer",
         hasProfile: false,
       },
       {
-        id: "electrical-engineering",
-        name: "Electrical Engineer",
+        id: "electrical-engineer",
+        name: "Electrical / Electronics Engineer",
         hasProfile: false,
       },
       {
@@ -146,11 +158,16 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
     ],
   },
   {
-    sector: "Design & Creative Arts",
+    sector: "Design & Creative",
     emoji: "🎨",
     careers: [
-      { id: "graphic-design", name: "Graphic Designer", hasProfile: false },
-      { id: "architecture", name: "Architect", hasProfile: false },
+      {
+        id: "graphic-designer",
+        name: "Graphic / Visual Designer",
+        hasProfile: false,
+      },
+      { id: "architect", name: "Architect", hasProfile: false },
+      { id: "ux-ui-designer", name: "UX / UI Designer", hasProfile: false },
       { id: "fashion-design", name: "Fashion Designer", hasProfile: false },
       { id: "animation-vfx", name: "Animator / VFX Artist", hasProfile: false },
       {
@@ -193,7 +210,12 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
     sector: "Education & Social Impact",
     emoji: "📚",
     careers: [
-      { id: "teacher", name: "School Teacher", hasProfile: false },
+      { id: "teacher-educator", name: "Teacher / Educator", hasProfile: false },
+      {
+        id: "edtech-professional",
+        name: "EdTech Professional",
+        hasProfile: false,
+      },
       {
         id: "professor",
         name: "University Professor / Academic",
@@ -205,11 +227,6 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
         hasProfile: false,
       },
       {
-        id: "edtech",
-        name: "EdTech Entrepreneur / Educator",
-        hasProfile: false,
-      },
-      {
         id: "ngo-development",
         name: "NGO / Development Sector Professional",
         hasProfile: false,
@@ -218,9 +235,15 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
     ],
   },
   {
-    sector: "Commerce & Business",
-    emoji: "🏢",
+    sector: "Management & Business",
+    emoji: "💼",
     careers: [
+      {
+        id: "mba-business-manager",
+        name: "Business Manager (MBA)",
+        hasProfile: false,
+      },
+      { id: "hr-professional", name: "HR Professional", hasProfile: false },
       {
         id: "entrepreneur",
         name: "Entrepreneur / Startup Founder",
@@ -229,11 +252,6 @@ export const dreamCareerGroups: DreamCareerGroup[] = [
       {
         id: "management-consultant",
         name: "Management Consultant",
-        hasProfile: false,
-      },
-      {
-        id: "hr-professional",
-        name: "HR / People & Culture Manager",
         hasProfile: false,
       },
       {

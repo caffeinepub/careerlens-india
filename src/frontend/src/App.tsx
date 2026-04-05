@@ -1,20 +1,27 @@
+import { Toaster } from "@/components/ui/sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import { AssessmentPage } from "./pages/AssessmentPage";
+import { SessionProvider } from "./context/SessionContext";
 import { CategoryPage } from "./pages/CategoryPage";
-import { HomePage } from "./pages/HomePage";
+import { ExplorePage } from "./pages/ExplorePage";
 import { LegalPage } from "./pages/LegalPage";
 import { SearchPage } from "./pages/SearchPage";
-import { StudentProfilePage } from "./pages/StudentProfilePage";
-import { SubjectGatewayPage } from "./pages/SubjectGatewayPage";
 import { SubtypeDetailPage } from "./pages/SubtypeDetailPage";
 import { TypePage } from "./pages/TypePage";
+import { DecisionEngine } from "./pages/engines/DecisionEngine";
+import { ExecutionEngine } from "./pages/engines/ExecutionEngine";
+import { IdentityEngine } from "./pages/engines/IdentityEngine";
+import { OpportunityEngine } from "./pages/engines/OpportunityEngine";
+import { WOWScreen } from "./pages/engines/WOWScreen";
 import type { NavState } from "./types/navigation";
 
-const initialState: NavState = { view: "home" };
+const queryClient = new QueryClient();
 
-export default function App() {
+const initialState: NavState = { view: "identity" };
+
+function AppContent() {
   const [nav, setNav] = useState<NavState>(initialState);
 
   const handleNavigate = (state: NavState) => {
@@ -24,8 +31,28 @@ export default function App() {
 
   const renderPage = () => {
     switch (nav.view) {
-      case "home":
-        return <HomePage onNavigate={handleNavigate} />;
+      case "identity":
+        return <IdentityEngine onNavigate={handleNavigate} />;
+
+      case "opportunity":
+        return <OpportunityEngine onNavigate={handleNavigate} />;
+
+      case "decision":
+        return (
+          <DecisionEngine
+            onNavigate={handleNavigate}
+            selectedCareer={nav.selectedCareer}
+          />
+        );
+
+      case "execution":
+        return <ExecutionEngine onNavigate={handleNavigate} />;
+
+      case "wow":
+        return <WOWScreen onNavigate={handleNavigate} />;
+
+      case "explore":
+        return <ExplorePage onNavigate={handleNavigate} />;
 
       case "category":
         return (
@@ -46,7 +73,7 @@ export default function App() {
             onNavigate={handleNavigate}
           />
         ) : (
-          <HomePage onNavigate={handleNavigate} />
+          <ExplorePage onNavigate={handleNavigate} />
         );
 
       case "subtype":
@@ -61,7 +88,7 @@ export default function App() {
             onNavigate={handleNavigate}
           />
         ) : (
-          <HomePage onNavigate={handleNavigate} />
+          <ExplorePage onNavigate={handleNavigate} />
         );
 
       case "search":
@@ -72,28 +99,12 @@ export default function App() {
           />
         );
 
+      // Legacy views — redirect to identity
+      case "home":
       case "student-profile":
-        return <StudentProfilePage onNavigate={handleNavigate} />;
-
       case "subject-gateway":
-        return (
-          <SubjectGatewayPage
-            onNavigate={handleNavigate}
-            grade={nav.grade}
-            stream={nav.stream}
-            selectedSubjects={nav.selectedSubjects}
-          />
-        );
-
       case "assessment":
-        return (
-          <AssessmentPage
-            onNavigate={handleNavigate}
-            initialGrade={nav.grade}
-            initialStream={nav.stream}
-            initialSubjects={nav.selectedSubjects}
-          />
-        );
+        return <IdentityEngine onNavigate={handleNavigate} />;
 
       case "legal":
         return (
@@ -104,7 +115,7 @@ export default function App() {
         );
 
       default:
-        return <HomePage onNavigate={handleNavigate} />;
+        return <IdentityEngine onNavigate={handleNavigate} />;
     }
   };
 
@@ -113,6 +124,17 @@ export default function App() {
       <Header onNavigate={handleNavigate} currentView={nav.view} />
       <div className="flex-1">{renderPage()}</div>
       <Footer onNavigate={handleNavigate} />
+      <Toaster position="top-center" richColors />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>
+        <AppContent />
+      </SessionProvider>
+    </QueryClientProvider>
   );
 }

@@ -5,8 +5,6 @@ import List "mo:core/List";
 import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
 
-
-
 actor {
   type Category = {
     id : Text;
