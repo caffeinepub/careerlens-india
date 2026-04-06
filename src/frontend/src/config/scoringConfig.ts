@@ -1,8 +1,8 @@
 export const scoringConfig = {
-  stream_weight: 0.3,
-  module_weight: 0.3,
+  stream_weight: 0.55,
+  module_weight: 0.15,
   riasec_weight: 0.2,
-  slider_weight: 0.2,
+  slider_weight: 0.1,
 };
 
 // stream → compatible career clusters
@@ -15,14 +15,7 @@ export const streamCareerAffinity: Record<string, string[]> = {
     "law",
   ],
   "science-pcb": ["healthcare", "science-research", "technology"],
-  commerce: [
-    "finance",
-    "commerce-business",
-    "law",
-    "technology",
-    "management",
-    "education",
-  ],
+  commerce: ["finance", "commerce-business", "management", "education"],
   arts: ["design-creative", "media", "education", "law"],
   vocational: ["vocational", "healthcare", "technology", "engineering"],
   undecided: [], // all clusters show
@@ -32,7 +25,7 @@ export const streamCareerAffinity: Record<string, string[]> = {
 export const adjacentClusters: Record<string, string[]> = {
   "science-pcm": ["healthcare", "design-creative", "management"],
   "science-pcb": ["engineering", "finance"],
-  commerce: ["design-creative", "media", "science-research", "law"],
+  commerce: ["design-creative", "media", "law"],
   arts: ["commerce-business", "healthcare", "management"],
   vocational: ["engineering", "design-creative"],
   undecided: [],

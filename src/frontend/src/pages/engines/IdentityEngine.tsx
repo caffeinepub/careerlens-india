@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { ChevronRight, Lightbulb, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useSession } from "../../context/SessionContext";
 import type {
@@ -23,6 +23,9 @@ import { computeDISCProfile, scoreCareers } from "../../utils/scoringEngine";
 
 interface IdentityEngineProps {
   onNavigate: (state: NavState) => void;
+  /** When true and a profile already exists in session, skip the profile form
+   *  and launch directly into the 102-question deep assessment. */
+  startDeepMode?: boolean;
 }
 
 type Step = "profile" | "quiz" | "sliders" | "deep-assessment";
@@ -60,35 +63,35 @@ const STREAM_OPTIONS = [
 const SLIDER_CONFIG = [
   {
     key: "income" as const,
-    emoji: "💰",
+    emoji: "\uD83D\uDCB0",
     label: "Income Priority",
     low: "Basic needs",
     high: "Maximum earnings",
   },
   {
     key: "passion" as const,
-    emoji: "❤️",
+    emoji: "\u2764\uFE0F",
     label: "Passion Fit",
     low: "Practical choice",
     high: "Follow my passion",
   },
   {
     key: "stability" as const,
-    emoji: "🛡️",
+    emoji: "\uD83D\uDEE1\uFE0F",
     label: "Stability",
     low: "OK with risk",
     high: "Need job security",
   },
   {
     key: "time" as const,
-    emoji: "📅",
+    emoji: "\uD83D\uDCC5",
     label: "Time to Invest",
-    low: "1–2 years max",
+    low: "1\u20132 years max",
     high: "6+ years / PhD",
   },
   {
     key: "risk" as const,
-    emoji: "🎲",
+    emoji: "\uD83C\uDFB2",
     label: "Risk Appetite",
     low: "Safe, steady",
     high: "Ambitious, high-stakes",
@@ -143,7 +146,6 @@ function getPreviewInsight(
   questions: typeof assessmentQuestions,
   answers: Record<string, string>,
 ): string {
-  // Get the first 3 answered question IDs in order
   const answeredIds = Object.keys(answers);
   const firstThreeIds = answeredIds.slice(0, 3);
   const moduleCounts: Record<string, number> = {};
@@ -153,7 +155,6 @@ function getPreviewInsight(
       moduleCounts[q.moduleId] = (moduleCounts[q.moduleId] || 0) + 1;
     }
   }
-  // Find dominant module
   let dominantModule = "";
   let maxCount = 0;
   for (const [mod, count] of Object.entries(moduleCounts)) {
@@ -184,7 +185,10 @@ function getPreviewInsight(
   }
 }
 
-export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
+export function IdentityEngine({
+  onNavigate,
+  startDeepMode = false,
+}: IdentityEngineProps) {
   const {
     session,
     setStudentProfile,
@@ -219,17 +223,36 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
 
   const maxSubjects = 8;
 
-  const initQuiz = useCallback((isDeep: boolean) => {
-    const qs = isDeep ? pickDeepQuestions() : pickMVPQuestions();
-    setQuestions(qs);
-    setAnswers({});
-    setConfidence({});
-    setCurrentQ(0);
-    setPreviewShown(false);
-    setDeepMode(isDeep);
-    setStep(isDeep ? "deep-assessment" : "quiz");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  const initQuiz = useCallback(
+    (isDeep: boolean, profileOverride?: StudentProfile) => {
+      const qs = isDeep ? pickDeepQuestions() : pickMVPQuestions();
+      setQuestions(qs);
+      setAnswers({});
+      setConfidence({});
+      setCurrentQ(0);
+      setPreviewShown(false);
+      setDeepMode(isDeep);
+      setStep(isDeep ? "deep-assessment" : "quiz");
+      if (profileOverride) {
+        setProfile(profileOverride);
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    [],
+  );
+
+  // If startDeepMode=true AND the user already has a saved profile, jump directly
+  // into the deep quiz without making them re-fill the profile form.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally runs once on mount when startDeepMode changes
+  useEffect(() => {
+    if (
+      startDeepMode &&
+      session.studentProfile?.grade &&
+      session.studentProfile?.stream
+    ) {
+      initQuiz(true, session.studentProfile);
+    }
+  }, [startDeepMode]);
 
   // Preview insight after Q3
   useEffect(() => {
@@ -383,7 +406,6 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
       setCurrentQ((q) => q + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // Quiz done — go to sliders (or directly compute for deep mode)
       if (deepMode) {
         finishAssessment();
       } else {
@@ -398,7 +420,6 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
     setModuleScores(ms);
     setStudentProfile(profile);
 
-    // if deep mode, also compute results directly
     if (deepMode) {
       setStep("sliders");
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -418,13 +439,11 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
     setSliderValues(sliders);
     setStudentProfile(profile);
 
-    // Compute module scores (for MVP mode) if not already done
     let ms = session.moduleScores;
     if (!ms && questions.length > 0) {
       ms = computeModuleScores(questions, answers, confidence);
       setModuleScores(ms);
     } else if (!ms) {
-      // Provide baseline module scores when no quiz was taken (came back to sliders)
       ms = {
         logical: 50,
         numerical: 50,
@@ -441,7 +460,6 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
       setModuleScores(ms);
     }
 
-    // Compute results
     const careers = scoreCareers(ms, sliders, profile.stream || "undecided");
     const disc = computeDISCProfile(ms, sliders);
     setResults({
@@ -472,7 +490,7 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
   const progressPct =
     questions.length > 0 ? Math.round((currentQ / questions.length) * 100) : 0;
 
-  // ─── RENDER STEPS ───
+  // \u2500\u2500\u2500 RENDER STEPS \u2500\u2500\u2500
 
   if (step === "profile") {
     return (
@@ -492,16 +510,16 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
               transition={{ duration: 0.4 }}
             >
               <Badge className="mb-4 text-white border-white/30 bg-white/10">
-                Step 1 of 5 — Identity Engine
+                Step 1 of 5 \u2014 Identity Engine
               </Badge>
               <h1 className="text-3xl sm:text-4xl font-display font-bold text-white mb-3">
-                Let’s build your{" "}
+                Let's build your{" "}
                 <em className="font-instrument-italic not-italic">
                   career profile
                 </em>
               </h1>
               <p className="text-white/70 text-base sm:text-lg">
-                3 minutes to your personalized career blueprint. We’ll ask about
+                3 minutes to your personalized career blueprint. We'll ask about
                 your grade, stream, and what matters to you.
               </p>
             </motion.div>
@@ -680,7 +698,7 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
               disabled={!canAdvanceProfile}
               className="w-full mt-3 text-sm text-muted-foreground hover:text-foreground underline-offset-2 hover:underline transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              I want the full deep assessment (102 questions) →
+              I want the full deep assessment (102 questions) \u2192
             </button>
           </motion.div>
         </section>
@@ -854,7 +872,7 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
             </h1>
             <p className="text-muted-foreground text-sm mb-8">
               These 5 sliders personalise your career ranking. There are no
-              right or wrong answers — just your priorities.
+              right or wrong answers \u2014 just your priorities.
             </p>
 
             <div className="space-y-6 mb-10" data-ocid="identity.sliders.panel">
@@ -885,7 +903,11 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
                       {[1, 2, 3, 4, 5].map((v) => (
                         <span
                           key={v}
-                          className={`text-xs ${sliders[key] === v ? "font-bold text-foreground" : "text-muted-foreground"}`}
+                          className={`text-xs ${
+                            sliders[key] === v
+                              ? "font-bold text-foreground"
+                              : "text-muted-foreground"
+                          }`}
                         >
                           {v}
                         </span>
@@ -908,7 +930,8 @@ export function IdentityEngine({ onNavigate }: IdentityEngineProps) {
             </Button>
 
             <p className="text-center text-xs text-muted-foreground mt-4">
-              Your results are computed locally — no data is stored or shared.
+              Your results are computed locally \u2014 no data is stored or
+              shared.
             </p>
           </motion.div>
         </div>

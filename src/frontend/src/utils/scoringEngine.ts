@@ -21,7 +21,7 @@ export function computeFitScore(
   sliderValues: SliderValues,
   stream: string,
 ): number {
-  // 1. Stream score (0 | 40 | 100)
+  // 1. Stream score
   const compatibleClusters = streamCareerAffinity[stream] || [];
   const adjacentClusterList = adjacentClusters[stream] || [];
   let streamScore: number;
@@ -34,9 +34,9 @@ export function computeFitScore(
     compatibleClusters.includes(career.sector) ||
     adjacentClusterList.includes(career.sector)
   ) {
-    streamScore = 40;
+    streamScore = 30; // was 40, now 30 — makes incompatible careers rank lower
   } else {
-    streamScore = 10;
+    streamScore = 0; // was 10, now 0 — hard exclusion for truly incompatible stream/career combinations
   }
 
   // 2. Module score (average of key modules for this career)

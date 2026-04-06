@@ -32,7 +32,12 @@ function AppContent() {
   const renderPage = () => {
     switch (nav.view) {
       case "identity":
-        return <IdentityEngine onNavigate={handleNavigate} />;
+        return (
+          <IdentityEngine
+            onNavigate={handleNavigate}
+            startDeepMode={nav.deepMode === true}
+          />
+        );
 
       case "opportunity":
         return <OpportunityEngine onNavigate={handleNavigate} />;

@@ -17,6 +17,7 @@ export type ViewType =
 
 export interface NavState {
   view: ViewType;
+  deepMode?: boolean;
   categoryId?: string;
   categoryName?: string;
   typeId?: string;

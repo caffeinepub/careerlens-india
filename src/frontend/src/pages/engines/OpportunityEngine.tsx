@@ -1,7 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertCircle, ArrowRight, RefreshCw, TrendingUp } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowRight,
+  BookOpen,
+  RefreshCw,
+  TrendingUp,
+} from "lucide-react";
 import { motion } from "motion/react";
 import { SourceBadge } from "../../components/SourceBadge";
 import { useSession } from "../../context/SessionContext";
@@ -15,7 +21,7 @@ interface OpportunityEngineProps {
 
 const MARKET_SIGNALS = [
   {
-    source: "NASSCOM India Tech Outlook 2025–26",
+    source: "NASSCOM India Tech Outlook 2025\u201326",
     stat: "5.4 million",
     desc: "Tech professionals employed in India",
     growth: "+9.5% YoY",
@@ -39,6 +45,19 @@ const MARKET_SIGNALS = [
     color: "oklch(0.58 0.14 55)",
   },
 ];
+
+/** Convert raw stream id to a human-readable label */
+function formatStreamLabel(stream: string): string {
+  const labels: Record<string, string> = {
+    "science-pcm": "Science PCM",
+    "science-pcb": "Science PCB",
+    commerce: "Commerce",
+    arts: "Arts & Humanities",
+    vocational: "Vocational / ITI",
+    undecided: "Not Decided",
+  };
+  return labels[stream] ?? stream.replace(/-/g, " ");
+}
 
 function CircleScore({ score, color }: { score: number; color: string }) {
   const circumference = 2 * Math.PI * 22;
@@ -82,10 +101,12 @@ function CareerCard({
   career,
   onViewDecision,
   index,
+  selectedSubjects,
 }: {
   career: ScoredCareer;
   onViewDecision: (id: string) => void;
   index: number;
+  selectedSubjects: string[];
 }) {
   const scoringMeta = careerScoringMap[career.id];
   const bandColors = {
@@ -100,6 +121,12 @@ function CareerCard({
   };
   const bandColor = bandColors[career.fitBand];
   const cardBg = bandBg[career.fitBand];
+
+  // Subject relevance matching
+  const relevantSubjects = scoringMeta?.relevantSubjects ?? [];
+  const matchedSubjects = selectedSubjects.filter((s) =>
+    relevantSubjects.some((rs) => rs.toLowerCase() === s.toLowerCase()),
+  );
 
   return (
     <motion.div
@@ -129,22 +156,40 @@ function CareerCard({
                     {career.sector}
                   </Badge>
                 </div>
-                {career.hasFullProfile === false && (
-                  <Badge variant="outline" className="text-[10px] shrink-0">
-                    Profile coming soon
-                  </Badge>
-                )}
               </div>
 
               <p className="text-xs text-muted-foreground mt-1.5 mb-2">
                 {career.reasonPhrase}
               </p>
 
+              {/* Subject match indicators */}
+              {matchedSubjects.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1.5 mb-2">
+                  <BookOpen
+                    className="w-3 h-3 shrink-0"
+                    style={{ color: "oklch(0.35 0.12 162)" }}
+                  />
+                  {matchedSubjects.map((subject) => (
+                    <span
+                      key={subject}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border"
+                      style={{
+                        background: "oklch(0.95 0.04 162)",
+                        color: "oklch(0.30 0.12 162)",
+                        borderColor: "oklch(0.87 0.07 162)",
+                      }}
+                    >
+                      {subject} \u2713
+                    </span>
+                  ))}
+                </div>
+              )}
+
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground">Entry salary</p>
                   <p className="text-sm font-bold text-foreground">
-                    \u20B9{career.salaryEntry}L\u2013{career.salaryMid}L{" "}
+                    \u20b9{career.salaryEntry}L\u2013{career.salaryMid}L{" "}
                     <span className="text-xs font-normal text-muted-foreground">
                       LPA
                     </span>
@@ -209,6 +254,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
   }
 
   const { topCareers } = results;
+  const selectedSubjects = studentProfile.selectedSubjects ?? [];
   const strongMatches = topCareers.filter((c) => c.fitBand === "strong");
   const goodMatches = topCareers.filter((c) => c.fitBand === "good");
   const stretchMatches = topCareers.filter((c) => c.fitBand === "stretch");
@@ -229,7 +275,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
       >
         <div className="max-w-3xl mx-auto">
           <Badge className="mb-3 text-white border-white/30 bg-white/10">
-            Step 2 of 5 — Opportunity Engine
+            Step 2 of 5 \u2014 Opportunity Engine
           </Badge>
           <h1 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
             Your Career Matches
@@ -239,11 +285,14 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
               Grade {studentProfile.grade}
             </Badge>
             <Badge className="bg-white/10 text-white border-white/20 text-xs">
-              {studentProfile.stream
-                .replace("-", " ")
-                .replace("science pcm", "Science PCM")
-                .replace("science pcb", "Science PCB")}
+              Your Stream: {formatStreamLabel(studentProfile.stream)}
             </Badge>
+            {selectedSubjects.length > 0 && (
+              <Badge className="bg-white/10 text-white border-white/20 text-xs">
+                {selectedSubjects.length} subject
+                {selectedSubjects.length !== 1 ? "s" : ""} matched
+              </Badge>
+            )}
             {!results.completedDeep && (
               <Badge className="bg-amber-500/20 text-amber-300 border-amber-400/30 text-xs">
                 MVP Mode
@@ -278,13 +327,14 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
               </p>
               <p className="text-xs text-amber-700">
                 Take the full 102-question assessment for deeper insights and
-                more precise matches.
+                more precise matches. Your profile is already saved \u2014 you
+                won't need to re-enter it.
               </p>
             </div>
             <Button
               size="sm"
               data-ocid="opportunity.deep_assessment.button"
-              onClick={() => onNavigate({ view: "identity" })}
+              onClick={() => onNavigate({ view: "identity", deepMode: true })}
               className="shrink-0 text-xs h-7 px-3 bg-amber-600 hover:bg-amber-700 text-white"
             >
               Go Deep
@@ -314,7 +364,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
                 {strongMatches.length !== 1 ? "s" : ""}
               </Badge>
               <span className="text-xs text-muted-foreground">
-                — These careers align closely with your profile
+                \u2014 These careers align closely with your profile
               </span>
             </div>
             <div className="space-y-3">
@@ -324,6 +374,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
                   career={c}
                   onViewDecision={handleViewDecision}
                   index={i}
+                  selectedSubjects={selectedSubjects}
                 />
               ))}
             </div>
@@ -351,7 +402,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
                 {goodMatches.length} career{goodMatches.length !== 1 ? "s" : ""}
               </Badge>
               <span className="text-xs text-muted-foreground">
-                — Solid options with some gaps to bridge
+                \u2014 Solid options with some gaps to bridge
               </span>
             </div>
             <div className="space-y-3">
@@ -361,6 +412,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
                   career={c}
                   onViewDecision={handleViewDecision}
                   index={i}
+                  selectedSubjects={selectedSubjects}
                 />
               ))}
             </div>
@@ -389,7 +441,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
                 {stretchMatches.length !== 1 ? "s" : ""}
               </Badge>
               <span className="text-xs text-muted-foreground">
-                — Ambitious choices — here’s what it takes
+                \u2014 Ambitious choices \u2014 here's what it takes
               </span>
             </div>
             <div className="space-y-3">
@@ -399,6 +451,7 @@ export function OpportunityEngine({ onNavigate }: OpportunityEngineProps) {
                   career={c}
                   onViewDecision={handleViewDecision}
                   index={i}
+                  selectedSubjects={selectedSubjects}
                 />
               ))}
             </div>

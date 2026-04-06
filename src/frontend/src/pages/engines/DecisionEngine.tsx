@@ -11,10 +11,13 @@ import {
 import {
   AlertCircle,
   ChevronDown,
+  ChevronLeft,
   ChevronUp,
   Eye,
   EyeOff,
+  Info,
   Printer,
+  TrendingUp,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -24,6 +27,10 @@ import {
   computeBridgeMatchScore,
   getBridgeSteps,
 } from "../../data/careerBridgeData";
+import {
+  careerPathwaysMap,
+  getTierFromSlider,
+} from "../../data/careerPathwaysData";
 import { careerScoringMap } from "../../data/careerScoringData";
 import type { NavState } from "../../types/navigation";
 
@@ -45,18 +52,34 @@ const DISC_LABELS = {
   C: "Conscientiousness",
 };
 
+const TIER_BUTTONS = [
+  { years: 1, label: "1 yr" },
+  { years: 2, label: "2 yrs" },
+  { years: 3, label: "3 yrs" },
+  { years: 4, label: "4\u20135 yrs" },
+  { years: 5, label: "6+ yrs" },
+  { years: 6, label: "PhD" },
+];
+
 export function DecisionEngine({
   onNavigate,
   selectedCareer: initialCareer,
 }: DecisionEngineProps) {
   const { session } = useSession();
-  const { results, studentProfile, moduleScores } = session;
+  const { results, studentProfile, moduleScores, sliderValues } = session;
 
   const [selectedId, setSelectedId] = useState(
     initialCareer || session.selectedCareer || results?.topCareers[0]?.id || "",
   );
   const [roiExpanded, setRoiExpanded] = useState(false);
   const [parentView, setParentView] = useState(false);
+
+  // Investment Window: default from slider "time" value
+  const defaultTierYears = sliderValues
+    ? getTierFromSlider(sliderValues.time)
+    : 3;
+  const [selectedTierYears, setSelectedTierYears] =
+    useState<number>(defaultTierYears);
 
   if (!results || !studentProfile) {
     return (
@@ -75,12 +98,11 @@ export function DecisionEngine({
   }
 
   const career = selectedId ? careerScoringMap[selectedId] : null;
-  const _topCareer = results.topCareers[0];
   const secondCareer = results.topCareers[1];
 
   // Bridge
   const bridgeSteps = selectedId
-    ? getBridgeSteps(selectedId, studentProfile.grade)
+    ? getBridgeSteps(selectedId, studentProfile.grade, studentProfile.stream)
     : [];
   const bridgeScore =
     selectedId && moduleScores
@@ -106,7 +128,6 @@ export function DecisionEngine({
       : null;
 
   // ROI computation (simplified)
-  const yearsToJob = career?.yearsToFirstJob || 4;
   const entryLPA = career?.salaryEntry || 6;
   const midLPA = career?.salaryMid || 15;
   const fiveYearIncome = Math.round(entryLPA * 2 + midLPA * 3);
@@ -115,16 +136,43 @@ export function DecisionEngine({
     : 0;
   const delta = fiveYearIncome - secondFiveYear;
 
+  // Investment Window — find exact tier or nearest available tier
+  const pathway = selectedId ? careerPathwaysMap[selectedId] : null;
+
+  const selectedTier = pathway?.tiers.length
+    ? (pathway.tiers.find((t) => t.years === selectedTierYears) ??
+      pathway.tiers.reduce((best, t) => {
+        const bestDiff = Math.abs(best.years - selectedTierYears);
+        const tDiff = Math.abs(t.years - selectedTierYears);
+        return tDiff < bestDiff ? t : best;
+      }, pathway.tiers[0]))
+    : undefined;
+
+  // Use selected tier values when available, otherwise fall back to career defaults
+  const displayYearsToJob = selectedTier
+    ? selectedTier.years
+    : career?.yearsToFirstJob || 4;
+
+  // Salary display — never empty
+  const displaySalaryRange = selectedTier
+    ? selectedTier.salaryRange
+    : career
+      ? `\u20b9${career.salaryEntry}L\u2013${career.salaryMid}L LPA`
+      : "See pathways below";
+
   // Education loan scenario
-  const loanAmount = Math.round(yearsToJob * 1.5); // rough estimate in Lakhs
+  const loanAmount = Math.round(displayYearsToJob * 1.5);
   const emi = Math.round(
     (((loanAmount * 100000 * 0.09) / 12) * (1.09 / 12 + 1) ** 60) /
       ((1.09 / 12 + 1) ** 60 - 1) /
       1000,
-  ); // simplified
+  );
 
   const grade = Number.parseInt(studentProfile.grade);
   const isGrade910 = grade <= 10;
+
+  // Determine which tier button should show as the "from quiz" default
+  const quizDefaultTier = defaultTierYears;
 
   return (
     <main className="min-h-screen bg-background">
@@ -137,8 +185,19 @@ export function DecisionEngine({
         }}
       >
         <div className="max-w-3xl mx-auto">
+          {/* Back button */}
+          <button
+            type="button"
+            data-ocid="decision.back.button"
+            onClick={() => onNavigate({ view: "opportunity" })}
+            className="flex items-center gap-1.5 text-white/70 hover:text-white text-xs mb-4 transition-colors"
+          >
+            <ChevronLeft className="w-3.5 h-3.5" />
+            Back to Career Matches
+          </button>
+
           <Badge className="mb-3 text-white border-white/30 bg-white/10">
-            Step 3 of 5 — Decision Engine
+            Step 3 of 5 \u2014 Decision Engine
           </Badge>
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
@@ -150,7 +209,7 @@ export function DecisionEngine({
               <p className="text-white/70 text-sm">
                 {parentView
                   ? "ROI-first view for parents and family"
-                  : "ROI analysis, bridge steps, and your DISC profile"}
+                  : "ROI analysis, investment window, bridge steps, and your DISC profile"}
               </p>
             </div>
             <div className="flex gap-2">
@@ -188,7 +247,14 @@ export function DecisionEngine({
           <span className="text-sm font-medium text-foreground shrink-0">
             Analysing career:
           </span>
-          <Select value={selectedId} onValueChange={setSelectedId}>
+          <Select
+            value={selectedId}
+            onValueChange={(val) => {
+              setSelectedId(val);
+              // Reset to quiz default tier when switching careers
+              setSelectedTierYears(defaultTierYears);
+            }}
+          >
             <SelectTrigger
               data-ocid="decision.career.select"
               className="w-auto min-w-[200px] h-9"
@@ -198,7 +264,7 @@ export function DecisionEngine({
             <SelectContent>
               {results.topCareers.map((c) => (
                 <SelectItem key={c.id} value={c.id}>
-                  {c.name} — {c.fitScore}% match
+                  {c.name} \u2014 {c.fitScore}% match
                 </SelectItem>
               ))}
             </SelectContent>
@@ -207,7 +273,72 @@ export function DecisionEngine({
 
         {career && (
           <>
-            {/* Simple ROI Summary */}
+            {/* Parent View: Key facts panel — shown first when in parent mode */}
+            {parentView && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                data-ocid="decision.parent_facts.card"
+              >
+                <Card
+                  className="border shadow-xs"
+                  style={{ background: "oklch(0.97 0.015 255)" }}
+                >
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base text-foreground">
+                      Key facts for your family
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2 text-sm">
+                        <span
+                          className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{
+                            background: "oklch(0.52 0.15 162)",
+                            marginTop: "6px",
+                          }}
+                        />
+                        <span className="text-foreground">
+                          Your child can start earning within{" "}
+                          <strong>{displayYearsToJob} years</strong> after Grade
+                          12
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm">
+                        <span
+                          className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{
+                            background: "oklch(0.52 0.15 162)",
+                            marginTop: "6px",
+                          }}
+                        />
+                        <span className="text-foreground">
+                          Entry salary range:{" "}
+                          <strong>{displaySalaryRange}</strong>
+                        </span>
+                      </li>
+                      <li className="flex items-start gap-2 text-sm">
+                        <span
+                          className="mt-0.5 w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{
+                            background: "oklch(0.52 0.15 162)",
+                            marginTop: "6px",
+                          }}
+                        />
+                        <span className="text-foreground">
+                          Education cost estimate is available in the Investment
+                          Window below \u2014 select the years of education your
+                          family can support
+                        </span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* ROI Summary */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -222,36 +353,39 @@ export function DecisionEngine({
                 >
                   <CardTitle className="text-white text-base">
                     {parentView
-                      ? `Investment outlook for ${career.name}`
-                      : `Your ROI — ${career.name}`}
+                      ? `Investment Summary for ${career.name}`
+                      : `Your ROI \u2014 ${career.name}`}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-5">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 mb-4">
+                    {/* Stat 1: Years to earn */}
                     <div>
                       <p className="text-xs text-muted-foreground mb-1">
                         You start earning in
                       </p>
                       <p className="text-2xl font-display font-bold text-foreground">
-                        {yearsToJob} years
+                        {displayYearsToJob}{" "}
+                        <span className="text-base font-normal">yrs</span>
                       </p>
                       <p className="text-xs text-muted-foreground">
                         after Grade 12
                       </p>
                     </div>
+                    {/* Stat 2: Entry Salary Range */}
                     <div>
                       <p className="text-xs text-muted-foreground mb-1">
-                        {parentView
-                          ? "5-year earning potential"
-                          : "Earnings in first 5 years"}
+                        Entry Salary Range
                       </p>
-                      <p className="text-2xl font-display font-bold text-foreground">
-                        ₹{fiveYearIncome}L
+                      <p
+                        className="text-xl font-display font-bold"
+                        style={{ color: "oklch(0.35 0.12 162)" }}
+                      >
+                        {displaySalaryRange}
                       </p>
-                      <p className="text-xs text-muted-foreground">
-                        cumulative estimate
-                      </p>
+                      <p className="text-xs text-muted-foreground">per year</p>
                     </div>
+                    {/* Stat 3: vs 2nd choice delta */}
                     {secondCareer && delta > 0 && (
                       <div>
                         <p className="text-xs text-muted-foreground mb-1">
@@ -263,7 +397,7 @@ export function DecisionEngine({
                           className="text-2xl font-display font-bold"
                           style={{ color: "oklch(0.52 0.15 162)" }}
                         >
-                          +\u20B9{delta}L
+                          +\u20b9{delta}L
                         </p>
                         <p className="text-xs text-muted-foreground">
                           more over 5 years
@@ -297,6 +431,24 @@ export function DecisionEngine({
                       animate={{ opacity: 1, height: "auto" }}
                       className="mt-4 space-y-4"
                     >
+                      {/* 5-year cumulative earnings */}
+                      <div
+                        className="rounded-lg p-3 border"
+                        style={{ background: "oklch(0.97 0.007 255)" }}
+                      >
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {parentView
+                            ? "5-year earning potential"
+                            : "Earnings in first 5 years"}
+                        </p>
+                        <p className="text-xl font-display font-bold text-foreground">
+                          \u20b9{fiveYearIncome}L
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          cumulative estimate
+                        </p>
+                      </div>
+
                       {/* Year-by-year table */}
                       <div>
                         <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
@@ -363,7 +515,7 @@ export function DecisionEngine({
                                     {row.role}
                                   </td>
                                   <td className="py-1.5 text-right font-semibold text-foreground">
-                                    ₹{row.lpa}L
+                                    \u20b9{row.lpa}L
                                   </td>
                                 </tr>
                               ))}
@@ -384,11 +536,11 @@ export function DecisionEngine({
                               Education Loan Scenario
                             </h4>
                             <p className="text-xs text-muted-foreground">
-                              If you borrow <strong>\u20B9{loanAmount}L</strong>{" "}
+                              If you borrow <strong>\u20b9{loanAmount}L</strong>{" "}
                               at <strong>9% p.a.</strong> for 5 years:
                             </p>
                             <p className="text-sm font-semibold text-foreground mt-1.5">
-                              EMI ≈ \u20B9{emi},000/month
+                              EMI \u2248 \u20b9{emi},000/month
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">
                               Loan paid off by Year{" "}
@@ -407,11 +559,190 @@ export function DecisionEngine({
               </Card>
             </motion.div>
 
+            {/* Investment Window \u2014 Time-to-Career Pathways */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08 }}
+            >
+              <Card className="border shadow-xs overflow-hidden">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp
+                      className="w-4 h-4"
+                      style={{ color: "oklch(0.52 0.15 162)" }}
+                    />
+                    <CardTitle className="text-base">
+                      Investment Window
+                    </CardTitle>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    How many years can you invest in education right now?
+                  </p>
+                  {/* Hint: which tier is pre-selected from the quiz */}
+                  <div className="flex items-start gap-1.5 mt-1.5 p-2 rounded-lg bg-secondary/60 border border-border">
+                    <Info className="w-3 h-3 text-muted-foreground shrink-0 mt-0.5" />
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">
+                      <span className="font-semibold text-foreground">
+                        {TIER_BUTTONS.find((b) => b.years === quizDefaultTier)
+                          ?.label ?? `${quizDefaultTier} yr`}
+                      </span>{" "}
+                      is pre-selected based on your Time preference from the
+                      quiz. Change anytime to compare pathways.
+                    </p>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {/* Tier buttons */}
+                  <div
+                    className="flex flex-wrap gap-2 mb-4"
+                    data-ocid="decision.investment_window.section"
+                  >
+                    {TIER_BUTTONS.map((btn) => {
+                      const isSelected = selectedTierYears === btn.years;
+                      const isDefault = btn.years === quizDefaultTier;
+                      const hasData = pathway?.tiers.some(
+                        (t) => t.years === btn.years,
+                      );
+                      return (
+                        <button
+                          key={btn.years}
+                          type="button"
+                          data-ocid={`decision.tier.button.${btn.years}`}
+                          onClick={() => setSelectedTierYears(btn.years)}
+                          disabled={!hasData && !pathway}
+                          className={[
+                            "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all relative",
+                            isSelected
+                              ? "text-white border-transparent"
+                              : hasData
+                                ? "bg-background border-border text-foreground hover:border-primary/60"
+                                : "bg-muted border-border text-muted-foreground opacity-40 cursor-not-allowed",
+                          ].join(" ")}
+                          style={
+                            isSelected
+                              ? { background: "oklch(0.28 0.11 255)" }
+                              : isDefault && !isSelected && hasData
+                                ? {
+                                    borderColor: "oklch(0.52 0.15 162)",
+                                    color: "oklch(0.35 0.12 162)",
+                                  }
+                                : {}
+                          }
+                        >
+                          {btn.label}
+                          {isDefault && !isSelected && (
+                            <span
+                              className="absolute -top-1.5 -right-1.5 w-2 h-2 rounded-full"
+                              style={{ background: "oklch(0.52 0.15 162)" }}
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Tier detail card */}
+                  {selectedTier ? (
+                    <motion.div
+                      key={`${selectedId}-${selectedTierYears}`}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="rounded-xl border p-4 space-y-3"
+                      style={{ background: "oklch(0.97 0.007 255)" }}
+                    >
+                      <div>
+                        <p
+                          className="text-lg font-display font-bold"
+                          style={{ color: "oklch(0.28 0.11 255)" }}
+                        >
+                          {selectedTier.qualification}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {selectedTier.route}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div>
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-medium">
+                            Entry Role
+                          </p>
+                          <p className="text-sm font-semibold text-foreground mt-0.5">
+                            {selectedTier.entryRole}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-medium">
+                            Salary Range
+                          </p>
+                          <p
+                            className="text-sm font-semibold mt-0.5"
+                            style={{ color: "oklch(0.35 0.12 162)" }}
+                          >
+                            {selectedTier.salaryRange}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-medium">
+                            Education Cost
+                          </p>
+                          <p className="text-sm font-semibold text-foreground mt-0.5">
+                            {selectedTier.educationCost}
+                          </p>
+                        </div>
+                      </div>
+
+                      <SourceBadge
+                        source="India industry estimates 2025\u201326"
+                        confidence="Medium"
+                      />
+
+                      {/* Ladder note */}
+                      <div
+                        className="rounded-lg p-3 border"
+                        style={{
+                          background: "oklch(0.96 0.03 162)",
+                          borderColor: "oklch(0.85 0.06 162)",
+                        }}
+                      >
+                        <p
+                          className="text-[10px] font-bold uppercase tracking-wide mb-1"
+                          style={{ color: "oklch(0.35 0.12 162)" }}
+                        >
+                          \u2191 Want to go further later?
+                        </p>
+                        <p
+                          className="text-xs leading-relaxed"
+                          style={{ color: "oklch(0.30 0.10 162)" }}
+                        >
+                          {selectedTier.ladderNote}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div
+                      className="rounded-xl border border-dashed p-6 text-center"
+                      data-ocid="decision.investment_window.empty_state"
+                    >
+                      <p className="text-sm text-muted-foreground">
+                        Detailed pathways coming soon for this career.
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Check the bridge steps below for actionable guidance.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </motion.div>
+
             {/* Aspiration Bridge */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.15 }}
             >
               <Card className="border shadow-xs">
                 <CardHeader className="pb-2">
@@ -440,9 +771,15 @@ export function DecisionEngine({
                   </div>
                   <p className="text-xs text-muted-foreground">
                     {isGrade910
-                      ? "Grade 9–10 action steps — building your foundation"
-                      : "Grade 11–12 action steps — final sprint to entry"}
+                      ? "Grade 9\u201310 action steps \u2014 building your foundation"
+                      : "Grade 11\u201312 action steps \u2014 final sprint to entry"}
                   </p>
+                  {parentView && (
+                    <p className="text-xs text-muted-foreground mt-1 italic">
+                      These are the concrete steps your child needs to take to
+                      enter this career successfully.
+                    </p>
+                  )}
                 </CardHeader>
                 <CardContent>
                   <div
@@ -493,9 +830,10 @@ export function DecisionEngine({
                         Mindset bridge needed
                       </p>
                       <p className="text-xs text-rose-700 mt-0.5">
-                        This career rewards a growth mindset — treating setbacks
-                        as data, not judgments. Read Carol Dweck’s Mindset (free
-                        summaries online) before your next exam season.
+                        This career rewards a growth mindset \u2014 treating
+                        setbacks as data, not judgments. Read Carol Dweck's
+                        Mindset (free summaries online) before your next exam
+                        season.
                       </p>
                     </div>
                   )}
@@ -508,7 +846,7 @@ export function DecisionEngine({
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0.22 }}
               >
                 <Card className="border shadow-xs">
                   <CardHeader className="pb-2">
@@ -516,7 +854,7 @@ export function DecisionEngine({
                       Your DISC Profile
                     </CardTitle>
                     <p className="text-xs text-muted-foreground">
-                      Derived from your assessment —{" "}
+                      Derived from your assessment \u2014{" "}
                       {results.discProfile.descriptor}
                     </p>
                   </CardHeader>

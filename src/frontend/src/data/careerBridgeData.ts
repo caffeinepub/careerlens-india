@@ -30,6 +30,10 @@ export interface CareerBridgeMeta {
   steps910: BridgeStep[];
   /** 5 concrete grade 11-12 steps */
   steps1112: BridgeStep[];
+  /** Optional: Commerce stream-specific grade 11-12 steps */
+  steps1112Commerce?: BridgeStep[];
+  /** Optional: Arts stream-specific grade 11-12 steps */
+  steps1112Arts?: BridgeStep[];
 }
 
 export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
@@ -91,6 +95,33 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
         label: "Research college options",
         detail:
           "Shortlist 5 colleges: IIT/NIT (JEE), BITS Pilani (BITSAT), VIT (VITEEE), IIIT Hyderabad (UGEE). Apply to all. Each has a different exam.",
+      },
+    ],
+    steps1112Commerce: [
+      {
+        label: "Pursue BCA (3 years) — no PCM required",
+        detail:
+          "BCA from Symbiosis, Amity, IGNOU, or state colleges is fully open to Commerce students. No JEE required. Pair with a strong GitHub portfolio. Many product companies now hire BCA graduates at par with B.Tech for roles in product, QA, and business analysis.",
+      },
+      {
+        label: "Build a portfolio of 3 projects",
+        detail:
+          "Build a web app, a simple data dashboard, and an automation script. Host on GitHub + Vercel. Project work is valued over marks in campus hiring — start in Grade 12.",
+      },
+      {
+        label: "Get certified",
+        detail:
+          "Complete Harvard CS50x (free online) and one of: Google IT Support certificate, Meta Frontend Developer certificate, or AWS Cloud Practitioner. These signal seriousness to hiring managers.",
+      },
+      {
+        label: "Start competitive coding",
+        detail:
+          "Register on LeetCode. Solve 30 easy problems before college — this prepares you for campus placement DSA rounds which most companies use regardless of degree.",
+      },
+      {
+        label: "Research your college options",
+        detail:
+          "For BCA: Symbiosis (SNAP), Amity, Christ University, IGNOU (affordable), or state government colleges. Alternatively, apply for B.Sc. Computer Science — also open to Commerce students.",
       },
     ],
   },
@@ -219,68 +250,6 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
     ],
   },
 
-  cybersecurity: {
-    keyModules: ["logical", "scientific", "numerical"],
-    keyModuleThreshold: 50,
-    alignedRiasec: ["I", "R", "C"],
-    minGritLevel: "Medium",
-    needsGrowthMindset: true,
-    steps910: [
-      {
-        label: "Start on TryHackMe",
-        detail:
-          "TryHackMe.com has beginner 'paths' (Pre-Security, Introduction to Cybersecurity) that gamify learning. Free. Complete the Pre-Security path by Grade 10.",
-      },
-      {
-        label: "Learn basic networking",
-        detail:
-          "Understand what IP addresses, DNS, HTTP, and firewalls do. Professor Messer's CompTIA Network+ YouTube series is free and excellent.",
-      },
-      {
-        label: "Choose PCM + CS stream",
-        detail:
-          "Physics, Chemistry, Maths with Computer Science is the ideal combination. Networking knowledge from CS board paper is directly applicable.",
-      },
-      {
-        label: "Understand Linux basics",
-        detail:
-          "Install Ubuntu in a VirtualBox (free). Learn basic commands: ls, cd, grep, chmod. This is used daily in cybersecurity work.",
-      },
-      {
-        label: "Read about real cybersecurity incidents",
-        detail:
-          "Follow KrebsOnSecurity.com blog. Understanding real breaches builds analytical thinking and career awareness.",
-      },
-    ],
-    steps1112: [
-      {
-        label: "Pursue CEH certification track",
-        detail:
-          "Certified Ethical Hacker (CEH) by EC-Council can be started from Grade 12. Study materials available; exam can be taken at 18. Globally recognized.",
-      },
-      {
-        label: "Target IIT Kanpur / IIIT Hyderabad",
-        detail:
-          "IIT Kanpur's C3i Hub is India's top cybersecurity research center. IIIT Hyderabad has strong info-sec research. Both require JEE for B.Tech.",
-      },
-      {
-        label: "Complete HackTheBox Starting Point",
-        detail:
-          "HackTheBox.com has beginner labs for penetration testing. Completing 10 labs demonstrates hands-on skills to any recruiter.",
-      },
-      {
-        label: "Enter bug bounty programs",
-        detail:
-          "HackerOne and Bugcrowd have beginner-friendly scopes. Finding even 1 bug and disclosing responsibly builds your resume significantly.",
-      },
-      {
-        label: "Explore CDAC PG Diploma post-graduation",
-        detail:
-          "If top IIT/NIT is not accessible, CDAC's PG Diploma in Cybersecurity is government-run, affordable, and highly respected in the industry.",
-      },
-    ],
-  },
-
   "product-management": {
     keyModules: ["verbal", "logical", "leadership"],
     keyModuleThreshold: 50,
@@ -339,6 +308,33 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
         label: "Target CAT/GMAT for MBA acceleration",
         detail:
           "IIM Ahmedabad, IIM Bangalore, and ISB placements send 20-30% of students into PM roles at top tech companies. CAT prep should start in Grade 11.",
+      },
+    ],
+    steps1112Commerce: [
+      {
+        label: "Pursue BBA / BCom + MBA track",
+        detail:
+          "BBA (Symbiosis, NMIMS, Christ University, Amity) + MBA from IIM/ISB is the most common and high-ROI PM path for Commerce students. Start preparing for CAT from Grade 11 alongside your board exams.",
+      },
+      {
+        label: "Start CAT preparation in Grade 11",
+        detail:
+          "CAT coaching (TIME, IMS, or Career Launcher) typically runs 12–18 months. Starting in Grade 11 means you appear for CAT in your final year of UG — the standard timeline for IIM admissions.",
+      },
+      {
+        label: "Build a product portfolio using business lens",
+        detail:
+          "Analyse 3 Indian products/apps (Zepto, CRED, PhonePe) from a business + user experience lens. Write a 1-page teardown each: market problem, business model, what you would improve. This is what Commerce-track PMs bring that engineers don't.",
+      },
+      {
+        label: "Learn product frameworks + business thinking",
+        detail:
+          "Study: JTBD (Jobs to be Done), Unit Economics, North Star Metric, and P&L basics. Resources: Lenny's Newsletter (free), Reforge blog, and Prasad Ramakrishnan's PM India podcast.",
+      },
+      {
+        label: "Get a startup internship in Growth or Operations",
+        detail:
+          "Commerce + PM = product roles that need business acumen. Target internships at funded startups in Growth, Business Development, or Operations. Even a 2-month internship in Class 12 summer significantly differentiates your MBA application.",
       },
     ],
   },
@@ -401,6 +397,33 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
         label: "Build an agency or freelance early",
         detail:
           "Offer social media management to 2 local businesses at low cost in Grade 12. Real client work > any certificate for entry-level roles.",
+      },
+    ],
+    steps1112Commerce: [
+      {
+        label: "Complete a Digital Marketing certification",
+        detail:
+          "Google Digital Marketing & E-commerce Certificate (free, Coursera) and HubSpot Social Media Certification are industry-recognised. Both can be completed in 2–3 months alongside board prep.",
+      },
+      {
+        label: "Build a personal brand or project",
+        detail:
+          "Create an Instagram or LinkedIn account focused on a niche you know well (finance tips, student life, local food). Grow it to 1,000 followers using organic tactics — this is your live portfolio.",
+      },
+      {
+        label: "Learn analytics tools",
+        detail:
+          "Google Analytics 4 (free course on Skillshop), Meta Business Suite, and basic Excel/Google Sheets for campaign reporting. Commerce background gives you a natural edge in interpreting business metrics.",
+      },
+      {
+        label: "Pursue BBA in Marketing or Digital Marketing",
+        detail:
+          "BBA Marketing from Symbiosis / NMIMS / Christ University + a specialisation in Digital Marketing is the standard entry path. Alternatively, mass communication degrees (MICA, Manipal) are equally valued.",
+      },
+      {
+        label: "Build a client project or freelance portfolio",
+        detail:
+          "Offer to manage social media for a local business, NGO, or school event — even for free. Real results (follower growth, ad ROI) are more compelling than any certificate for entry-level digital marketing roles.",
       },
     ],
   },
@@ -592,68 +615,6 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
     ],
   },
 
-  architect: {
-    keyModules: ["creative", "scientific", "numerical"],
-    keyModuleThreshold: 55,
-    alignedRiasec: ["A", "R", "I"],
-    minGritLevel: "Medium",
-    needsGrowthMindset: true,
-    steps910: [
-      {
-        label: "Develop drawing and spatial thinking skills",
-        detail:
-          "Architecture is equal parts visual art and engineering. Practice freehand sketching daily — 15 minutes of architectural drawings, interior spaces, or still life.",
-      },
-      {
-        label: "Study buildings around you",
-        detail:
-          "Observe why buildings feel good or bad. Study sunlight, ventilation, material textures. Architecture awareness begins with seeing the built environment differently.",
-      },
-      {
-        label: "Choose PCM stream for Grade 11",
-        detail:
-          "NATA (National Aptitude Test in Architecture) and JEE Paper 2 both require Mathematics. Physics and Chemistry are also tested. PCM is mandatory.",
-      },
-      {
-        label: "Visit architectural landmarks in your city",
-        detail:
-          "Visit government buildings, old colonial structures, modern complexes. Sketch what you see. This builds a visual library that is directly useful in design studies.",
-      },
-      {
-        label: "Explore architecture portfolios online",
-        detail:
-          "Browse ArchDaily.com and Dezeen.com. Follow Indian architects like B.V. Doshi and Charles Correa. Understanding the global design conversation inspires direction.",
-      },
-    ],
-    steps1112: [
-      {
-        label: "Prepare for NATA — Drawing test is critical",
-        detail:
-          "NATA (National Aptitude Test in Architecture) has a Drawing section (80 marks) and a PCM-based test. Drawing practice must start 6 months before the exam. CoA-accredited coaching helps.",
-      },
-      {
-        label: "Target JEE Paper 2 (B.Arch) for top NITs/SPA",
-        detail:
-          "School of Planning and Architecture (SPA) Delhi, SPA Bhopal, NIT Trichy B.Arch require JEE Main Paper 2 + NATA. SPA Delhi is India's top architecture school.",
-      },
-      {
-        label: "Build a portfolio of design work",
-        detail:
-          "Compile your best drawings, 3D models (SketchUp is free), and any design projects into a PDF portfolio. Most architecture colleges require a portfolio for admission.",
-      },
-      {
-        label: "Learn AutoCAD and SketchUp basics",
-        detail:
-          "AutoCAD is the industry standard for architectural drawing. SketchUp is free and widely used for 3D modeling. Learning both before college gives a significant head start.",
-      },
-      {
-        label: "Understand the B.Arch + M.Arch pathway",
-        detail:
-          "B.Arch is 5 years (not 4). Mandatory internship in final year. Council of Architecture (CoA) registration is required to practice independently.",
-      },
-    ],
-  },
-
   entrepreneur: {
     keyModules: ["leadership", "verbal", "creative"],
     keyModuleThreshold: 45,
@@ -776,130 +737,6 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
         label: "Research the NCLEX-RN pathway",
         detail:
           "The US nursing licensing exam (NCLEX-RN) opens international doors. Many Indian nursing colleges now prepare students for NCLEX — ask colleges about this directly.",
-      },
-    ],
-  },
-
-  pharmacist: {
-    keyModules: ["scientific", "numerical", "logical"],
-    keyModuleThreshold: 50,
-    alignedRiasec: ["I", "C", "R"],
-    minGritLevel: "Medium",
-    needsGrowthMindset: false,
-    steps910: [
-      {
-        label: "Build strong Chemistry and Biology fundamentals",
-        detail:
-          "D.Pharm and B.Pharm entrance exams test PCB concepts directly. Chemistry is the most critical subject — focus on organic chemistry and chemical reactions.",
-      },
-      {
-        label: "Visit a local pharmacy and talk to the pharmacist",
-        detail:
-          "Understanding the actual work demystifies the career. Ask the pharmacist what they do beyond dispensing — drug counseling, inventory, clinical pharmacy roles are often unknown.",
-      },
-      {
-        label: "Learn about drug regulations in India",
-        detail:
-          "India's pharmacy sector is shaped by CDSCO and state pharmacy councils. Understanding regulations — what a pharmacist can and cannot do — is core to the career.",
-      },
-      {
-        label: "Explore PCB stream for Grade 11",
-        detail:
-          "B.Pharm requires PCB, with Chemistry as the most critical subject. Physics and Mathematics are also tested in pharmacy entrance exams.",
-      },
-      {
-        label: "Research D.Pharm vs B.Pharm options",
-        detail:
-          "D.Pharm (2-year) opens retail pharmacy fast with a lower investment. B.Pharm (4-year) opens industrial, clinical, and research roles with higher long-term earnings.",
-      },
-    ],
-    steps1112: [
-      {
-        label: "Research state pharmacy entrance exams",
-        detail:
-          "MHT-CET, WBJEE, AP EAPCET, and KCET all have pharmacy tracks. State government colleges have significantly lower fees than private colleges with similar quality.",
-      },
-      {
-        label: "Target top pharmacy colleges",
-        detail:
-          "Jamia Hamdard Delhi, BITS Pilani Pharmacy, Bombay College of Pharmacy, and JSS Manipal offer the strongest industrial placements and research opportunities.",
-      },
-      {
-        label: "Consider GPAT preparation from Year 2 of B.Pharm",
-        detail:
-          "GPAT (Graduate Pharmacy Aptitude Test) opens M.Pharm at NIPER (National Institutes of Pharmaceutical Education and Research) — India's top pharmacy PG programs.",
-      },
-      {
-        label: "Explore pharma industry tracks",
-        detail:
-          "Regulatory affairs, clinical research, medical writing, and drug discovery each have different salary trajectories. Research these tracks before final year so you can target internships strategically.",
-      },
-      {
-        label: "Pursue clinical research certification alongside B.Pharm",
-        detail:
-          "ICTRC, CCRPS, or SOCRA certifications are valued by CROs (contract research organizations). These add ₹1–2 LPA to entry-level offers and open global opportunities.",
-      },
-    ],
-  },
-
-  physiotherapist: {
-    keyModules: ["scientific", "verbal", "creative"],
-    keyModuleThreshold: 50,
-    alignedRiasec: ["S", "I", "R"],
-    minGritLevel: "Medium",
-    needsGrowthMindset: true,
-    steps910: [
-      {
-        label: "Focus on Biology and Physics fundamentals",
-        detail:
-          "Anatomy, physiology, and biomechanics — the core of BPT — are built on these. Strong Biology in Grade 9–10 is essential preparation.",
-      },
-      {
-        label: "Observe or shadow a physiotherapist",
-        detail:
-          "Sports clinics, hospital rehab departments, and community health centers all have physiotherapists. Even 2 visits give you a realistic view of the daily work.",
-      },
-      {
-        label: "Learn basic anatomy from free resources",
-        detail:
-          "Khan Academy covers human body systems that are directly tested in BPT entrance exams. Start with musculoskeletal system and nervous system modules.",
-      },
-      {
-        label: "Build physical fitness yourself",
-        detail:
-          "Physiotherapists who have experienced rehabilitation personally develop stronger empathy and technique. Fitness, sports, or yoga practice is both relevant and beneficial.",
-      },
-      {
-        label: "Explore PCB stream for Grade 11",
-        detail:
-          "BPT requires PCB with minimum 50% in Biology. Do not choose PCM if physiotherapy is the goal — PCB is mandatory for most BPT programs.",
-      },
-    ],
-    steps1112: [
-      {
-        label: "Apply to top BPT programs in India",
-        detail:
-          "SRM University, Manipal University, DY Patil, Jamia Hamdard, and state government medical colleges with physiotherapy departments are the top targets.",
-      },
-      {
-        label: "NEET score opens BPT admission options",
-        detail:
-          "NEET score is accepted by many BPT programs. Preparing for NEET even if the target is BPT maximizes admission options and keeps MBBS as a backup possibility.",
-      },
-      {
-        label: "Specialize early in your area of interest",
-        detail:
-          "Sports physiotherapy, neuro rehabilitation, pediatric PT, and cardiac rehab each have different salary ceilings and opportunities. Specialization determines your career trajectory significantly.",
-      },
-      {
-        label: "Get certified in manual therapy or dry needling during BPT",
-        detail:
-          "These add-on skills command premium rates in private practice and abroad. Many BPT students complete these certifications in final year or immediately after.",
-      },
-      {
-        label: "Research MPT options for PG specialization",
-        detail:
-          "MPT (Masters in Physiotherapy) with AIPT or IAP registration opens independent practice. Specialization at PG level significantly increases earnings and career scope.",
       },
     ],
   },
@@ -1089,70 +926,6 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
         label: "Network aggressively through college alumni",
         detail:
           "Investment banking placement is relationship-driven. Every senior from your institution in the industry is a door-opener. LinkedIn outreach to alumni with a specific, genuine question has a high response rate.",
-      },
-    ],
-  },
-
-  actuary: {
-    keyModules: ["numerical", "logical", "scientific"],
-    keyModuleThreshold: 65,
-    alignedRiasec: ["I", "C", "R"],
-    minGritLevel: "High",
-    needsGrowthMindset: false,
-    steps910: [
-      {
-        label:
-          "Build the strongest possible Mathematics and Statistics foundation",
-        detail:
-          "Actuarial exams are mathematics-heavy and passed on quantitative ability alone. If you are not genuinely strong in Maths now, this career requires serious honest self-assessment.",
-      },
-      {
-        label:
-          "Excel in PCM — Mathematics at the highest level is non-negotiable",
-        detail:
-          "Actuarial science is one of the few careers where mathematics ability is a near-complete predictor of success. No workaround exists — mathematical rigor is the job.",
-      },
-      {
-        label: "Familiarize with probability concepts early",
-        detail:
-          "Probability theory underpins all actuarial science. The Probability and Statistics chapter in Grade 10–11 Maths is directly tested in actuarial exams. Master it thoroughly.",
-      },
-      {
-        label: "Research the Institute of Actuaries of India exam structure",
-        detail:
-          "There are 9 levels of IAI actuarial exams, typically taking 5–8 years to complete. Understanding the full path before committing helps with realistic planning.",
-      },
-      {
-        label: "Consider Computer Science as 5th subject",
-        detail:
-          "R and Python skills complement actuarial exams significantly. Many actuarial roles involve data modeling and statistical programming — technical skills add ₹2–4 LPA to entry packages.",
-      },
-    ],
-    steps1112: [
-      {
-        label: "Clear early IAI actuarial papers while in college",
-        detail:
-          "Many actuarial students begin CT1/CM1 (now CS1, CM1) papers during undergraduate years. Papers cleared before graduation give significant advantage in the job market — employers value early progress.",
-      },
-      {
-        label: "Target B.Sc Statistics/Mathematics at IIT or top university",
-        detail:
-          "IIT Kanpur, IIT Bombay Statistics programs or B.Sc Mathematics at SRCC, ISI Kolkata provide the strongest foundation. The actuarial exams are the qualification — the degree builds the foundation.",
-      },
-      {
-        label: "Join IAI Student membership immediately",
-        detail:
-          "Access to study materials, mock exams, and student communities significantly improves exam success rates. IAI membership is ₹2,000/year — the highest ROI investment in actuarial preparation.",
-      },
-      {
-        label: "Intern at LIC, HDFC Life, ICICI Prudential, or a reinsurer",
-        detail:
-          "LIC, HDFC Life, Max Life, Munich Re, and Swiss Re are the main actuarial employers in India. Most actuarial hiring happens through internship-to-full-time conversion.",
-      },
-      {
-        label: "Learn Prophet or Moses actuarial modeling software",
-        detail:
-          "Prophet is the most used actuarial modeling platform in Indian life insurance. Hands-on modeling software experience is valued by all actuarial employers — student versions are available.",
       },
     ],
   },
@@ -1795,6 +1568,378 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
       },
     ],
   },
+  cybersecurity: {
+    keyModules: ["logical", "scientific", "numerical"],
+    keyModuleThreshold: 50,
+    alignedRiasec: ["I", "R", "C"],
+    minGritLevel: "Medium",
+    needsGrowthMindset: true,
+    steps910: [
+      {
+        label: "Learn networking fundamentals",
+        detail:
+          "Complete the free Cisco Networking Academy Intro to Cybersecurity course online. Understand TCP/IP, firewalls, and how the internet works — this is the foundation of every cybersecurity role.",
+      },
+      {
+        label: "Start using Linux",
+        detail:
+          "Install Linux (Ubuntu) as a second OS on your PC or use a virtual machine. Cybersecurity professionals use Linux daily — learning basic commands, file permissions, and processes by Grade 10 sets you years ahead.",
+      },
+      {
+        label: "Try ethical hacking on legal platforms",
+        detail:
+          "Register on TryHackMe (free tier) and complete the Pre-Security path. This introduces web vulnerabilities, network attacks, and defensive tools in a safe, legal environment.",
+      },
+      {
+        label: "Strengthen Mathematics and Logic",
+        detail:
+          "Focus on discrete mathematics, logic gates, and number systems in your board syllabus — these are prerequisites for cryptography and algorithm-level security understanding.",
+      },
+      {
+        label: "Choose PCM + Computer Science for Grade 11",
+        detail:
+          "Physics, Chemistry, Maths + Computer Science (5th subject) is the ideal combination for B.Tech CSE / Information Security. Alternatively, consider B.Sc IT or BCA if PCM isn't your stream.",
+      },
+    ],
+    steps1112: [
+      {
+        label: "Get CompTIA Security+ certified",
+        detail:
+          "Start self-study for CompTIA Security+ using Professor Messer's free notes and practice exams. This globally recognised certification covers network security, threats, and risk management — valid for 3 years.",
+      },
+      {
+        label: "Practice on Hack The Box or TryHackMe",
+        detail:
+          "Complete 20+ machines on HackTheBox or advance to TryHackMe's Advanced level. A public HackTheBox profile demonstrates practical skills to employers more convincingly than marks.",
+      },
+      {
+        label: "Target B.Tech CSE at NIT/VIT with cybersecurity electives",
+        detail:
+          "JEE Main 80th+ percentile targets NIT Calicut / VIT / SRM. Look for colleges with a Cyber Security specialisation in their B.Tech CSE. IIT Kanpur's C3i Hub is India's premier cybersecurity research centre.",
+      },
+      {
+        label: "Get CDAC or EC-Council introduction to CEH",
+        detail:
+          "Register for CDAC's Certified Cyber Security Professional (CCSP) course or EC-Council's CEH v12 foundation. CDAC has government recognition and is respected by Indian employers including CERT-In and government agencies.",
+      },
+      {
+        label: "Build a security homelab or CTF portfolio",
+        detail:
+          "Set up a home lab with Kali Linux + vulnerable virtual machines (DVWA, Metasploitable). Participate in 2 Capture the Flag (CTF) competitions and document your writeups on a blog — this is your portfolio.",
+      },
+    ],
+  },
+
+  pharmacist: {
+    keyModules: ["scientific", "numerical", "logical"],
+    keyModuleThreshold: 50,
+    alignedRiasec: ["I", "R", "C"],
+    minGritLevel: "Medium",
+    needsGrowthMindset: false,
+    steps910: [
+      {
+        label: "Excel in Biology and Chemistry",
+        detail:
+          "Pharmacy requires strong Organic Chemistry (drug synthesis) and Biology (pharmacology). Aim for 85%+ in both subjects in board exams. NEET or state pharmacy entrance tests these heavily.",
+      },
+      {
+        label: "Choose Science PCB stream for Grade 11",
+        detail:
+          "Physics, Chemistry, Biology is the required stream for pharmacy. Some pharmacy programmes also accept PCM students. Confirm the requirements of your target state's pharmacy entrance exam.",
+      },
+      {
+        label: "Learn about drug regulation and pharmacy careers",
+        detail:
+          "Visit a hospital pharmacy or retail chemist for 1-2 hours of observation (with permission). Understand the difference between D.Pharm (2-year diploma), B.Pharm (4-year degree), and Pharm.D (6-year clinical doctorate).",
+      },
+      {
+        label: "Understand the Pharmacy Council of India (PCI) rules",
+        detail:
+          "PCI regulates all pharmacy education in India. Only PCI-approved colleges count for registration. Research the closest PCI-approved college in your state and their admission requirements.",
+      },
+      {
+        label: "Begin basic chemistry lab habits",
+        detail:
+          "Pharmacy is a lab-intensive career. Develop precise measurement habits, equipment familiarity, and safety protocols in your school chemistry lab. These skills transfer directly to pharmaceutical manufacturing and quality control.",
+      },
+    ],
+    steps1112: [
+      {
+        label: "Clear NEET or state pharmacy entrance exam",
+        detail:
+          "Most states require NEET for government pharmacy college admission. Some states have their own pharmacy CET. Target 400+ in NEET for government B.Pharm seats. D.Pharm does not require NEET at most private colleges.",
+      },
+      {
+        label: "Target B.Pharm at BITS Pilani, Jamia Hamdard, or NIPER",
+        detail:
+          "BITS Pilani Pharmacy (BITSAT), Jamia Hamdard (HSTES), and Panjab University are India's premier pharmacy schools. NIPER (National Institute of Pharmaceutical Education and Research) for M.Pharm is the IIT equivalent of pharmacy.",
+      },
+      {
+        label: "Study Organic Chemistry and Biochemistry deeply",
+        detail:
+          "B.Pharm entrance tests: Organic Chemistry reactions (mechanism, nomenclature), Biochemistry (metabolic pathways), and Physics (optics, mechanics). NCERT + coaching or Unacademy pharmacy track prepares you in 10–12 months.",
+      },
+      {
+        label: "Research pharmaceutical career paths",
+        detail:
+          "Pharmacy has 5 career tracks: Retail/Hospital Pharmacy, Pharmaceutical Manufacturing, Clinical Research, Medical Representatives (pharma sales), and Drug Regulatory Affairs. Knowing which track you want shapes which specialisation you choose in B.Pharm.",
+      },
+      {
+        label: "Build lab skills and apply for internships",
+        detail:
+          "Local pharmacy colleges often allow Grade 12 students to shadow in labs. Additionally, CSIR-CDRI (Central Drug Research Institute, Lucknow) runs summer internship programmes for students interested in drug research.",
+      },
+    ],
+  },
+
+  physiotherapist: {
+    keyModules: ["scientific", "leadership", "verbal"],
+    keyModuleThreshold: 45,
+    alignedRiasec: ["S", "I", "R"],
+    minGritLevel: "Medium",
+    needsGrowthMindset: true,
+    steps910: [
+      {
+        label: "Excel in Biology and Physics",
+        detail:
+          "Physiotherapy requires understanding human anatomy, physiology, and biomechanics. Biology covers anatomy and body systems; Physics covers mechanics and movement principles. Score 80%+ in both.",
+      },
+      {
+        label: "Choose Science PCB stream for Grade 11",
+        detail:
+          "BPT (Bachelor of Physiotherapy) requires PCB stream (Physics, Chemistry, Biology). Most state physiotherapy entrances follow NEET scores or state-level CET. Confirm your state's requirement.",
+      },
+      {
+        label: "Build a helper instinct — volunteer at a health camp",
+        detail:
+          "Physiotherapy is a hands-on, patient-facing profession. Volunteer at a local health camp, NGO clinic, or sports event medical tent to observe physiotherapy in action and confirm it matches your personality.",
+      },
+      {
+        label: "Learn basic anatomy through YouTube",
+        detail:
+          "Watch the 'Anatomy Zone' or 'Armando Hasudungan' channels to build anatomical vocabulary early. Understanding muscle groups, joints, and the skeletal system gives you a huge advantage in BPT entrance exams.",
+      },
+      {
+        label: "Follow sports physiotherapy online",
+        detail:
+          "Sports physiotherapy is one of the fastest-growing specialisations (IPL, ISL, and Olympic sports all employ full-time physios). Follow Indian physiotherapists on Instagram and LinkedIn to understand modern career opportunities.",
+      },
+    ],
+    steps1112: [
+      {
+        label: "Prepare for NEET and state CET for BPT",
+        detail:
+          "BPT admission in most states uses NEET score. Target 350+ in NEET for government BPT seats. States like Maharashtra (MHT-CET) and Karnataka (KCET) have separate CET processes. Check your state's Allied Health Sciences council.",
+      },
+      {
+        label: "Research top BPT colleges in India",
+        detail:
+          "Top BPT programmes: AIIMS New Delhi (BPT), CMC Vellore (BPT), Manipal College of Allied Health Sciences, MAHE Manipal, and Kasturba Medical College. Government BPT seats cost ₹10K–50K/year; private seats ₹1L–3L/year.",
+      },
+      {
+        label: "Understand the BPT 4.5-year programme structure",
+        detail:
+          "BPT is a 4.5-year programme (4 years + 6-month internship). Core subjects: Anatomy, Physiology, Biomechanics, Pathology, Therapeutic Exercises, Manual Therapy. Specialisations after BPT: Sports, Neuro, Musculoskeletal, Paediatrics.",
+      },
+      {
+        label: "Shadow a physiotherapist for a week",
+        detail:
+          "Contact a local physiotherapy clinic or hospital physio department for a week of shadowing (unpaid observation). This confirms your interest and gives you a genuine story for college interviews and personal statements.",
+      },
+      {
+        label: "Plan for MPT (Master's) from the start",
+        detail:
+          "BPT + MPT (Master of Physiotherapy, 2 years) significantly increases earning potential. AIIMS, Manipal, and Amrita offer MPT programs. GATE Biosciences or college-specific entrance exams are used for MPT admissions.",
+      },
+    ],
+  },
+
+  "chartered-accountant": {
+    keyModules: ["numerical", "logical", "verbal"],
+    keyModuleThreshold: 55,
+    alignedRiasec: ["C", "E", "I"],
+    minGritLevel: "High",
+    needsGrowthMindset: true,
+    steps910: [
+      {
+        label: "Master Mathematics and start Accountancy",
+        detail:
+          "CA requires strong numerical thinking. In Grade 9–10, focus on Maths (especially Algebra, Arithmetic, and Percentage problems), and if Accountancy is available, study it — it directly maps to CA Foundation content.",
+      },
+      {
+        label: "Register for CA Foundation after Grade 10",
+        detail:
+          "ICAI allows CA Foundation registration after Class 10 (X). You need to study and appear only after completing Grade 12. Register at icai.org early to get access to study materials (ICAI Study Materials are India's best for CA prep).",
+      },
+      {
+        label: "Choose Commerce stream for Grade 11",
+        detail:
+          "Commerce stream (Accountancy, Business Studies, Economics, Maths) is ideal for CA. However, CA is also open to Science and Arts stream students — the syllabus is self-contained. Commerce just gives a head start.",
+      },
+      {
+        label: "Study ICAI CA Foundation modules as preview",
+        detail:
+          "The 4 CA Foundation subjects are: Principles of Accounting, Business Laws, Maths & Statistics, and Business Economics. Start reading the ICAI study material for Accounting (Paper 1) in Grade 10 — it's freely downloadable.",
+      },
+      {
+        label: "Understand what articleship means",
+        detail:
+          "After CA Foundation + Intermediate Group I, you start a mandatory 3-year articleship (practical training) under a CA. Understanding this early helps you target Big 4 article positions (Deloitte, EY, KPMG, PwC) from day one.",
+      },
+    ],
+    steps1112: [
+      {
+        label: "Clear CA Foundation within 6 months of Grade 12 exams",
+        detail:
+          "CA Foundation has 4 papers: Accounting (100 marks), Business Laws (100 marks), Maths & Statistics (100 marks), and Business Economics (100 marks). 40% per paper + 50% aggregate to pass. ICAI Study Material + mock tests are sufficient without coaching.",
+      },
+      {
+        label: "Target a Big 4 articleship",
+        detail:
+          "Big 4 articleships (Deloitte, EY, KPMG, PwC) offer the best training environment and placement record. They shortlist through their own hiring portals, not just merit. Prepare a clean academic record + 2-3 Excel/Accounting skills to stand out.",
+      },
+      {
+        label: "Prepare for CA Intermediate in parallel with articleship",
+        detail:
+          "CA Intermediate has 6 papers in 2 groups. Group I: Accounting, Corporate & Other Laws, Taxation. Group II: Cost & Management Accounting, Auditing & Ethics, Financial Management. Most students clear one group per attempt.",
+      },
+      {
+        label: "Use ICAI self-study materials exclusively",
+        detail:
+          "ICAI study materials, ICAI mock test papers, and ICAI student journals are the official and most effective study tools. Third-party coaching (ICAI coaching centres, CA Wallah) is optional but adds speed. Coaching adds ₹30K–1L but isn't mandatory.",
+      },
+      {
+        label: "Understand the 5-year journey upfront",
+        detail:
+          "CA takes 4.5–5 years from registration to final qualification: Foundation (6 months study) → Inter (2–3 attempts over 1.5–2 years) → Articleship (3 years) → Final (clear both groups during/after articleship). Average clearance age in India is 24–25.",
+      },
+    ],
+  },
+
+  actuary: {
+    keyModules: ["numerical", "logical", "scientific"],
+    keyModuleThreshold: 65,
+    alignedRiasec: ["C", "I", "E"],
+    minGritLevel: "High",
+    needsGrowthMindset: true,
+    steps910: [
+      {
+        label: "Build exceptional Mathematics skills",
+        detail:
+          "Actuarial science is the most mathematically demanding career on this list. Probability, Statistics, Algebra, and Calculus are all essential. Target 95%+ in Maths in Grade 10 board exams and explore competition mathematics (AMC, Olympiad).",
+      },
+      {
+        label: "Understand what an actuary does",
+        detail:
+          "Actuaries quantify financial risk — they work in insurance, pension funds, banking, and consulting. Watch 'What does an actuary do?' (YouTube) and read the Institute and Faculty of Actuaries (IFoA) or IAI (Institute of Actuaries of India) student pages.",
+      },
+      {
+        label: "Pursue PCM stream + Statistics optional",
+        detail:
+          "Physics, Chemistry, Maths is mandatory for actuarial programmes. If Statistics is offered as an additional subject at your school, take it — it directly covers probability and data analysis that will appear in your actuarial exams.",
+      },
+      {
+        label: "Learn Excel and basic programming early",
+        detail:
+          "Actuaries use Excel, R, and Python daily. Start with Excel (functions, VLOOKUP, Pivot Tables) in Grade 10 — free YouTube tutorials are sufficient. This skill puts you ahead when you start actuarial internships.",
+      },
+      {
+        label: "Research B.Sc Actuarial Science programmes",
+        detail:
+          "Top BSc Actuarial Science colleges: Amity University, Delhi University (Statistics + Actuary electives), University of Mumbai (BSc Actuarial Science), and Pune University. Some UK universities offer India-pathway scholarships for BSc Actuarial programmes.",
+      },
+    ],
+    steps1112: [
+      {
+        label:
+          "Clear IAI CT1 (Actuarial Foundation exam) during or after Grade 12",
+        detail:
+          "The Institute of Actuaries of India (IAI) allows students to appear for Foundation examinations while still in college. CT1 (Financial Mathematics) is the recommended first exam. It requires strong Maths Grade 12 knowledge and can be self-studied.",
+      },
+      {
+        label: "Target top Statistics / Actuarial Science degree programmes",
+        detail:
+          "B.Sc Statistics + actuarial exams is the most common path. Delhi University (Hindu College / SRCC), ISI Kolkata (B.Stat), CMI Chennai are India's best for Statistics. ISI B.Stat is considered India's most prestigious statistics degree.",
+      },
+      {
+        label: "Simultaneously pursue IAI Foundation exams",
+        detail:
+          "The IAI Fellow qualification requires passing 15 examinations (CT series, CA series, ST series, SA series). Begin CT1 and CT3 in your first year of college. Most actuaries clear their qualification by age 28–32.",
+      },
+      {
+        label: "Apply for actuarial internships at insurance companies",
+        detail:
+          "LIC India, New India Assurance, HDFC Life, ICICI Prudential Life, and Max Life Insurance regularly hire actuarial interns. Target internships during Grade 12 summer or first year of college — practical training accelerates your exam progression.",
+      },
+      {
+        label: "Connect with the student actuarial community",
+        detail:
+          "IAI has a student membership programme. Join the IAI student section, follow LinkedIn actuarial groups, and connect with students at BSc Actuarial Science colleges. Actuarial is a small, supportive community — early networking pays off.",
+      },
+    ],
+  },
+
+  architect: {
+    keyModules: ["creative", "scientific", "numerical"],
+    keyModuleThreshold: 50,
+    alignedRiasec: ["A", "R", "I"],
+    minGritLevel: "High",
+    needsGrowthMindset: true,
+    steps910: [
+      {
+        label: "Start sketching and hand drawing daily",
+        detail:
+          "Architecture entrance exams (NATA) include drawing tests. Develop hand-drawing skills now — architectural drawing, perspective sketches, and abstract visualisation. Even 20 minutes of sketching daily builds critical muscle memory.",
+      },
+      {
+        label: "Build spatial reasoning through construction toys and origami",
+        detail:
+          "NATA's General Aptitude test examines 3D spatial reasoning, proportion sense, and visualisation. Lego architecture, origami, and isometric drawing exercises all build these skills. Architecture is fundamentally about seeing space in 3D.",
+      },
+      {
+        label: "Study Maths and Physics for structural understanding",
+        detail:
+          "B.Arch requires Maths (PCM) in Grade 12 (mandatory). Physics covers structural concepts (force, load, materials) that directly apply to building design. Score 80%+ in both to keep all architecture college options open.",
+      },
+      {
+        label: "Visit architecture and buildings in your city",
+        detail:
+          "Observe buildings actively — how does light enter? What materials are used? How does the space feel? Photography of architectural details builds visual literacy, which NATA drawing tests evaluate.",
+      },
+      {
+        label: "Explore architecture portfolios online",
+        detail:
+          "Follow ArchDaily, Dezeen, and Indian architecture practices on Instagram. Look at student portfolios on Behance. Understanding what a professional architecture portfolio looks like is essential before beginning your own.",
+      },
+    ],
+    steps1112: [
+      {
+        label: "Crack NATA (National Aptitude Test in Architecture)",
+        detail:
+          "NATA is the primary architecture entrance exam for COA (Council of Architecture) approved colleges. It tests: Drawing (2D and 3D sketching), PCM knowledge, General Aptitude, and Logical Reasoning. Score 100+ in NATA for top private architecture schools.",
+      },
+      {
+        label: "JEE Paper 2 (AAT) for IIT B.Arch",
+        detail:
+          "IIT Roorkee and IIT Kharagpur offer B.Arch via JEE Advanced + Architecture Aptitude Test (AAT). JEE Advanced qualification + AAT is the path to India's most prestigious B.Arch degree. Preparation: JEE Advanced PCM + NATA drawing practice.",
+      },
+      {
+        label: "Research top architecture colleges",
+        detail:
+          "Top B.Arch colleges: IIT Roorkee (best public), IIT Kharagpur, CEPT University Ahmedabad, Chandigarh College of Architecture (SPA Chandigarh), SPA New Delhi. CEPT has the most internationally recognised curriculum in India.",
+      },
+      {
+        label: "Build an architecture foundation portfolio",
+        detail:
+          "A portfolio of 15–20 sketches, design projects, and spatial explorations is required for admissions at top private architecture schools (Kamla Raheja Vidyanidhi, Pillai College). Start assembling this portfolio from Grade 11.",
+      },
+      {
+        label: "Understand the 5-year B.Arch path and COA registration",
+        detail:
+          "B.Arch is a 5-year professional degree. After completion, you register with the Council of Architecture (COA) to practice as an Architect. Internship (2 years after degree) and Architecture Registration Examination (ARE-equivalent) follows for licensed practice.",
+      },
+    ],
+  },
 };
 
 /**
@@ -1803,11 +1948,18 @@ export const careerBridgeMap: Record<string, CareerBridgeMeta> = {
 export function getBridgeSteps(
   careerId: string,
   grade: string,
+  stream?: string,
 ): { label: string; detail: string }[] {
   const meta = careerBridgeMap[careerId];
   const is910 = grade === "9" || grade === "10";
 
   if (meta) {
+    if (!is910 && stream === "commerce" && meta.steps1112Commerce) {
+      return meta.steps1112Commerce;
+    }
+    if (!is910 && stream === "arts" && meta.steps1112Arts) {
+      return meta.steps1112Arts;
+    }
     return is910 ? meta.steps910 : meta.steps1112;
   }
 
